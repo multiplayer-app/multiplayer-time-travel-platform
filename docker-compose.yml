@@ -1,0 +1,96 @@
+version: "3"
+services:
+  envoy:
+    image: envoyproxy/envoy-alpine:v1.18-latest
+    container_name: envoy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./services/envoy/envoy.yaml:/etc/envoy/envoy.yaml
+
+  epoch-engine: # dotnet
+    build:
+      context: ./services/epoch-engine
+    container_name: epoch-engine
+    hostname: epoch-engine
+    restart: on-failure
+    environment:
+      - ASPNETCORE_URLS=http://+:3000
+    env_file:
+      - ./.env
+    volumes:
+      - ./services/epoch-engine:/source:cached
+
+  vault-of-time: # go
+    build:
+      context: ./services/vault-of-time
+    container_name: vault-of-time
+    hostname: vault-of-time
+    restart: on-failure
+    environment:
+      - PORT=3000
+    env_file:
+      - ./.env
+    volumes:
+      - ./services/vault-of-time:/app:cached
+
+  dialogue-hub: # java
+    build:
+      context: ./services/dialogue-hub
+    container_name: dialogue-hub
+    hostname: dialogue-hub
+    restart: on-failure
+    environment:
+      - SERVER_PORT=3000
+    env_file:
+      - ./.env
+    volumes:
+      - ./services/dialogue-hub:/usr/app:cached
+
+  timegate: # nodejs
+    build:
+      context: ./services/timegate
+    container_name: timegate
+    hostname: timegate
+    restart: on-failure
+    environment:
+      - PORT=3000
+    env_file:
+      - ./.env
+    volumes:
+      - ./services/timegate:/usr/src/app:cached
+
+  minds-of-time: # python
+    build:
+      context: ./services/minds-of-time
+    container_name: minds-of-time
+    hostname: minds-of-time
+    restart: on-failure
+    environment:
+      - PORT=3000
+    env_file:
+      - ./.env
+    volumes:
+      - ./services/minds-of-time:/usr/src/app:cached
+
+  frontend:
+    build:
+      context: ./clients/mp-time-travel
+    container_name: frontend
+    hostname: frontend
+    restart: on-failure
+    env_file:
+      - ./.env
+    volumes:
+      - ./clients/mp-time-travel:/app:cached
+
+  # otel-collector:
+  #   image: otelcontribcol
+  #   container_name: otel-collector
+  #   hostname: otel-collector
+  #   restart: on-failure
+  #   command: ["--config=/etc/otel/config.yaml"]
+  #   env_file:
+  #     - ./.env
+  #   volumes:
+  #     - ./services/otel-collector/config.yaml:/etc/otel/config.yaml
