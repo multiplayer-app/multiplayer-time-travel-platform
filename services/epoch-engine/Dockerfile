@@ -3,10 +3,10 @@ ARG TARGETARCH
 WORKDIR /source
 
 COPY . .
-RUN dotnet restore -a $TARGETARCH
 
-RUN dotnet publish --no-restore -a $TARGETARCH -o /app
+RUN dotnet restore -a $TARGETARCH ./src
 
+RUN dotnet publish --no-restore -a $TARGETARCH -o /app ./src
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine
 

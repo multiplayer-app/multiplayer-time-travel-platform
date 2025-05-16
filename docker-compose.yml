@@ -55,6 +55,8 @@ services:
     restart: on-failure
     environment:
       - PORT=3000
+      - SERVICE_NAME=timegate
+      - SERVICE_VERSION=0.0.1
     env_file:
       - ./.env
     volumes:

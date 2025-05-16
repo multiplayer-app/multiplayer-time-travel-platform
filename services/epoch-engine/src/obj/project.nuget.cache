@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "dgSpecHash": "bveL2+SSpe0=",
+  "success": true,
+  "projectFilePath": "/Users/dima/Projects/multiplayer-time-travel-platform/services/epoch-engine/src/WebApiOpenApi.csproj",
+  "expectedPackageFiles": [
+    "/Users/dima/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/9.0.0/microsoft.aspnetcore.authentication.jwtbearer.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.aspnetcore.openapi/9.0.0/microsoft.aspnetcore.openapi.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.extensions.apidescription.server/9.0.0/microsoft.extensions.apidescription.server.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.extensions.configuration/9.0.0/microsoft.extensions.configuration.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.extensions.configuration.abstractions/9.0.0/microsoft.extensions.configuration.abstractions.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.extensions.configuration.binder/9.0.0/microsoft.extensions.configuration.binder.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.extensions.dependencyinjection/9.0.0/microsoft.extensions.dependencyinjection.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/9.0.0/microsoft.extensions.dependencyinjection.abstractions.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.extensions.diagnostics.abstractions/9.0.0/microsoft.extensions.diagnostics.abstractions.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.extensions.fileproviders.abstractions/9.0.0/microsoft.extensions.fileproviders.abstractions.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.extensions.hosting.abstractions/9.0.0/microsoft.extensions.hosting.abstractions.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.extensions.logging/9.0.0/microsoft.extensions.logging.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.extensions.logging.abstractions/9.0.0/microsoft.extensions.logging.abstractions.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.extensions.logging.configuration/9.0.0/microsoft.extensions.logging.configuration.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.extensions.options/9.0.0/microsoft.extensions.options.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.extensions.options.configurationextensions/9.0.0/microsoft.extensions.options.configurationextensions.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.extensions.primitives/9.0.0/microsoft.extensions.primitives.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.identitymodel.abstractions/8.0.1/microsoft.identitymodel.abstractions.8.0.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.identitymodel.jsonwebtokens/8.0.1/microsoft.identitymodel.jsonwebtokens.8.0.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.identitymodel.logging/8.0.1/microsoft.identitymodel.logging.8.0.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.identitymodel.protocols/8.0.1/microsoft.identitymodel.protocols.8.0.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.identitymodel.protocols.openidconnect/8.0.1/microsoft.identitymodel.protocols.openidconnect.8.0.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.identitymodel.tokens/8.0.1/microsoft.identitymodel.tokens.8.0.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/microsoft.openapi/1.6.23/microsoft.openapi.1.6.23.nupkg.sha512",
+    "/Users/dima/.nuget/packages/multiplayeropentelemetrytest/1.0.12/multiplayeropentelemetrytest.1.0.12.nupkg.sha512",
+    "/Users/dima/.nuget/packages/netescapades.aspnetcore.securityheaders/1.0.0-preview.2/netescapades.aspnetcore.securityheaders.1.0.0-preview.2.nupkg.sha512",
+    "/Users/dima/.nuget/packages/opentelemetry/1.11.1/opentelemetry.1.11.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/opentelemetry.api/1.11.1/opentelemetry.api.1.11.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/opentelemetry.api.providerbuilderextensions/1.11.1/opentelemetry.api.providerbuilderextensions.1.11.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/opentelemetry.exporter.console/1.11.1/opentelemetry.exporter.console.1.11.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/opentelemetry.exporter.opentelemetryprotocol/1.11.1/opentelemetry.exporter.opentelemetryprotocol.1.11.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/opentelemetry.extensions.hosting/1.11.1/opentelemetry.extensions.hosting.1.11.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/opentelemetry.instrumentation.aspnetcore/1.11.0/opentelemetry.instrumentation.aspnetcore.1.11.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/opentelemetry.instrumentation.http/1.11.0/opentelemetry.instrumentation.http.1.11.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/swashbuckle.aspnetcore/8.1.1/swashbuckle.aspnetcore.8.1.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/swashbuckle.aspnetcore.swagger/8.1.1/swashbuckle.aspnetcore.swagger.8.1.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/swashbuckle.aspnetcore.swaggergen/8.1.1/swashbuckle.aspnetcore.swaggergen.8.1.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/swashbuckle.aspnetcore.swaggerui/8.1.1/swashbuckle.aspnetcore.swaggerui.8.1.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/system.diagnostics.diagnosticsource/9.0.0/system.diagnostics.diagnosticsource.9.0.0.nupkg.sha512",
+    "/Users/dima/.nuget/packages/system.identitymodel.tokens.jwt/8.0.1/system.identitymodel.tokens.jwt.8.0.1.nupkg.sha512",
+    "/Users/dima/.nuget/packages/system.text.json/9.0.2/system.text.json.9.0.2.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'MultiplayerOpentelemetryTest 1.0.12' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net9.0'. This package may not be fully compatible with your project.",
+      "libraryId": "MultiplayerOpentelemetryTest",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    }
+  ]
+}
