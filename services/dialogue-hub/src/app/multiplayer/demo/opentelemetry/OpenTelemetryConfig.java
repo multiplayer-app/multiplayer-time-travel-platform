@@ -24,25 +24,20 @@ import io.opentelemetry.exporter.otlp.http.logs.OtlpHttpLogRecordExporter;
 
 public class OpenTelemetryConfig {
     public static void initialize() {
-        String SERVICE_NAME = "java-mp-demo-service";
-        String SERVICE_VERSION = "0.0.1";
-        String PLATFORM_ENV = "local";
-        String MULTIPLAYER_OTLP_KEY = System.getenv("MULTIPLAYER_OTLP_KEY");
-
         // SpanExporter multiplayerSpanExporter = new MultiplayerOtlpHttpSpanExporter(MULTIPLAYER_OTLP_KEY, "http://localhost/v1/traces");
         // LogRecordExporter multiplayerLogsExporter = new MultiplayerOtlpHttpLogExporter(MULTIPLAYER_OTLP_KEY, "http://localhost/v1/logs");
-        // Sampler sampler = MultiplayerTraceIdRatioBasedSampler.create(0.5);
-        // MultiplayerRandomIdGenerator idGenerator = new MultiplayerRandomIdGenerator(0.5)
+        // Sampler sampler = MultiplayerTraceIdRatioBasedSampler.create(Config.OTLP_MULTIPLAYER_SPAN_RATIO);
+        // MultiplayerRandomIdGenerator idGenerator = new MultiplayerRandomIdGenerator(Config.OTLP_MULTIPLAYER_DOC_SPAN_RATIO)
 
         SpanExporter multiplayerSpanExporter = OtlpHttpSpanExporter.builder()
-            .setEndpoint("https://api.multiplayer.app/v1/traces")
-            .addHeader("Authorization", MULTIPLAYER_OTLP_KEY)
+            .setEndpoint(Config.OTLP_TRACES_ENDPOINT)
+            .addHeader("Authorization", Config.MULTIPLAYER_OTLP_KEY)
             .build();
         LogRecordExporter multiplayerLogsExporter = OtlpHttpLogRecordExporter.builder()
-            .setEndpoint("https://api.multiplayer.app/v1/logs")
-            .addHeader("Authorization", MULTIPLAYER_OTLP_KEY)
+            .setEndpoint(Config.OTLP_LOGS_ENDPOINT)
+            .addHeader("Authorization", Config.MULTIPLAYER_OTLP_KEY)
             .build();
-        Sampler sampler = Sampler.traceIdRatioBased(0.5);
+        Sampler sampler = Sampler.traceIdRatioBased(Config.OTLP_MULTIPLAYER_SPAN_RATIO);
 
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
                 // .setIdGenerator(idGenerator)

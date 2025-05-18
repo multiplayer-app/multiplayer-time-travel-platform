@@ -42,6 +42,10 @@ dependencies {
     implementation 'io.opentelemetry:opentelemetry-exporter-otlp:1.35.0'
     implementation 'io.opentelemetry:opentelemetry-exporter-common:1.35.0'
     // implementation 'io.opentelemetry:opentelemetry-exporter-otlp-logs:1.35.0'
+    
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     // implementation 'app.multiplayer:opentelemetry:0.0.1'

@@ -42,6 +42,7 @@ services:
     restart: on-failure
     environment:
       - SERVER_PORT=3000
+      - REDIS_HOST=redis
     env_file:
       - ./.env
     volumes:
@@ -85,6 +86,16 @@ services:
       - ./.env
     volumes:
       - ./clients/mp-time-travel:/app:cached
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    hostname: redis
+    command: redis-server
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "6379:6379"
 
   # otel-collector:
   #   image: otelcontribcol
