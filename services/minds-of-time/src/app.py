@@ -19,7 +19,7 @@ swagger_config = {
             "model_filter": lambda tag: True,  # all in
         }
     ],
-    "static_url_path": "/flasgger_static",
+    "static_url_path": f'{API_PREFIX}/docs/flasgger_static',
     "swagger_ui": True,
     "specs_route": f"{API_PREFIX}/docs"
 }
