@@ -10,10 +10,10 @@ RUN dotnet publish --no-restore -a $TARGETARCH -o /app ./src
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine
 
-ARG VERSION
-ENV VERSION=$VERSION
+ARG SERVICE_VERSION
+ENV SERVICE_VERSION=$SERVICE_VERSION
 
-EXPOSE 5000
+EXPOSE 3000
 WORKDIR /app
 COPY --from=build /app .
 

@@ -2,7 +2,7 @@ version: "3"
 services:
   envoy:
     image: envoyproxy/envoy-alpine:v1.18-latest
-    container_name: envoy
+    container_name: multiplayer-time-travel-platform-envoy
     ports:
       - "8080:8080"
     volumes:
@@ -11,48 +11,55 @@ services:
   epoch-engine: # dotnet
     build:
       context: ./services/epoch-engine
-    container_name: epoch-engine
-    hostname: epoch-engine
+    container_name: multiplayer-time-travel-platform-epoch-engine
+    hostname: multiplayer-time-travel-platform-epoch-engine
     restart: on-failure
     environment:
-      - ASPNETCORE_URLS=http://+:3000
+      - ASPNETCORE_URLS=http://0.0.0.0:3000
+      - PORT=3000
+      - SERVICE_NAME=epoch-engine
+      - SERVICE_VERSION=0.0.1
     env_file:
       - ./.env
-    volumes:
-      - ./services/epoch-engine:/source:cached
+    # volumes:
+    #   - ./services/epoch-engine:/source:cached
 
   vault-of-time: # go
     build:
       context: ./services/vault-of-time
-    container_name: vault-of-time
-    hostname: vault-of-time
+    container_name: multiplayer-time-travel-platform-vault-of-time
+    hostname: multiplayer-time-travel-platform-vault-of-time
     restart: on-failure
     environment:
       - PORT=3000
+      - SERVICE_NAME=vault-of-time
+      - SERVICE_VERSION=0.0.1
     env_file:
       - ./.env
-    volumes:
-      - ./services/vault-of-time:/app:cached
+    # volumes:
+    #   - ./services/vault-of-time:/app:cached
 
   dialogue-hub: # java
     build:
       context: ./services/dialogue-hub
-    container_name: dialogue-hub
-    hostname: dialogue-hub
+    container_name: multiplayer-time-travel-platform-dialogue-hub
+    hostname: multiplayer-time-travel-platform-dialogue-hub
     restart: on-failure
     environment:
       - SERVER_PORT=3000
-      - REDIS_HOST=redis
+      - REDIS_HOST=multiplayer-time-travel-platform-redis
+      - SERVICE_NAME=dialogue-hub
+      - SERVICE_VERSION=0.0.1
     env_file:
       - ./.env
-    volumes:
-      - ./services/dialogue-hub:/usr/app:cached
+    # volumes:
+    #   - ./services/dialogue-hub:/usr/app:cached
 
   timegate: # nodejs
     build:
       context: ./services/timegate
-    container_name: timegate
-    hostname: timegate
+    container_name: multiplayer-time-travel-platform-timegate
+    hostname: multiplayer-time-travel-platform-timegate
     restart: on-failure
     environment:
       - PORT=3000
@@ -60,37 +67,42 @@ services:
       - SERVICE_VERSION=0.0.1
     env_file:
       - ./.env
-    volumes:
-      - ./services/timegate:/usr/src/app:cached
+    # volumes:
+    #   - ./services/timegate:/usr/src/app:cached
 
   minds-of-time: # python
     build:
       context: ./services/minds-of-time
-    container_name: minds-of-time
-    hostname: minds-of-time
+    container_name: multiplayer-time-travel-platform-minds-of-time
+    hostname: multiplayer-time-travel-platform-minds-of-time
     restart: on-failure
     environment:
       - PORT=3000
+      - SERVICE_NAME=minds-of-time
+      - SERVICE_VERSION=0.0.1
     env_file:
       - ./.env
-    volumes:
-      - ./services/minds-of-time:/usr/src/app:cached
+    # volumes:
+    #   - ./services/minds-of-time:/usr/src/app:cached
 
   frontend:
     build:
       context: ./clients/mp-time-travel
-    container_name: frontend
-    hostname: frontend
+    container_name: multiplayer-time-travel-platform-frontend
+    hostname: multiplayer-time-travel-platform-frontend
     restart: on-failure
+    environment:
+      - SERVICE_NAME=mp-time-travel-frontend
+      - SERVICE_VERSION=0.0.1
     env_file:
       - ./.env
-    volumes:
-      - ./clients/mp-time-travel:/app:cached
+    # volumes:
+    #   - ./clients/mp-time-travel:/app:cached
 
   redis:
     image: redis:alpine
-    container_name: redis
-    hostname: redis
+    container_name: multiplayer-time-travel-platform-redis
+    hostname: multiplayer-time-travel-platform-redis
     command: redis-server
     environment:
       ALLOW_EMPTY_PASSWORD: "yes"

@@ -1,7 +1,7 @@
 FROM python:3.9.5-slim-buster
 
-ARG VERSION
-ENV VERSION=$VERSION
+ARG SERVICE_VERSION
+ENV SERVICE_VERSION=$SERVICE_VERSION
 
 WORKDIR /usr/src/app
 
@@ -18,5 +18,5 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-EXPOSE 8080
+EXPOSE 3000
 ENTRYPOINT ["python", "./src/app.py"]

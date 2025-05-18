@@ -13,7 +13,7 @@ MultiplayerTraceIdConfiguration.ConfigureMultiplayerTraceIdGenerator(0.5);
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.WebHost.UseUrls($"http://0.0.0.0:{Config.PORT}");
 
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource =>

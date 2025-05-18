@@ -2,8 +2,8 @@ namespace WebApiOpenApi;
 
 public static class Config
 {
+    public static string PORT = Environment.GetEnvironmentVariable("PORT") ?? "3000";
 
-    // public static string API_PREFIX = Environment.GetEnvironmentVariable("API_PREFIX") ?? "/v1/epoch-engine";
     public static readonly string API_PREFIX = Environment.GetEnvironmentVariable("API_PREFIX") ?? "/v1/epoch-engine";
 
     public static string SERVICE_NAME = Environment.GetEnvironmentVariable("SERVICE_NAME") ?? "<example-service-name>";

@@ -15,6 +15,9 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
 
 COPY --from=builder /app/build/app /app/build/app
 
+ARG SERVICE_VERSION
+ENV SERVICE_VERSION=$SERVICE_VERSION
+
 EXPOSE 3000
 
 CMD ["./app/build/app"]

@@ -6,3 +6,4 @@ build
 bin
 __pycache__
 .env
+services/epoch-engine/src/obj
