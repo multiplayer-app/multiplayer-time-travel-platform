@@ -6,7 +6,7 @@ const { Router } = express
 const router = Router({ mergeParams: true })
 const { DialogueHubValidationMiddleware } = ValidationMiddleware
 
-router.route('/').get(
+router.route('/openrouter/message').post(
   DialogueHubValidationMiddleware.validatePostOpenrouterMessage,
   postMessage,
 )

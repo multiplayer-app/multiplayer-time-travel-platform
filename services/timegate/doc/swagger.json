@@ -2,11 +2,11 @@
   "openapi": "3.0.0",
   "info": {
     "version": "0.0.1",
-    "title": "Multiplayer API service"
+    "title": "Timegate API service"
   },
   "servers": [
     {
-      "url": "/v0/api"
+      "url": "/v1/timegate"
     }
   ],
   "tags": [
@@ -87,6 +87,123 @@
           }
         }
       }
+    },
+    "/dialogue-hub/openrouter/message": {
+      "post": {
+        "summary": "Post message to openrouter.",
+        "tags": [
+          "Dialogue hub"
+        ],
+        "operationId": "postMessage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostMessageToOpenrouter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Openrouter reply.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenrouterReply"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/epoch-engine/epoch": {
+      "get": {
+        "summary": "List epochs.",
+        "tags": [
+          "Epoch engine"
+        ],
+        "operationId": "listEpochs",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Epochs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Epochs"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/minds-of-time/prominent-persons": {
+      "get": {
+        "summary": "List prominent persons.",
+        "tags": [
+          "Minds of time"
+        ],
+        "operationId": "listProminentPersons",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Prominent persons.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProminentPersons"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vault-of-time/historical-events": {
+      "get": {
+        "summary": "List historical events.",
+        "tags": [
+          "Vault of time"
+        ],
+        "operationId": "listHistoricalEvents",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Historical events.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HistoricalEvents"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -114,6 +231,89 @@
       "Healthz": {
         "type": "string"
       },
+
+     "PostMessageToOpenrouter": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "contextId": {
+            "type": "string"
+          }
+        }
+      },
+      "OpenrouterReply": {
+        "type": "object",
+        "properties": {
+          "reply": {
+            "type": "string"
+          },
+          "contextId": {
+            "type": "string"
+          }
+        }
+      },
+
+      "Epochs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": "string",
+            "startDate": {
+              "isBCE": {
+                "type": "boolean"
+              },
+              "date": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "bceString": {
+                "type": "string"
+              }
+            },
+            "endDate": {
+              "isBCE": {
+                "type": "boolean"
+              },
+              "date": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "bceString": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "ProminentPersons": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "HistoricalEvents": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "event": {
+              "type": "string"
+            }
+          }
+        }
+      },
+
       "Error": {
         "type": "object",
         "required": [
