@@ -3,6 +3,7 @@ import debuggerInstance from "@multiplayer-app/session-debugger";
 import SidePanel from "./components/SidePanel";
 import Board from "./components/Board";
 import "./App.scss";
+import ModalComponent from "./components/NavigationModal";
 
 debuggerInstance.init({
   version: "0.0.1",
@@ -32,11 +33,16 @@ debuggerInstance.init({
 
 function App() {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="mtt-app">
       <SidePanel character={selectedCharacter} />
       <Board selectCharacter={setSelectedCharacter} />
+      <ModalComponent
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }

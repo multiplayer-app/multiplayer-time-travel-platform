@@ -22,6 +22,7 @@ interface ChatMessage extends Partial<MessageModel> {
 const MultiplayerChat = ({ character, preselectedQuestion, setQuestion }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [contextId, setContextId] = useState(null);
   const [error, setError] = useState<string | null>(null);
 
   const postMessage = useCallback(
@@ -43,25 +44,21 @@ const MultiplayerChat = ({ character, preselectedQuestion, setQuestion }) => {
           "http://localhost:8080/v1/dialogue-hub/openrouter/messages",
           {
             message,
-            context: character.name,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
+            contextId
           }
         );
 
         const data = response.data;
 
         const botMessage: ChatMessage = {
-          message: data || "I couldn't process that request.",
+          message: data?.reply || "I couldn't process that request.",
           sentTime: "just now",
           sender: "Multiplayer",
           direction: "incoming",
         };
 
         setMessages((prev) => [...prev, botMessage]);
+        setContextId(data?.contextId);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           setError(err.message || "Axios error occurred");
