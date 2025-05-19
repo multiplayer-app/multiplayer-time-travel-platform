@@ -30,7 +30,7 @@ function categorizeCharacters(characters) {
   return { bceCe, earlyCe, laterCe };
 }
 
-const Timeline = ({ selectedCharacter, setSelectedCharacter }) => {
+const Timeline = ({ selectedCharacter, setSelectedCharacter, setEra }) => {
   const { bceCe, earlyCe, laterCe } = categorizeCharacters(characters);
 
   return (
@@ -40,7 +40,7 @@ const Timeline = ({ selectedCharacter, setSelectedCharacter }) => {
       <div className="mtt-timeline-scroll-container">
         <div className="mtt-timeline-years-container">
           <div className="mtt-timeline-years-ticks">
-            <div className="mtt-timeline-year-cm">
+            <div className="mtt-timeline-year-cm" onClick={() => setEra("BCE")}>
               <span className="mtt-timeline-year">BCE</span>
             </div>
             <YearDivider />
@@ -58,7 +58,7 @@ const Timeline = ({ selectedCharacter, setSelectedCharacter }) => {
               );
             })}
             <YearDivider />
-            <div className="mtt-timeline-year-cm">
+            <div className="mtt-timeline-year-cm" onClick={() => setEra("CE")}>
               <span className="mtt-timeline-year">CE</span>
             </div>
             {earlyCe.map((character, index) => {

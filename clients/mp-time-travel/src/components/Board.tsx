@@ -5,42 +5,34 @@ import WelcomeScreen from "./WelcomeScreen";
 import MultiplayerChat from "./MultiplayerChat";
 import { characters } from "../mock/characters";
 
-const INITIAL_YEAR = 1960;
 const TERMS_URL = "https://www.multiplayer.app/terms-of-service/";
 const PRIVACY_URL = "https://www.multiplayer.app/privacy/";
 
-const getFullYear = (date) => {
-  return date ? new Date(date).getFullYear() : null;
-};
-
 const Board = () => {
-  const [selectedYear, setSelectedYear] = useState(INITIAL_YEAR);
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [question, setQuestion] = useState(null);
+  const [era, setEra] = useState("BCE");
 
   useEffect(() => {
     setQuestion(null);
+    setEra(
+      selectedCharacter?.startDate?.isBCE || selectedCharacter?.endDate?.isBCE
+        ? "BCE"
+        : "CE"
+    );
   }, [selectedCharacter]);
 
   const filteredCharacters = useMemo(() => {
     return characters.filter((character) => {
-      const startYear = getFullYear(character.startDate?.date);
-      const endYear = getFullYear(character.endDate?.date);
-
-      return (
-        (!startYear || selectedYear >= startYear) &&
-        (!endYear || selectedYear <= endYear)
-      );
+      return era === "BCE"
+        ? character.startDate?.isBCE || character.endDate?.isBCE
+        : !character.startDate?.isBCE && !character.endDate?.isBCE;
     });
-  }, [selectedYear]);
+  }, [era]);
 
   const handleCharacterPick = useCallback(() => {
     const randomIndex = Math.floor(Math.random() * characters.length);
     const randomCharacter = characters[randomIndex];
-
-    if (randomCharacter?.startDate?.date) {
-      setSelectedYear(getFullYear(randomCharacter.startDate.date));
-    }
 
     setSelectedCharacter(randomCharacter);
   }, []);
@@ -51,6 +43,7 @@ const Board = () => {
         <Timeline
           selectedCharacter={selectedCharacter}
           setSelectedCharacter={setSelectedCharacter}
+          setEra={setEra}
         />
 
         <CharacterList
