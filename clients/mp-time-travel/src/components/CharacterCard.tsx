@@ -11,7 +11,7 @@ const CharacterCard = ({ isSelected, onSelect, character }) => {
       onClick={handleClick}
       title={character.description}
       role="button"
-      tabIndex="0"
+      tabIndex={0}
       aria-label={`Select ${character.name}`}
       onKeyDown={(e) => e.key === "Enter" && handleClick()}
     >

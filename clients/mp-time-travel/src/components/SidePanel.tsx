@@ -1,9 +1,16 @@
 import React, { memo } from "react";
 import logoR from "../assets/logo.png";
 
-const SidePanel = () => {
+const SidePanel = ({ character }) => {
   return (
-    <div className="mtt-sidepanel">
+    <div
+      className="mtt-sidepanel"
+      style={
+        character && {
+          backgroundImage: `url(${character?.panelImg})`,
+        }
+      }
+    >
       <div className="mtt-logo-container">
         <a
           href="https://www.multiplayer.app/"

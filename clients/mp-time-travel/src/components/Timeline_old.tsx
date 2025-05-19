@@ -11,7 +11,7 @@ for (let y = START_YEAR; y <= END_YEAR; y += 20) {
 
 const Timeline = ({ selectedYear, setSelectedYear }) => {
   const [draggerPosition, setDraggerPosition] = useState(0);
-  const yearRefs = useRef({});
+  const yearRefs = useRef<any>({});
 
   useEffect(() => {
     requestAnimationFrame(() => {
@@ -40,7 +40,7 @@ const Timeline = ({ selectedYear, setSelectedYear }) => {
                         ? "mtt-year-selected"
                         : ""
                     }`}
-                    ref={(el) => (yearRefs.current[year] = el)}
+                    ref={(el: any) => (yearRefs.current[year] = el)}
                     onClick={(e) => {
                       setSelectedYear(year);
                       const left = (e.target as HTMLElement)?.offsetLeft;

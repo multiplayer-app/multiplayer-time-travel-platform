@@ -8,7 +8,7 @@ import { characters } from "../mock/characters";
 const TERMS_URL = "https://www.multiplayer.app/terms-of-service/";
 const PRIVACY_URL = "https://www.multiplayer.app/privacy/";
 
-const Board = () => {
+const Board = ({ selectCharacter }) => {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [question, setQuestion] = useState(null);
   const [era, setEra] = useState("BCE");
@@ -20,7 +20,8 @@ const Board = () => {
         ? "BCE"
         : "CE"
     );
-  }, [selectedCharacter]);
+    selectCharacter(selectedCharacter);
+  }, [selectedCharacter, selectCharacter]);
 
   const filteredCharacters = useMemo(() => {
     return characters.filter((character) => {
@@ -43,6 +44,7 @@ const Board = () => {
         <Timeline
           selectedCharacter={selectedCharacter}
           setSelectedCharacter={setSelectedCharacter}
+          era={era}
           setEra={setEra}
         />
 

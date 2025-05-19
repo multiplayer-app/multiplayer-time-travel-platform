@@ -5,6 +5,10 @@
     "moduleResolution": "node",
     "allowJs": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
-  }
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "target": "ESNext",
+    "skipLibCheck": true
+  },
+  "include": ["src"]
 }

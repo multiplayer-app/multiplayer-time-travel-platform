@@ -7,15 +7,18 @@ import EllenRipley from "../assets/characters/EllenRipley.png";
 import DocBrown from "../assets/characters/DocBrown.png";
 import AlanTuring from "../assets/characters/AlanTuring.png";
 import MargaretHamilton from "../assets/characters/MargaretHamilton.png";
-import HypatiaAlexandria from "../assets/characters/HypatiaAlexandria.png";
-import R2D2 from "../assets/characters/R2-D2.png";
-import Groot from "../assets/characters/Groot.png";
-import CheshireCat from "../assets/characters/CheshireCat.png";
-import MissPiggy from "../assets/characters/MissPiggy.png";
-import HanSolo from "../assets/characters/HanSolo.png";
-import SpockStarTrek from "../assets/characters/SpockStarTrek.png";
-import Trinity from "../assets/characters/Carrie-AnneMoss.png";
-import AgathaChristie from "../assets/characters/AgathaChristie.png";
+import FridaKahlo from "../assets/characters/FridaKahlo.png";
+
+import FreddieMercury_Panel from "../assets/panel_imgs/Freddie_Mercury.jpg";
+import Pikachu_Panel from "../assets/panel_imgs/Pikachu.png";
+import Yoda_Panel from "../assets/panel_imgs/Yoda.jpg";
+import AdaLovelace_Panel from "../assets/panel_imgs/Ada-Lovelace.webp";
+import JuliaChild_Panel from "../assets/panel_imgs/Julia_Child.jpg";
+import EllenRipley_Panel from "../assets/panel_imgs/EllenRipley.webp";
+import DocBrown_Panel from "../assets/panel_imgs/DocBrown.jpg";
+import AlanTuring_Panel from "../assets/panel_imgs/Alan_Turing.jpg";
+import MargaretHamilton_Panel from "../assets/panel_imgs/Hamilton-Margaret.jpg";
+import FridaKahlo_Panel from "../assets/panel_imgs/Frida_Kahlo.webp";
 
 export const characters = [
   {
@@ -31,11 +34,12 @@ export const characters = [
       bceString: null,
     },
     questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
+      "Is this a real bug? Or is this just fantasy?",
+      "Can you feel the latency tonight?",
+      "Mama... just killed a deploy. Pushed some code, now prod is gone.",
     ],
     avatar: FreddieMercury,
+    panelImg: FreddieMercury_Panel,
     pronoun: "He",
     description: "Iconic rock vocalist and Queen frontman",
   },
@@ -52,11 +56,12 @@ export const characters = [
       bceString: null,
     },
     questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
+      `"Pipipipi-chuchuchu… Pi?" (why is the app so slow?)`,
+      `"Pikapikapika… pi-ka chu?" (how do I trace this bug across services?)`,
+      `"PikakaPika… chuuu-pika, Pi?" (why is the data flow doing this unexpected thing?)`,
     ],
     avatar: Pikachu,
+    panelImg: Pikachu_Panel,
     pronoun: "He",
     description: "Electric-type Pokémon and loyal companion",
   },
@@ -73,13 +78,14 @@ export const characters = [
       bceString: null,
     },
     questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
+      "Bad, my API design is. Change it, I must.",
+      "Hidden data in the logs, must I find, hmm?",
+      "Fix this, how would you, Master Yoda?",
     ],
     avatar: Yoda,
+    panelImg: Yoda_Panel,
     pronoun: "He",
-    description: "Jedi Master and wise mentor",
+    description: "Jedi Master and wise mentor from Star Wars",
   },
   {
     name: "Ada Lovelace",
@@ -94,11 +100,12 @@ export const characters = [
       bceString: null,
     },
     questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
+      "Might you assist me in deciphering the logic behind this most perplexing state transition?",
+      "In what manner might we best preserve the intent behind this algorithm?",
+      "Might the error be not within the machine, but in the assumptions of its maker?",
     ],
     avatar: AdaLovelace,
+    panelImg: AdaLovelace_Panel,
     pronoun: "She",
     description: "Mathematician and early computer programmer",
   },
@@ -115,16 +122,17 @@ export const characters = [
       bceString: null,
     },
     questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
+      "What’s the missing ingredient in this integration?",
+      "What exactly is in this data stew? I’m tasting at least three unintended side effects.",
+      "Do you think this bug is baked in, or did someone forget the unit tests?",
     ],
     avatar: JuliaChild,
+    panelImg: JuliaChild_Panel,
     pronoun: "She",
     description: "Chef and television personality",
   },
   {
-    name: "Ellen Ripley (Alien series)",
+    name: "Ellen Ripley",
     startDate: {
       isBCE: false,
       date: "2092-01-07",
@@ -136,16 +144,17 @@ export const characters = [
       bceString: null,
     },
     questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
+      "I patched this issue once, yet it keeps coming back. Have you seen it happen before?",
+      "How resilient is this API, really?",
+      "Something’s breaking the data pipeline. And it’s not gonna fix itself.",
     ],
     avatar: EllenRipley,
+    panelImg: EllenRipley_Panel,
     pronoun: "She",
     description: "Fearless space officer and alien fighter",
   },
   {
-    name: "Doc Brown (Back to the Future)",
+    name: "Doc Brown",
     startDate: {
       isBCE: false,
       date: "1920-04-05",
@@ -157,11 +166,12 @@ export const characters = [
       bceString: null,
     },
     questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
+      "Great Scott! There's too much latency. What should I do?",
+      "How do I get this timeline back on track?",
+      "How much processing power do I need to go back to before that deployment broke everything?",
     ],
     avatar: DocBrown,
+    panelImg: DocBrown_Panel,
     pronoun: "He",
     description: "Inventor and time travel enthusiast",
   },
@@ -178,11 +188,12 @@ export const characters = [
       bceString: null,
     },
     questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
+      "Given these inputs, is the system’s response non-deterministic?",
+      "This process appears decidable, yet the machine stalls. Why?",
+      "Is the anomaly within the logic, or the assumptions behind it?",
     ],
     avatar: AlanTuring,
+    panelImg: AlanTuring_Panel,
     pronoun: "He",
     description: "Mathematician and pioneer of computing",
   },
@@ -195,185 +206,35 @@ export const characters = [
     },
     endDate: null,
     questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
+      "Where’s the fail-safe if this service crashes mid-operation?",
+      "Is this system built for success, or merely survival?",
+      "If you launched this code to space, would you trust it to come back?",
     ],
     avatar: MargaretHamilton,
+    panelImg: MargaretHamilton_Panel,
     pronoun: "She",
     description: "Software engineer and Apollo mission leader",
   },
   {
-    name: "Hypatia of Alexandria",
+    name: "Frida Kahlo",
     startDate: {
       isBCE: false,
-      date: "0350-01-01",
+      date: "1907-07-06",
       bceString: null,
     },
     endDate: {
       isBCE: false,
-      date: "0415-01-01",
+      date: "1954-07-13",
       bceString: null,
     },
     questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
+      "My software works, but does it speak to the human condition?",
+      "What does this error feel like to you?",
+      "Is a bug still a bug... if it’s beautiful?",
     ],
-    avatar: HypatiaAlexandria,
+    avatar: FridaKahlo,
+    panelImg: FridaKahlo_Panel,
     pronoun: "She",
-    description: "Philosopher, mathematician, and astronomer",
-  },
-  {
-    name: "R2-D2 (Star Wars)",
-    startDate: {
-      isBCE: true,
-      date: null,
-      bceString: "033 BBY",
-    },
-    endDate: null,
-    questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
-    ],
-    avatar: R2D2,
-    pronoun: "It",
-    description: "Astromech droid and loyal sidekick",
-  },
-  {
-    name: "Groot (Guardians of the Galaxy)",
-    startDate: {
-      isBCE: false,
-      date: "2000-01-01",
-      bceString: null,
-    },
-    endDate: {
-      isBCE: false,
-      date: "2014-05-01",
-      bceString: null,
-    },
-    questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
-    ],
-    avatar: Groot,
-    pronoun: "He",
-    description: "Tree-like being with a big heart",
-  },
-  {
-    name: "The Cheshire Cat (Alice in Wonderland)",
-    startDate: null,
-    endDate: null,
-    questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
-    ],
-    avatar: CheshireCat,
-    pronoun: "He",
-    description: "Mischievous and philosophical feline",
-  },
-  {
-    name: "Miss Piggy (The Muppets)",
-    startDate: {
-      isBCE: false,
-      date: "1974-06-01",
-      bceString: null,
-    },
-    endDate: null,
-    questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
-    ],
-    avatar: MissPiggy,
-    pronoun: "She",
-    description: "Diva, actress, and karate enthusiast",
-  },
-  {
-    name: "Han Solo (Star Wars)",
-    startDate: {
-      isBCE: true,
-      date: null,
-      bceString: "0032-01-01",
-    },
-    endDate: {
-      isBCE: false,
-      date: "0034-01-01",
-      bceString: null,
-    },
-    questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
-    ],
-    avatar: HanSolo,
-    pronoun: "He",
-    description: "Smuggler, pilot, and rebel hero",
-  },
-  {
-    name: "Spock (Star Trek)",
-    startDate: {
-      isBCE: false,
-      date: "2230-01-06",
-      bceString: null,
-    },
-    endDate: {
-      isBCE: false,
-      date: "2387-01-01",
-      bceString: null,
-    },
-    questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
-    ],
-    avatar: SpockStarTrek,
-    pronoun: "He",
-    description: "Half-human, half-Vulcan science officer",
-  },
-  {
-    name: "Trinity (The Matrix)",
-    startDate: {
-      isBCE: false,
-      date: "1995-01-01",
-      bceString: null,
-    },
-    endDate: {
-      isBCE: false,
-      date: "2199-01-01",
-      bceString: null,
-    },
-    questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
-    ],
-    avatar: Trinity,
-    pronoun: "She",
-    description: "Hacker and freedom fighter",
-  },
-  {
-    name: "Agatha Christie",
-    startDate: {
-      isBCE: false,
-      date: "1890-09-15",
-      bceString: null,
-    },
-    endDate: {
-      isBCE: false,
-      date: "1976-01-12",
-      bceString: null,
-    },
-    questions: [
-      "Hey, what can I do with Multiplayer?",
-      "What do you think about system diagrams?",
-      "What is the difference between REST and qRPC?",
-    ],
-    avatar: AgathaChristie,
-    pronoun: "She",
-    description: "Queen of mystery and bestselling author",
+    description: "Iconic Mexican painter known for her vivid self-portraits",
   },
 ];

@@ -30,7 +30,7 @@ function categorizeCharacters(characters) {
   return { bceCe, earlyCe, laterCe };
 }
 
-const Timeline = ({ selectedCharacter, setSelectedCharacter, setEra }) => {
+const Timeline = ({ selectedCharacter, setSelectedCharacter, era, setEra }) => {
   const { bceCe, earlyCe, laterCe } = categorizeCharacters(characters);
 
   return (
@@ -38,58 +38,37 @@ const Timeline = ({ selectedCharacter, setSelectedCharacter, setEra }) => {
       <header className="mtt-timeline-header semibold-text">Timeline</header>
 
       <div className="mtt-timeline-scroll-container">
-        <div className="mtt-timeline-years-container">
-          <div className="mtt-timeline-years-ticks">
-            <div className="mtt-timeline-year-cm" onClick={() => setEra("BCE")}>
-              <span className="mtt-timeline-year">BCE</span>
-            </div>
-            <YearDivider />
-            {bceCe.map((character, index) => {
-              return (
-                <img
-                  key={index}
-                  src={character.avatar}
-                  className={`mtt-character-avatar avatar-sm ${
-                    selectedCharacter?.name === character.name ? "selected" : ""
-                  }`}
-                  alt={character.description}
-                  onClick={() => setSelectedCharacter(character)}
-                />
-              );
-            })}
-            <YearDivider />
-            <div className="mtt-timeline-year-cm" onClick={() => setEra("CE")}>
-              <span className="mtt-timeline-year">CE</span>
-            </div>
-            {earlyCe.map((character, index) => {
-              return (
-                <img
-                  key={index}
-                  src={character.avatar}
-                  className={`mtt-character-avatar avatar-sm ${
-                    selectedCharacter?.name === character.name ? "selected" : ""
-                  }`}
-                  alt={character.description}
-                  onClick={() => setSelectedCharacter(character)}
-                />
-              );
-            })}
-            <YearDivider />
-            {laterCe.map((character, index) => {
-              return (
-                <img
-                  key={index}
-                  src={character.avatar}
-                  className={`mtt-character-avatar avatar-sm ${
-                    selectedCharacter?.name === character.name ? "selected" : ""
-                  }`}
-                  alt={character.description}
-                  onClick={() => setSelectedCharacter(character)}
-                />
-              );
-            })}
-            <YearDivider />
-          </div>
+        <div className="mtt-timeline-era-container">
+          <EraToggleButton setEra={setEra} currentEra={era} label="BCE" />
+          <YearDivider />
+          {bceCe.map((character, index) => (
+            <CharacterAvatar
+              key={index}
+              character={character}
+              setSelectedCharacter={setSelectedCharacter}
+              selectedCharacter={selectedCharacter}
+            />
+          ))}
+          <YearDivider />
+          <EraToggleButton setEra={setEra} currentEra={era} label="CE" />
+          {earlyCe.map((character, index) => (
+            <CharacterAvatar
+              key={index}
+              character={character}
+              setSelectedCharacter={setSelectedCharacter}
+              selectedCharacter={selectedCharacter}
+            />
+          ))}
+          <YearDivider />
+          {laterCe.map((character, index) => (
+            <CharacterAvatar
+              key={index}
+              character={character}
+              setSelectedCharacter={setSelectedCharacter}
+              selectedCharacter={selectedCharacter}
+            />
+          ))}
+          <YearDivider />
         </div>
       </div>
     </div>
@@ -105,5 +84,35 @@ const YearDivider = () => (
     <div className="mtt-year-dot" />
   </div>
 );
+
+const EraToggleButton = ({ label, currentEra, setEra }) => {
+  return (
+    <div
+      className={`mtt-timeline-era ${
+        currentEra === label ? "mtt-era-selected" : ""
+      }`}
+      onClick={() => setEra(label)}
+    >
+      {label}
+    </div>
+  );
+};
+
+const CharacterAvatar = ({
+  character,
+  selectedCharacter,
+  setSelectedCharacter,
+}) => {
+  return (
+    <img
+      src={character.avatar}
+      className={`mtt-character-avatar avatar-sm ${
+        selectedCharacter?.name === character.name ? "selected" : ""
+      }`}
+      alt={character.description}
+      onClick={() => setSelectedCharacter(character)}
+    />
+  );
+};
 
 export default memo(Timeline);

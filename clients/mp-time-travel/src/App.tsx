@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import debuggerInstance from "@multiplayer-app/session-debugger";
 import SidePanel from "./components/SidePanel";
 import Board from "./components/Board";
@@ -31,10 +31,12 @@ debuggerInstance.init({
 });
 
 function App() {
+  const [selectedCharacter, setSelectedCharacter] = useState(null);
+
   return (
     <div className="mtt-app">
-      <SidePanel />
-      <Board />
+      <SidePanel character={selectedCharacter} />
+      <Board selectCharacter={setSelectedCharacter} />
     </div>
   );
 }
