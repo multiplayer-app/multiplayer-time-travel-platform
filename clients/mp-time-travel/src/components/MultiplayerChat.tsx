@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState, memo } from "react";
+import axios from "axios";
 import {
   MainContainer,
   ChatContainer,
@@ -26,7 +27,6 @@ const MultiplayerChat = ({ character, preselectedQuestion, setQuestion }) => {
   const postMessage = useCallback(
     async (message: string) => {
       try {
-        // Create user message
         const userMessage: ChatMessage = {
           message,
           sentTime: "just now",
@@ -39,26 +39,21 @@ const MultiplayerChat = ({ character, preselectedQuestion, setQuestion }) => {
         setIsTyping(true);
         setError(null);
 
-        // API call
-        const response = await fetch(
-          "http://localhost:8080/v1/dialogue-hub/docs",
+        const response = await axios.post(
+          "http://localhost:8080/v1/dialogue-hub/openrouter/messages",
           {
-            method: "POST",
+            message,
+            context: character.name,
+          },
+          {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ message }),
           }
         );
 
-        if (!response.ok) {
-          throw new Error(`Request failed with status ${response.status}`);
-        }
+        const data = response.data;
 
-        const data = await response.json();
-        debugger;
-
-        // Create bot response
         const botMessage: ChatMessage = {
           message: data.response || "I couldn't process that request.",
           sentTime: "just now",
@@ -68,10 +63,13 @@ const MultiplayerChat = ({ character, preselectedQuestion, setQuestion }) => {
 
         setMessages((prev) => [...prev, botMessage]);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred"
-        );
-        console.error("API Error:", err);
+        if (axios.isAxiosError(err)) {
+          setError(err.message || "Axios error occurred");
+          console.error("Axios Error:", err);
+        } else {
+          setError("An unknown error occurred");
+          console.error("Unknown Error:", err);
+        }
       } finally {
         setIsTyping(false);
       }
