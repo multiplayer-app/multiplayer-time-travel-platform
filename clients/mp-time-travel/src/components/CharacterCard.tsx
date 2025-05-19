@@ -1,15 +1,23 @@
-import React from "react";
+import React, { memo, useCallback } from "react";
 
 const CharacterCard = ({ isSelected, onSelect, character }) => {
+  const handleClick = useCallback(() => {
+    onSelect(character);
+  }, [onSelect, character]);
+
   return (
     <div
       className={`mtt-character-card ${isSelected ? "card-selected" : ""}`}
-      onClick={onSelect}
+      onClick={handleClick}
       title={character.description}
+      role="button"
+      tabIndex="0"
+      aria-label={`Select ${character.name}`}
+      onKeyDown={(e) => e.key === "Enter" && handleClick()}
     >
       <img
         src={character.avatar}
-        alt={character.description}
+        alt={`${character.name} - ${character.description}`}
         className="mtt-character-avatar"
       />
       <span className="mtt-character-name medium-text">{character.name}</span>
@@ -17,4 +25,4 @@ const CharacterCard = ({ isSelected, onSelect, character }) => {
   );
 };
 
-export default CharacterCard;
+export default memo(CharacterCard);

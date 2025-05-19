@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useCallback, memo } from "react";
 import QuestionSelector from "./QuestionSelector";
 
 const WelcomeScreen = ({ onCharacterPick, pickedCharacter, setQuestion }) => {
+  const handleCharacterPick = useCallback(() => {
+    onCharacterPick();
+  }, [onCharacterPick]);
+
   return (
     <div className="mtt-welcome-container">
       <h1 className="mtt-welcome-title semibold-text">Hello there! 👋</h1>
+
       <p className="mtt-subtext medium-text">
         {pickedCharacter ? (
           <>
@@ -13,13 +18,21 @@ const WelcomeScreen = ({ onCharacterPick, pickedCharacter, setQuestion }) => {
             you into installing Multiplayer.
           </>
         ) : (
-          <>Pick a character to start chatting.</>
+          "Pick a character to start chatting."
         )}
       </p>
+
       {pickedCharacter ? (
-        <QuestionSelector setQuestion={setQuestion} character={pickedCharacter}/>
+        <QuestionSelector
+          setQuestion={setQuestion}
+          character={pickedCharacter}
+        />
       ) : (
-        <button className="mtt-button medium-text" onClick={onCharacterPick}>
+        <button
+          className="mtt-button medium-text"
+          onClick={handleCharacterPick}
+          aria-label="Pick a random character"
+        >
           Pick for me
         </button>
       )}
@@ -27,4 +40,4 @@ const WelcomeScreen = ({ onCharacterPick, pickedCharacter, setQuestion }) => {
   );
 };
 
-export default WelcomeScreen;
+export default memo(WelcomeScreen);

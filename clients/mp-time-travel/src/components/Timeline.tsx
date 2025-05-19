@@ -1,7 +1,5 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import timelineDragger from "../assets/timeline-drag.svg";
+import React, { memo } from "react";
 import { characters } from "../mock/characters";
-import logoR from "src/assets/logo.png";
 
 function categorizeCharacters(characters) {
   const toYear = (dateObj) => {
@@ -32,7 +30,7 @@ function categorizeCharacters(characters) {
   return { bceCe, earlyCe, laterCe };
 }
 
-const Timeline = ({ setSelectedCharacter }) => {
+const Timeline = ({ selectedCharacter, setSelectedCharacter }) => {
   const { bceCe, earlyCe, laterCe } = categorizeCharacters(characters);
 
   return (
@@ -51,7 +49,9 @@ const Timeline = ({ setSelectedCharacter }) => {
                 <img
                   key={index}
                   src={character.avatar}
-                  className="mtt-character-avatar avatar-sm"
+                  className={`mtt-character-avatar avatar-sm ${
+                    selectedCharacter?.name === character.name ? "selected" : ""
+                  }`}
                   alt={character.description}
                   onClick={() => setSelectedCharacter(character)}
                 />
@@ -66,7 +66,9 @@ const Timeline = ({ setSelectedCharacter }) => {
                 <img
                   key={index}
                   src={character.avatar}
-                  className="mtt-character-avatar avatar-sm"
+                  className={`mtt-character-avatar avatar-sm ${
+                    selectedCharacter?.name === character.name ? "selected" : ""
+                  }`}
                   alt={character.description}
                   onClick={() => setSelectedCharacter(character)}
                 />
@@ -78,7 +80,9 @@ const Timeline = ({ setSelectedCharacter }) => {
                 <img
                   key={index}
                   src={character.avatar}
-                  className="mtt-character-avatar avatar-sm"
+                  className={`mtt-character-avatar avatar-sm ${
+                    selectedCharacter?.name === character.name ? "selected" : ""
+                  }`}
                   alt={character.description}
                   onClick={() => setSelectedCharacter(character)}
                 />
@@ -102,4 +106,4 @@ const YearDivider = () => (
   </div>
 );
 
-export default Timeline;
+export default memo(Timeline);

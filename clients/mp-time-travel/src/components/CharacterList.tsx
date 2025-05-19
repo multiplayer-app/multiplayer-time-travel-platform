@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import CharacterCard from "./CharacterCard";
 
 const CharacterList = ({
@@ -6,27 +6,28 @@ const CharacterList = ({
   selectedCharacter,
   setSelectedCharacter,
 }) => {
+  const handleSelectCharacter = (character) => {
+    setSelectedCharacter(character);
+  };
+
   return (
     <div className="mtt-character-list">
       <header className="mtt-character-list-header semibold-text">
         Available Personalities
       </header>
+
       <div className="mtt-characters-row">
         {characters?.length ? (
-          characters.map((i, index) => (
-            <div key={index}>
-              <CharacterCard
-                character={i}
-                isSelected={i === selectedCharacter}
-                onSelect={() => setSelectedCharacter(i)}
-              />
-            </div>
+          characters.map((character) => (
+            <CharacterCard
+              key={character.name}
+              character={character}
+              isSelected={character === selectedCharacter}
+              onSelect={handleSelectCharacter}
+            />
           ))
         ) : (
-          <p
-            className="medium-text"
-            style={{ color: "#888", fontSize: "14px" }}
-          >
+          <p className="mtt-no-characters medium-text">
             No characters found, please select another year
           </p>
         )}
@@ -35,4 +36,4 @@ const CharacterList = ({
   );
 };
 
-export default CharacterList;
+export default memo(CharacterList);

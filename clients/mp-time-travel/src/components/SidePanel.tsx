@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import logoR from "../assets/logo.png";
 
 const SidePanel = () => {
@@ -10,11 +10,18 @@ const SidePanel = () => {
           target="_blank"
           rel="noreferrer noopener"
         >
-          <img src={logoR} className="mtt-logo-main" alt="Multiplayer logo" />
+          <img
+            src={logoR}
+            className="mtt-logo-main"
+            alt="Multiplayer logo"
+            width="auto"
+            height="40px"
+            loading="lazy"
+          />
         </a>
       </div>
     </div>
   );
 };
 
-export default SidePanel;
+export default memo(SidePanel);

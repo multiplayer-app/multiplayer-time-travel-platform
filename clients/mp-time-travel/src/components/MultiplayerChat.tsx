@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, memo } from "react";
 import {
   MainContainer,
   ChatContainer,
@@ -8,139 +8,137 @@ import {
   TypingIndicator,
 } from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import { MessageModel } from "@chatscope/chat-ui-kit-react/src/components/Message/Message";
+import { MessageModel } from "@chatscope/chat-ui-kit-react";
+import MessageAvatar from "./MessageAvatar";
+
+interface ChatMessage extends Partial<MessageModel> {
+  message: string;
+  sentTime: string;
+  sender: string;
+  direction: "incoming" | "outgoing";
+}
 
 const MultiplayerChat = ({ character, preselectedQuestion, setQuestion }) => {
-  const [messages, setMessages] = useState<Partial<MessageModel>[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const postMessage = async (message) => {
-    try {
-      const res = await fetch("http://localhost:8080/v1/dialogue-hub/docs", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+  const postMessage = useCallback(
+    async (message: string) => {
+      try {
+        // Create user message
+        const userMessage: ChatMessage = {
           message,
-        }),
-      });
+          sentTime: "just now",
+          sender: character.name,
+          direction: "outgoing",
+        };
 
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
+        setQuestion(message);
+        setMessages((prev) => [...prev, userMessage]);
+        setIsTyping(true);
+        setError(null);
 
-      const data = await res.json();
-      // setResponse(data);
-      debugger;
-    } catch (err) {
-      // setError(err.message);
-      debugger;
-    }
-  };
-
-  const handleSend = useCallback(
-    (message) => {
-      const newMessage: Partial<MessageModel> = {
-        message,
-        sentTime: "just now",
-        sender: "user",
-        direction: "outgoing",
-      };
-      setQuestion(message);
-      setMessages([...messages, newMessage]);
-      setIsTyping(true);
-
-      // Simulate response after a delay
-      setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
+        // API call
+        const response = await fetch(
+          "http://localhost:8080/v1/dialogue-hub/docs",
           {
-            message: "This would be the system's response",
-            sentTime: "just now",
-            sender: "Multiplayer",
-            direction: "incoming",
-          },
-        ]);
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
+        debugger;
+
+        // Create bot response
+        const botMessage: ChatMessage = {
+          message: data.response || "I couldn't process that request.",
+          sentTime: "just now",
+          sender: "Multiplayer",
+          direction: "incoming",
+        };
+
+        setMessages((prev) => [...prev, botMessage]);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "An unknown error occurred"
+        );
+        console.error("API Error:", err);
+      } finally {
         setIsTyping(false);
-      }, 2000);
+      }
     },
-    [messages, setQuestion]
+    [character, setQuestion]
   );
 
+  // Handle preselected question
   useEffect(() => {
     if (preselectedQuestion && !messages.length) {
-      handleSend(preselectedQuestion);
+      postMessage(preselectedQuestion);
     }
-  }, [preselectedQuestion, messages, handleSend]);
+  }, [preselectedQuestion, messages.length, postMessage]);
 
+  // Reset chat when character changes
   useEffect(() => {
     setMessages([]);
     setIsTyping(false);
-    // cancel the AI request here
+    setError(null);
   }, [character]);
 
   return (
     <div className="mtt-chat-container">
       <MainContainer>
         <ChatContainer>
-          {messages.length && (
-            <MessageList
-              typingIndicator={
-                isTyping ? (
-                  <TypingIndicator content="Multiplayer is typing" />
-                ) : null
-              }
-            >
-              {messages.map((msg, i) => (
-                <div className={`mtt-message-row mtt-${msg.direction}`} key={i}>
-                  <MessageAvatar
-                    direction={msg.direction}
-                    character={character}
-                  />
-                  <Message
-                    key={i}
-                    model={{
-                      message: msg.message,
-                      sentTime: msg.sentTime,
-                      sender: msg.sender,
-                      direction: "incoming",
-                      position: "normal",
-                    }}
-                  />
-                </div>
-              ))}
-            </MessageList>
-          )}
+          <MessageList
+            typingIndicator={
+              isTyping && <TypingIndicator content="Multiplayer is typing..." />
+            }
+          >
+            {messages.map((msg, i) => (
+              <div className={`mtt-message-row mtt-${msg.direction}`} key={i}>
+                <MessageAvatar
+                  direction={msg.direction}
+                  character={character}
+                />
+                <Message
+                  key={i}
+                  model={{
+                    message: msg.message,
+                    sentTime: msg.sentTime,
+                    sender: msg.sender,
+                    direction: "incoming",
+                    position: "normal",
+                  }}
+                />
+              </div>
+            ))}
+          </MessageList>
+
           <MessageInput
             placeholder={
               character
-                ? "Enter your message here..."
-                : "Choose character to chat with..."
+                ? "Type your message here..."
+                : "Please select a character to chat"
             }
             onSend={postMessage}
             attachButton={false}
             disabled={isTyping || !character}
+            sendButton={!isTyping}
           />
+
+          {error && <div className="mtt-chat-error">{error}</div>}
         </ChatContainer>
       </MainContainer>
     </div>
   );
 };
 
-const MessageAvatar = ({ direction, character }) =>
-  direction === "incoming" ? (
-    character ? (
-      <img
-        src={character?.avatar}
-        alt={character?.description}
-        className="mtt-message-avatar mtt-incoming"
-      />
-    ) : (
-      <div className="mtt-message-avatar mtt-incoming-empty" />
-    )
-  ) : (
-    <div className="mtt-message-avatar mtt-outgoing" />
-  );
-
-export default MultiplayerChat;
+export default memo(MultiplayerChat);
