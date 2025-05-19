@@ -1,0 +1,491 @@
+* {
+  box-sizing: border-box;
+  font-family: 'PP Neue Montreal', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  p, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+  }
+}
+
+/* Normal */
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('fonts/ppneuemontreal-book.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Italic */
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('fonts/ppneuemontreal-italic.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Thin */
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('fonts/ppneuemontreal-thin.woff') format('woff');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Medium */
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('fonts/ppneuemontreal-medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* SemiBold italic*/
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('fonts/ppneuemontreal-semibolditalic.woff') format('woff');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Bold */
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('fonts/ppneuemontreal-bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Regular */
+p {
+  font-family: 'PP Neue Montreal', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Italic */
+em {
+  font-family: 'PP Neue Montreal', sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Thin */
+.light-text {
+  font-family: 'PP Neue Montreal', sans-serif;
+  font-weight: 100;
+}
+
+/* Medium */
+.medium-text {
+  font-family: 'PP Neue Montreal', sans-serif;
+  font-weight: 500;
+}
+
+/* SemiBold */
+.semibold-text {
+  font-family: 'PP Neue Montreal', sans-serif;
+  font-weight: 600;
+}
+
+/* Bold */
+strong {
+  font-family: 'PP Neue Montreal', sans-serif;
+  font-weight: 700;
+}
+
+
+
+.mtt-app {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  border-radius: 40px;
+  background: white;
+  overflow: hidden;
+}
+
+.mtt-logo-container {
+  display: inline-flex;
+  padding: 10px 13px;
+  align-items: center;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: white;
+  box-shadow: 0 1px 1px -0.5px rgba(0, 0, 0, 0.06), 0 3px 3px -1.5px rgba(0, 0, 0, 0.06);
+  .mtt-logo-main {
+    height: 40px;
+  }
+}
+
+.mtt-sidepanel {
+  background-image: url("assets/panel-bg-2.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  width: 30%;
+  position: relative;
+  padding: 24px;
+}
+
+.mtt-board {
+  width: 70%;
+  height: 100vh;
+  padding: 24px 0 6px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.mtt-timeline {
+  user-select: none;
+  position: relative;
+  .mtt-timeline-header {
+    color: #888;
+    font-size: 11px;
+    line-height: normal;
+    letter-spacing: 0.88px;
+    text-transform: uppercase;
+    padding: 0 24px;
+  }
+  .mtt-timeline-years-container {
+    position: relative;
+    width: 100%;
+    height: 20px;
+    padding: 24px 0;
+    .mtt-timeline-years-ticks {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .mtt-timeline-year-cm {
+      display: inline-flex;
+      align-items: center;
+      .mtt-timeline-year {
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px;
+        color: #868686;
+        cursor: pointer;
+        &.mtt-year-selected {
+          color: #474243;
+        }
+      }
+    }
+  }
+  .mtt-timeline-dragger {
+    position: absolute;
+    top: 0;
+    bottom: -8px;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+  .mtt-timeline-dragger-icon {
+    width: 24px;
+    height: 100%;
+    pointer-events: none;
+  }
+}
+/*new, check*/
+.mtt-timeline-scroll-container {
+  max-width: 100%;
+  white-space: nowrap;
+  margin: 0 20px 10px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+/*new, check*/
+
+.mtt-year-divider {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  .mtt-year-dot {
+    width: 2px;
+    height: 2px;
+    background: #868686;
+  }
+  .mtt-year-h-line {
+    width: 2px;
+    height: 9px;
+    background: #868686;
+  }
+}
+
+.mtt-character-list {
+  border-top: 1px solid #C1C1C1;
+  border-bottom: 1px solid #C1C1C1;
+  padding: 16px 24px;
+  .mtt-character-list-header {
+    color: #888;
+    font-size: 11px;
+    line-height: normal;
+    letter-spacing: 0.88px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+}
+
+.mtt-character-card {
+  display: flex;
+  white-space: nowrap;
+  padding: 4px 16px 4px 4px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 16px;
+  background: #F0F0F0;
+  user-select: none;
+  cursor: pointer;
+  color: #505050;
+  &.card-selected {
+    background: #493BFF;
+    color: white;
+  }
+  .mtt-character-name {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.14px;
+  }
+}
+
+.mtt-character-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  &.avatar-sm {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+}
+
+.mtt-characters-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  overflow: scroll;
+}
+
+.mtt-welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 40px;
+  flex: 2;
+}
+
+.mtt-welcome-title {
+  color: #292828;
+  font-size: 32px;
+  letter-spacing: 0.32px;
+  margin: 0 0 16px;
+}
+
+.mtt-subtext {
+  color: #999;
+  font-size: 24px;
+  letter-spacing: 0.24px;
+  margin: 0 0 32px;
+}
+
+.mtt-button {
+  color: #fff;
+  border-radius: 12px;
+  background: #493BFF;
+  box-shadow: 0 1px 1px -0.5px rgba(0, 0, 0, 0.06), 0px 3px 3px -1.5px rgba(0, 0, 0, 0.06);
+  padding: 10px 60px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.mtt-button:hover {
+  background-color: #3b2bdb;
+}
+
+.mtt-question-container {
+  margin: 30px 0;
+}
+
+.mtt-question-title {
+  color: #888;
+  opacity: 0.5;
+  font-size: 11px;
+  line-height: normal;
+  letter-spacing: 0.88px;
+  text-transform: uppercase;
+  padding: 0 24px;
+  margin: 0 0 16px;
+}
+
+.mtt-questions-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.mtt-question-button {
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid #F5F5F5;
+  background: white;
+  cursor: pointer;
+  color: #474747;
+  letter-spacing: 0.15px;
+  font-size: 15px;
+  box-shadow: 0 1px 1px -0.5px rgba(0, 0, 0, 0.06), 0px 3px 3px -1.5px rgba(0, 0, 0, 0.06), 0px 6px 6px -3px rgba(0, 0, 0, 0.06), 0px 12px 12px -12px rgba(0, 0, 0, 0.06);
+}
+
+.mtt-chat-container {
+  padding: 10px 100px 0;
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  .cs-main-container {
+    border: none;
+    width: 100%;
+    .cs-chat-container {
+      justify-content: flex-end;
+    }
+    .cs-chat-container .cs-message-input {
+      border: none;
+      margin-top: unset;
+      .cs-message-input__content-editor-wrapper {
+        margin-left: 0;
+        border-radius: 20px;
+        border: 1px solid #F0F0F0;
+        background: #F2F2F2;
+      }
+      .cs-message-input__content-editor {
+        background: #F2F2F2;
+        color: #8B8B8B;
+        font-family: 'PP Neue Montreal', sans-serif;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: 0.15px;
+      }
+    }
+    .cs-message-input__tools {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      align-items: center;
+      justify-content: center;
+      button {
+        background-image: url('assets/message-send-icon.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 32px;
+        width: 32px;
+        &:hover:not(:disabled) {
+          opacity: .9;
+        }
+        svg {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .cs-message-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: auto;
+    .cs-typing-indicator {
+      position: relative;
+    }
+  }
+
+  .cs-message-list__scroll-wrapper {
+    padding: 0;
+  }
+}
+
+.mtt-terms-info {
+  color: #C3C3C3;
+  font-size: 10px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  padding-left: 116px;
+  a {
+    color: inherit;
+  }
+}
+
+.mtt-message-row {
+  display: flex;
+  &:not(:only-child) {
+    margin: 0 0 24px;
+  }
+  .cs-message {
+    margin: 0;
+    overflow: unset;
+  }
+  &.mtt-outgoing {
+    .cs-message__content {
+      background: white;
+    }
+  }
+  &.mtt-incoming {
+    .cs-message__content {
+      background: #F2F2F2;
+    }
+  }
+  .cs-message__content {
+    border-radius: 16px;
+    border: 1px solid #F5F5F5;
+    padding: 12px 14px;
+    box-shadow: 0 1px 1px -0.5px rgba(0, 0, 0, 0.06), 0px 3px 3px -1.5px rgba(0, 0, 0, 0.06), 0px 6px 6px -3px rgba(0, 0, 0, 0.06), 0px 12px 12px -12px rgba(0, 0, 0, 0.06);
+    color: #474747;
+    font-family: 'PP Neue Montreal', sans-serif;
+    .cs-message__html-content {
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: 0.15px;
+    }
+  }
+  .mtt-message-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 32px;
+    margin-right: 16px;
+    &.mtt-outgoing {
+      background: #493BFF;
+    }
+    &.mtt-incoming-empty {
+      border: 1px solid #493BFF;
+      background: white;
+    }
+  }
+}
+
+.mp-session-debugger-button {
+  right: unset !important;
+  left: 32px !important;
+  bottom: 32px !important;
+}
+

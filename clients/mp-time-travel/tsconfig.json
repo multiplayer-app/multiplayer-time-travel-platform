@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  }
+}
