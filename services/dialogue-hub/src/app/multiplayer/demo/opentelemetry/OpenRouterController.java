@@ -98,7 +98,7 @@ public class OpenRouterController {
         }
       }
 
-      return ResponseEntity.status(response.getStatusCode()).body(new MessageResponse(reply));
+      return ResponseEntity.status(response.getStatusCode()).body(new MessageResponse(reply, contextId));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(Map.of("error", "Failed to send message to OpenRouter", "details", e.getMessage()));

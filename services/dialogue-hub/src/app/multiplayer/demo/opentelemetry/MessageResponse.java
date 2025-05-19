@@ -7,9 +7,11 @@ public class MessageResponse {
 
     @Schema(description = "Generated response from assistant", example = "I'm doing well, how can I help?")
     private String reply;
+    private String contextId;
 
-    public MessageResponse(String reply) {
+    public MessageResponse(String reply, String contextId) {
         this.reply = reply;
+        this.contextId = contextId;
     }
 
     public String getReply() {
@@ -18,5 +20,13 @@ public class MessageResponse {
 
     public void setReply(String reply) {
         this.reply = reply;
+    }
+
+    public String getContextId() {
+        return contextId;
+    }
+
+    public void setContextId(String contextId) {
+        this.contextId = contextId;
     }
 }
