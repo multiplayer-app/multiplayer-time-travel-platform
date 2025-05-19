@@ -34,6 +34,42 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/historical-events": {
+            "get": {
+                "description": "Returns a list of fictional and real historical events",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "events"
+                ],
+                "summary": "List historical events",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/src_vault_of_time_api.HistoricalEvent"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "src_vault_of_time_api.HistoricalEvent": {
+            "type": "object",
+            "properties": {
+                "event": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
         }
     }
 }`

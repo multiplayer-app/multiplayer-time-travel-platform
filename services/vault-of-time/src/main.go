@@ -13,6 +13,7 @@ import (
 	"github.com/multiplayer-app/multiplayer-time-travel-platform/services/vault-of-time/src/config"
 	_ "github.com/multiplayer-app/multiplayer-time-travel-platform/services/vault-of-time/src/docs"
 	"github.com/multiplayer-app/multiplayer-time-travel-platform/services/vault-of-time/src/health_api"
+	"github.com/multiplayer-app/multiplayer-time-travel-platform/services/vault-of-time/src/vault_of_time_api"
 
 	httpSwagger "github.com/swaggo/http-swagger"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
@@ -90,8 +91,7 @@ func newHTTPHandler() http.Handler {
 	handleFunc(config.API_PREFIX+"/docs/*", httpSwagger.WrapHandler)
 
 	handleFunc(config.API_PREFIX+"/health/", health_api.HealthHandler)
-	handleFunc(config.API_PREFIX+"/rolldice/", rolldice)
-	handleFunc(config.API_PREFIX+"/rolldice/{player}", rolldice)
+	handleFunc(config.API_PREFIX+"/historical-events/", vault_of_time_api.HistoricalEventsHandler)
 
 	// Add HTTP instrumentation for the whole server.
 	handler := otelhttp.NewHandler(mux, "/")

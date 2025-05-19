@@ -1,4 +1,12 @@
 basePath: /v1/vault-of-time
+definitions:
+  src_vault_of_time_api.HistoricalEvent:
+    properties:
+      event:
+        type: string
+      name:
+        type: string
+    type: object
 info:
   contact: {}
   description: This is a sample server.
@@ -18,4 +26,19 @@ paths:
       summary: Health check
       tags:
       - health
+  /historical-events:
+    get:
+      description: Returns a list of fictional and real historical events
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/src_vault_of_time_api.HistoricalEvent'
+            type: array
+      summary: List historical events
+      tags:
+      - events
 swagger: "2.0"
