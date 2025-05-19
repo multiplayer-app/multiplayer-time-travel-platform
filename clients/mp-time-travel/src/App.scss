@@ -122,9 +122,15 @@ strong {
   border-radius: 16px;
   border: 1px solid rgba(0, 0, 0, 0.05);
   background: white;
+  max-width: 100%;
   box-shadow: 0 1px 1px -0.5px rgba(0, 0, 0, 0.06), 0 3px 3px -1.5px rgba(0, 0, 0, 0.06);
+  a {
+    height: 40px;
+  }
   .mtt-logo-main {
     height: 40px;
+    max-width: 100%;
+    object-fit: contain;
   }
 }
 
@@ -292,7 +298,7 @@ strong {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding-top: 40px;
+  padding: 40px 20px 0;
   flex: 2;
 }
 
@@ -487,6 +493,7 @@ strong {
   .mtt-message-avatar {
     width: 32px;
     height: 32px;
+    min-width: 32px;
     border-radius: 32px;
     margin-right: 16px;
     &.mtt-outgoing {
@@ -505,3 +512,93 @@ strong {
   bottom: 32px !important;
 }
 
+@media screen and (max-width: 1024px) {
+  .mtt-chat-container {
+    padding: 10px 20px 0;
+  }
+  .mtt-terms-info {
+    padding-left: 36px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mtt-app {
+    flex-direction: column;
+  }
+  .mtt-sidepanel {
+    background-image: unset !important;
+    height: unset;
+    width: unset;
+    position: relative;
+    padding: 10px;
+  }
+  .mtt-logo-container {
+    padding: 6px 8px;
+    border-radius: 12px;
+    a, .mtt-logo-main {
+      height: 30px;
+    }
+  }
+  .mtt-board {
+    width: 100%;
+    height: calc(100vh - 64px);
+    flex: 1;
+    padding: 10px 0 6px;
+  }
+  .mtt-timeline {
+    .mtt-timeline-header {
+      padding: 0 10px;
+    }
+    .mtt-timeline-scroll-container {
+      margin: 0 10px 10px;
+    }
+  }
+  .mtt-year-dot:nth-child(2n) {
+    display: none;
+  }
+  .mtt-character-list {
+    padding: 10px;
+  }
+  .mtt-characters-row {
+    padding-bottom: 6px;
+  }
+  .mtt-welcome-container {
+    padding: 10px 10px 0;
+  }
+  .mtt-welcome-title {
+    font-size: 24px;
+    margin: 0 0 12px;
+  }
+  .mtt-subtext {
+    font-size: 16px;
+    margin: 0 0 24px;
+  }
+  .mtt-chat-container {
+    padding: 10px 10px 0;
+  }
+  .mtt-terms-info {
+    padding: 0 10px;
+  }
+  .mtt-question-container {
+    margin: 10px 0;
+  }
+  .mtt-questions-list {
+    gap: 10px;
+  }
+  .mtt-question-button {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+  .mp-session-debugger-button {
+    right: 10px !important;
+    left: unset !important;
+    bottom: unset !important;
+    top: 10px !important;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .mtt-timeline .mtt-timeline-era-container {
+    gap: 5px;
+  }
+}

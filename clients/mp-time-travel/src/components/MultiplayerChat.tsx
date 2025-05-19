@@ -55,7 +55,7 @@ const MultiplayerChat = ({ character, preselectedQuestion, setQuestion }) => {
         const data = response.data;
 
         const botMessage: ChatMessage = {
-          message: data.response || "I couldn't process that request.",
+          message: data || "I couldn't process that request.",
           sentTime: "just now",
           sender: "Multiplayer",
           direction: "incoming",
