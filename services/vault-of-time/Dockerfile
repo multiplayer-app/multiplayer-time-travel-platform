@@ -6,6 +6,9 @@ COPY . .
 
 RUN go mod download
 
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+RUN swag init -g ./src/main.go -o ./src/docs --parseDependency --parseInternal
+
 RUN go -C ./src build -v -o ../build/app 
 
 FROM debian:bookworm-slim
