@@ -1,0 +1,21 @@
+basePath: /v1/vault-of-time
+info:
+  contact: {}
+  description: This is a sample server.
+  title: Vault of time API
+  version: 0.0.1
+paths:
+  /health:
+    get:
+      description: Returns OK if service is running
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Health check
+      tags:
+      - health
+swagger: "2.0"
