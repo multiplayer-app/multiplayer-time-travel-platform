@@ -9,3 +9,11 @@ export const SERVICE_NAME = process.env.npm_package_name?.split('/').pop() as st
 export const SERVICE_VERSION = process.env.npm_package_version || '0.0.1'
 export const PLATFORM_ENV = process.env.PLATFORM_ENV || "<environment-name>"
 export const MULTIPLAYER_OTLP_KEY = process.env.MULTIPLAYER_OTLP_KEY || "<multiplayer-key>"
+
+export const DIALOGUE_HUB_SERVICE_URL = process.env.DIALOGUE_HUB_SERVICE_URL || 'http://localhost:3000/v1/dialogue-hub'
+
+export const EPOCH_ENGINE_SERVICE_URL = process.env.EPOCH_ENGINE_SERVICE_URL || 'http://localhost:3000/v1/epoch-engine'
+
+export const MINDS_OF_TIME_SERVICE_URL = process.env.MINDS_OF_TIME_SERVICE_URL || 'http://localhost:3000/v1/minds-of-time'
+
+export const VAULT_OF_TIME_SERVICE_URL = process.env.VAULT_OF_TIME_SERVICE_URL || 'http://localhost:3000/v1/vault-of-time'

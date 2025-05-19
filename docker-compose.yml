@@ -65,6 +65,10 @@ services:
       - PORT=3000
       - SERVICE_NAME=timegate
       - SERVICE_VERSION=0.0.1
+      - DIALOGUE_HUB_SERVICE_URL=http://multiplayer-time-travel-platform-dialogue-hub:3000/v1/dialogue-hub
+      - EPOCH_ENGINE_SERVICE_URL=http://multiplayer-time-travel-platform-epoch-engine:3000/v1/epoch-engine
+      - MINDS_OF_TIME_SERVICE_URL=http://multiplayer-time-travel-platform-minds-of-time:3000/v1/minds-of-time
+      - VAULT_OF_TIME_SERVICE_URL=http://multiplayer-time-travel-platform-vault-of-time:3000/v1/vault-of-time
     env_file:
       - ./.env
     # volumes:
