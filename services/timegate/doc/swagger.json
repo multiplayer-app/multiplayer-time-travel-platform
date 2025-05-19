@@ -207,13 +207,6 @@
     }
   },
   "components": {
-    "securitySchemes": {
-      "CookieAuth": {
-        "type": "apiKey",
-        "in": "cookie",
-        "name": "Multiplayer_SID"
-      }
-    },
     "schemas": {
       "Health": {
         "type": "object",
@@ -232,7 +225,7 @@
         "type": "string"
       },
 
-     "PostMessageToOpenrouter": {
+      "PostMessageToOpenrouter": {
         "type": "object",
         "properties": {
           "message": {
@@ -260,29 +253,37 @@
         "items": {
           "type": "object",
           "properties": {
-            "name": "string",
+            "name": {
+              "type": "string"
+            },
             "startDate": {
-              "isBCE": {
-                "type": "boolean"
-              },
-              "date": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "bceString": {
-                "type": "string"
+              "type": "object",
+               "properties": {
+                "isBCE": {
+                  "type": "boolean"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "bceString": {
+                  "type": "string"
+                }
               }
             },
             "endDate": {
-              "isBCE": {
-                "type": "boolean"
-              },
-              "date": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "bceString": {
-                "type": "string"
+              "type": "object",
+              "properties": {
+                "isBCE": {
+                  "type": "boolean"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "bceString": {
+                  "type": "string"
+                }
               }
             }
           }
