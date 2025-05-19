@@ -5,6 +5,17 @@ services:
     container_name: multiplayer-time-travel-platform-envoy
     ports:
       - "8080:8080"
+    depends_on:
+      vault-of-time:
+        condition: service_started
+      dialogue-hub:
+        condition: service_started
+      timegate:
+        condition: service_started
+      epoch-engine:
+        condition: service_started
+      minds-of-time:
+        condition: service_started
     volumes:
       - ./services/envoy/envoy.yaml:/etc/envoy/envoy.yaml
 
@@ -48,8 +59,12 @@ services:
     environment:
       - SERVER_PORT=3000
       - REDIS_HOST=multiplayer-time-travel-platform-redis
+      - REDIS_PORT=6379
       - SERVICE_NAME=dialogue-hub
       - SERVICE_VERSION=0.0.1
+    depends_on:
+      redis:
+        condition: service_started
     env_file:
       - ./.env
     # volumes:
@@ -104,7 +119,7 @@ services:
     #   - ./clients/mp-time-travel:/app:cached
 
   redis:
-    image: redis:alpine
+    image: redis:7.0.12-alpine
     container_name: multiplayer-time-travel-platform-redis
     hostname: multiplayer-time-travel-platform-redis
     command: redis-server
