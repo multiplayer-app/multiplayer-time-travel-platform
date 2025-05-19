@@ -1,7 +1,8 @@
-import { logger } from './libs'
 import { type Server } from 'http'
 import socketIo from 'socket.io'
 import { API_PREFIX } from './config'
+import { DialogueHubService } from './services'
+import { logger } from './libs'
 
 export let io
 
@@ -22,11 +23,18 @@ const onUserConnection = async (socket) => {
 
         logger.debug('[Websocket] Connected user')
 
-        socket.on('message', async (data: { message: string }) => {
+        socket.on('message', async (data: { message: string, contextId?: string }) => {
             logger.debug({
                 event: 'message',
                 data
             }, '[Websocket] Received message')
+
+            const reply = await DialogueHubService.postOpenRouterMessage(
+                data.message,
+                data.contextId
+            )
+
+            socket.emit('reply', reply)
         })
 
     } catch (error) {

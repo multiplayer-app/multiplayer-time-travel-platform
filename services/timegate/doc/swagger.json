@@ -17,6 +17,18 @@
     {
       "name": "Healthz",
       "description": "Healthz"
+    },
+    {
+      "name": "Dialogue hub"
+    },
+    {
+      "name": "Epoch engine"
+    },
+    {
+      "name": "Minds of time"
+    },
+    {
+      "name": "Vault of time"
     }
   ],
   "paths": {
