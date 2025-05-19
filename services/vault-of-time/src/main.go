@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/multiplayer-app/multiplayer-time-travel-platform/services/vault-of-time/src/config"
+	_ "github.com/multiplayer-app/multiplayer-time-travel-platform/services/vault-of-time/src/docs"
 	"github.com/multiplayer-app/multiplayer-time-travel-platform/services/vault-of-time/src/health_api"
 
 	httpSwagger "github.com/swaggo/http-swagger"
@@ -80,16 +81,13 @@ func run() (err error) {
 func newHTTPHandler() http.Handler {
 	mux := http.NewServeMux()
 
-	// handleFunc is a replacement for mux.HandleFunc
-	// which enriches the handler's HTTP instrumentation with the pattern as the http.route.
 	handleFunc := func(pattern string, handlerFunc func(http.ResponseWriter, *http.Request)) {
-		// Configure the "http.route" for the HTTP instrumentation.
 		handler := otelhttp.WithRouteTag(pattern, http.HandlerFunc(handlerFunc))
 		mux.Handle(pattern, handler)
 	}
 
-	// Swagger UI — serve it outside the prefix for clarity
 	handleFunc(config.API_PREFIX+"/docs/", httpSwagger.WrapHandler)
+	handleFunc(config.API_PREFIX+"/docs/*", httpSwagger.WrapHandler)
 
 	handleFunc(config.API_PREFIX+"/health/", health_api.HealthHandler)
 	handleFunc(config.API_PREFIX+"/rolldice/", rolldice)
