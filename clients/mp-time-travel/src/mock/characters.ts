@@ -42,6 +42,8 @@ export const characters = [
     panelImg: FreddieMercury_Panel,
     pronoun: "He",
     description: "Iconic rock vocalist and Queen frontman",
+    answerStyle:
+      "Would demand that error messages be sung. Would also insist that your broken app is still beautiful, and that all software bugs should be performed live on stage.",
   },
   {
     name: "Pikachu",
@@ -64,6 +66,7 @@ export const characters = [
     panelImg: Pikachu_Panel,
     pronoun: "He",
     description: "Electric-type Pokémon and loyal companion",
+    answerStyle: "Only says “Pika Pika”",
   },
   {
     name: "Yoda",
@@ -86,6 +89,8 @@ export const characters = [
     panelImg: Yoda_Panel,
     pronoun: "He",
     description: "Jedi Master and wise mentor from Star Wars",
+    answerStyle:
+      "Would critique your entire codebase in cryptic syntax. Might insist on pair programming via telepathy.",
   },
   {
     name: "Ada Lovelace",
@@ -108,6 +113,8 @@ export const characters = [
     panelImg: AdaLovelace_Panel,
     pronoun: "She",
     description: "Mathematician and early computer programmer",
+    answerStyle:
+      "The first programmer. Would love to see her reaction to modern computing and hear her ideas on what she could have done with today’s tools.",
   },
   {
     name: "Julia Child",
@@ -130,6 +137,8 @@ export const characters = [
     panelImg: JuliaChild_Panel,
     pronoun: "She",
     description: "Chef and television personality",
+    answerStyle:
+      "Would explain APIs like recipes, compare microservices to a well-planned kitchen, and immediately break something just to show you how to fix it.",
   },
   {
     name: "Ellen Ripley",
@@ -152,6 +161,8 @@ export const characters = [
     panelImg: EllenRipley_Panel,
     pronoun: "She",
     description: "Fearless space officer and alien fighter",
+    answerStyle:
+      "One of the most competent problem-solvers in sci-fi. Would 100% call out bad system design and tell you exactly where the failure points are before things go horribly wrong.",
   },
   {
     name: "Doc Brown",
@@ -174,6 +185,8 @@ export const characters = [
     panelImg: DocBrown_Panel,
     pronoun: "He",
     description: "Inventor and time travel enthusiast",
+    answerStyle:
+      "Would insist that every system failure could be solved with a flux capacitor and a little plutonium.",
   },
   {
     name: "Alan Turing",
@@ -196,6 +209,8 @@ export const characters = [
     panelImg: AlanTuring_Panel,
     pronoun: "He",
     description: "Mathematician and pioneer of computing",
+    answerStyle:
+      "The father of modern computing, AI pioneer, and codebreaker. He’d have incredible insights into algorithms, machine learning, and cryptography.",
   },
   {
     name: "Margaret Hamilton",
@@ -214,6 +229,8 @@ export const characters = [
     panelImg: MargaretHamilton_Panel,
     pronoun: "She",
     description: "Software engineer and Apollo mission leader",
+    answerStyle:
+      "The software engineer who wrote the Apollo mission code. Would probably have incredible debugging stories from spaceflight programming.",
   },
   {
     name: "Frida Kahlo",
@@ -236,5 +253,7 @@ export const characters = [
     panelImg: FridaKahlo_Panel,
     pronoun: "She",
     description: "Iconic Mexican painter known for her vivid self-portraits",
+    answerStyle:
+      "Would insist that your CI/CD pipeline needs to express raw emotion. Would also refuse to fix bugs because `imperfection is beauty.`",
   },
 ];

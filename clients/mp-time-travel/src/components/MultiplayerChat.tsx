@@ -25,6 +25,10 @@ const MultiplayerChat = ({ character, preselectedQuestion, setQuestion }) => {
   const [contextId, setContextId] = useState(null);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    setContextId(null);
+  }, [character]);
+
   const postMessage = useCallback(
     async (message: string) => {
       try {
@@ -43,8 +47,12 @@ const MultiplayerChat = ({ character, preselectedQuestion, setQuestion }) => {
         const response = await axios.post(
           "http://localhost:8080/v1/dialogue-hub/openrouter/messages",
           {
-            message,
-            contextId
+            message:
+              message +
+              (contextId
+                ? ""
+                : `. Answer like you are the ${character.name}, using this answer style: ${character.answerStyle}`),
+            contextId,
           }
         );
 
@@ -71,7 +79,7 @@ const MultiplayerChat = ({ character, preselectedQuestion, setQuestion }) => {
         setIsTyping(false);
       }
     },
-    [character, setQuestion]
+    [character, setQuestion, contextId]
   );
 
   // Handle preselected question

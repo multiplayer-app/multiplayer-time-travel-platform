@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import debuggerInstance from "@multiplayer-app/session-debugger";
 import SidePanel from "./components/SidePanel";
 import Board from "./components/Board";
-import "./App.scss";
 import ModalComponent from "./components/NavigationModal";
+import "./App.scss";
 
 debuggerInstance.init({
   version: "0.0.1",

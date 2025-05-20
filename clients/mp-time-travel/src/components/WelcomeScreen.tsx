@@ -15,7 +15,7 @@ const WelcomeScreen = ({ onCharacterPick, pickedCharacter, setQuestion }) => {
           <>
             Enter your message to {pickedCharacter.name}.<br /> Beware..{" "}
             {pickedCharacter.pronoun}’ll try to nudge <br />
-            you into installing Multiplayer.
+            you to try Multiplayer.
           </>
         ) : (
           "Pick a character to start chatting."
