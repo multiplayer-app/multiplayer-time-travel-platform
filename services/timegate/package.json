@@ -1,5 +1,5 @@
 {
-    "name": "@multiplayer/timegate",
+    "name": "timegate",
     "version": "0.0.1",
     "description": "",
     "main": "./src/index.ts",
@@ -38,6 +38,7 @@
         "express-jsdoc-swagger": "1.8.0",
         "express-session": "1.17.3",
         "joi": "17.10.0",
+        "mongoose": "8.15.0",
         "openai": "4.24.0",
         "restify-errors": "8.0.2",
         "socket.io": "4.8.1"

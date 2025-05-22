@@ -10,12 +10,14 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import api from './api'
 import * as swagger from './swagger'
-import { logger, Timer } from './libs'
+import { logger, Timer, mongoose } from './libs'
 import { API_PREFIX } from './config'
 
 const { RestError, HttpError } = restify
 
 export const app = express()
+
+mongoose.connect()
 
 app.disable('x-powered-by')
 app.use(cors())

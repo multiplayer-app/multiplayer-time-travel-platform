@@ -27,3 +27,5 @@ export const OTLP_MULTIPLAYER_DOC_SPAN_RATIO = process.env.OTLP_MULTIPLAYER_DOC_
 export const OTLP_MULTIPLAYER_SPAN_RATIO = process.env.OTLP_MULTIPLAYER_SPAN_RATIO
     ? Number(process.env.OTLP_MULTIPLAYER_SPAN_RATIO)
     : 0.01
+
+export const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/time-travel-demo'

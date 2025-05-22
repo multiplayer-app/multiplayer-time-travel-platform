@@ -6,6 +6,7 @@ import {
   epochEngine,
   mindsOfTime,
   vaultOfTime,
+  user
 } from './routes'
 
 const { Router } = express
@@ -18,5 +19,6 @@ router.use('/dialogue-hub', dialogueHub)
 router.use('/epoch-engine', epochEngine)
 router.use('/minds-of-time', mindsOfTime)
 router.use('/vault-of-time', vaultOfTime)
+router.use('/user', user)
 
 export default router

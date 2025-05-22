@@ -2,6 +2,7 @@ from flask import Flask
 from otel import init_tracing
 from config import PORT, API_PREFIX
 from flasgger import Swagger
+from opentelemetry import trace
 from prominent_persons import bp as prominent_persons_bp
 import logging
 
@@ -28,6 +29,20 @@ swagger = Swagger(app, config=swagger_config)
 init_tracing(app)
 
 logger = logging.getLogger(__name__)
+
+
+@app.after_request
+def add_trace_id_header(response):
+    # Get current active span
+    span = trace.get_current_span()
+    if span is not None:
+        trace_id = span.get_span_context().trace_id
+        if trace_id != 0:
+            # Format trace ID as 32-char hex string
+            trace_id_hex = format(trace_id, '032x')
+            # Add trace ID to response header
+            response.headers['X-Trace-Id'] = trace_id_hex
+    return response
 
 app.register_blueprint(prominent_persons_bp, url_prefix = API_PREFIX)
 

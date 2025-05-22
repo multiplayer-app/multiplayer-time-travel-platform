@@ -29,6 +29,9 @@
     },
     {
       "name": "Vault of time"
+    },
+    {
+      "name": "User"
     }
   ],
   "paths": {
@@ -84,6 +87,35 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/user/info/email": {
+      "post": {
+        "summary": "Save user email.",
+        "tags": [
+          "User"
+        ],
+        "operationId": "saveUserEmail",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveUserEmailPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Email saved."
           }
         }
       }
@@ -224,7 +256,14 @@
       "Healthz": {
         "type": "string"
       },
-
+      "SaveUserEmailPayload": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        }
+      },
       "PostMessageToOpenrouter": {
         "type": "object",
         "properties": {

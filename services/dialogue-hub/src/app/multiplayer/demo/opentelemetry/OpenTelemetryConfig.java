@@ -49,7 +49,8 @@ public class OpenTelemetryConfig {
                 .addLogRecordProcessor(BatchLogRecordProcessor.builder(logsExporter).build())
                 .build();
 
-        OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
+        // OpenTelemetrySdk openTelemetrySdk = 
+        OpenTelemetrySdk.builder()
                 .setTracerProvider(tracerProvider)
                 .setLoggerProvider(loggerProvider)
                 .buildAndRegisterGlobal();

@@ -1,6 +1,6 @@
 import os
 
-PORT = os.getenv('PORT', '8080')
+PORT = os.getenv('PORT', '3000')
 SERVICE_NAME = os.getenv("SERVICE_NAME", "<example-service-name>") 
 SERVICE_VERSION = os.getenv("SERVICE_VERSION", "<service-version>") 
 PLATFORM_ENV = os.getenv("PLATFORM_ENV", "<environment-name>")
