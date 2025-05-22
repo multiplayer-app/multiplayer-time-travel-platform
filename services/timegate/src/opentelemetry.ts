@@ -1,14 +1,18 @@
 import { hostname } from "os"
 import { node, NodeSDK } from "@opentelemetry/sdk-node"
 import {
-  // BatchSpanProcessor,
+  BatchSpanProcessor,
   ParentBasedSampler,
 } from "@opentelemetry/sdk-trace-base"
 import {
   getNodeAutoInstrumentations,
   getResourceDetectors,
 } from "@opentelemetry/auto-instrumentations-node"
-import { detectResources, resourceFromAttributes } from "@opentelemetry/resources"
+import {
+  detectResources,
+  detectResourcesSync,
+  Resource
+} from "@opentelemetry/resources"
 import {
   ATTR_SERVICE_NAME,
   ATTR_SERVICE_VERSION,
@@ -30,19 +34,17 @@ import {
 } from "@multiplayer-app/otlp-core"
 import { LoggerProvider, BatchLogRecordProcessor } from "@opentelemetry/sdk-logs"
 import * as apiLogs from "@opentelemetry/api-logs"
+import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http'
 import {
   SERVICE_NAME,
   SERVICE_VERSION,
   PLATFORM_ENV,
   MULTIPLAYER_OTLP_KEY,
+  OTLP_TRACES_ENDPOINT,
+  OTLP_LOGS_ENDPOINT,
+  OTLP_MULTIPLAYER_DOC_SPAN_RATIO,
+  OTLP_MULTIPLAYER_SPAN_RATIO
 } from './config'
-// import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http'
-
-// NOTE: Change those variables before testing
-// const SERVICE_NAME = "<example-service-name>"
-// const SERVICE_VERSION = "<service-version>"
-// const PLATFORM_ENV = "<environment-name>"
-// const MULTIPLAYER_OTLP_KEY = "<multiplayer-key>"
 
 // NOTE: Update instrumentation configuration as needed
 // For more see: https://www.npmjs.com/package/@opentelemetry/auto-instrumentations-node
@@ -66,10 +68,10 @@ const instrumentations = [
 ]
 
 const getResource = () => {
-  const resourcesWithDetectors = detectResources({
+  const resourcesWithDetectors = detectResourcesSync({
     detectors: getResourceDetectors(),
   })
-  const resourceWithAttributes = resourceFromAttributes({
+  const resourceWithAttributes = new Resource({
     [ATTR_SERVICE_NAME]: SERVICE_NAME,
     [ATTR_SERVICE_VERSION]: SERVICE_VERSION,
     [SEMRESATTRS_HOST_NAME]: hostname(),
@@ -83,58 +85,47 @@ const getResource = () => {
 }
 
 const opentelemetry = () => {
-  // NOTE: Either use MultiplayerHttpTraceExporterNode or OTLPTraceExporter
-  const multiplayerTraceExporter = new MultiplayerHttpTraceExporterNode({
+  const traceExporter = new MultiplayerHttpTraceExporterNode({
     apiKey: MULTIPLAYER_OTLP_KEY,
+    url: OTLP_TRACES_ENDPOINT
   })
-  // const multiplayerTraceExporter = new OTLPTraceExporter({
-  //   url: 'https://api.multiplayer.app/v1/traces',
+  // const traceExporter = new OTLPTraceExporter({
+  //   url: OTLP_TRACES_ENDPOINT,
   //   headers: {
   //     Authorization: MULTIPLAYER_OTLP_KEY
   //   },
   // })
 
-  // NOTE: if you want to send traces to one more OpenTelemetry provider
-  // uncomment lines below use these variables: `apmProviderTraceExporter`, `apmProviderTraceExporter`
-  // const apmProviderTraceExporter = new OTLPTraceExporter({
-  //   url: 'http://some.collector.url/v1/traces',
-  // })
-  // NOTE: Use MultiplayerFilterTraceExporter exporter wrapper to remove Multiplayer attributes (starts with `multiplayer.*` prefix)
-  // before sending traces to your APM provider
-  // const apmFilteredTraceExporter = new MultiplayerFilterTraceExporter(apmProviderTraceExporter) 
+
   const resource = getResource()
 
   const provider = new node.NodeTracerProvider({
     resource,
     spanProcessors: [
-      // new BatchSpanProcessor(apmFilteredTraceExporter),
-    //   new BatchSpanProcessor(multiplayerTraceExporter),
+      new BatchSpanProcessor(traceExporter),
     ],
     sampler: new ParentBasedSampler({
-      // NOTE: this config will send 80% of all traces + 100% of debug traces + 30% of 80% document traces
-      root: new MultiplayerTraceIdRatioBasedSampler(0.8),
+      root: new MultiplayerTraceIdRatioBasedSampler(OTLP_MULTIPLAYER_SPAN_RATIO),
     }),
-    // NOTE: this will set 30% of the traces sampled above for auto documentation
-    idGenerator: new MultiplayerIdGenerator({ autoDocTracesRatio: 0.3 }),
+    idGenerator: new MultiplayerIdGenerator({ autoDocTracesRatio: OTLP_MULTIPLAYER_DOC_SPAN_RATIO }),
   })
 
-  // Initialise logger provider and exporting logs to collector
   const loggerProvider = new LoggerProvider({
     resource,
   })
 
-  // NOTE: Either use `MultiplayerHttpLogExporterNode` or `OTLPLogExporter`
-  const multiplayerLogExporter = new MultiplayerHttpLogExporterNode({
-    apiKey: MULTIPLAYER_OTLP_KEY,
-  })
-  // const multiplayerLogExporter = new OTLPLogExporter({
-  //   url: 'https://api.multiplayer.app/v1/logs',
-  //   headers: {
-  //     Authorization: MULTIPLAYER_OTLP_KEY
-  //   },
+  // const logExporter = new MultiplayerHttpLogExporterNode({
+  //   apiKey: MULTIPLAYER_OTLP_KEY,
+  //   url: OTLP_LOGS_ENDPOINT
   // })
+  const logExporter = new OTLPLogExporter({
+    url: OTLP_LOGS_ENDPOINT,
+    headers: {
+      Authorization: MULTIPLAYER_OTLP_KEY
+    },
+  })
 
-  const logRecordProcessor = new BatchLogRecordProcessor(multiplayerLogExporter)
+  const logRecordProcessor = new BatchLogRecordProcessor(logExporter)
   loggerProvider.addLogRecordProcessor(logRecordProcessor)
 
   apiLogs.logs.setGlobalLoggerProvider(loggerProvider)

@@ -1,7 +1,4 @@
 extensions:
-  jwtauth:
-    secret: "some_secret"
-    attribute: Authorization
   healthcheckv2:
     use_v2: true
     component_health:
@@ -22,8 +19,6 @@ receivers:
     protocols:
       grpc:
         endpoint: 0.0.0.0:4317
-        auth:
-          authenticator: jwtauth
       http:
         endpoint: 0.0.0.0:4318
         cors:
@@ -31,8 +26,6 @@ receivers:
             - "*"
           allowed_headers:
             - "*"
-        auth:
-          authenticator: jwtauth
 
 processors:
   transform/set_trace_type:
@@ -51,33 +44,10 @@ processors:
     num_traces: 1000
     num_workers: 2
 
-  transform/add_resource_from_attributes:
-    error_mode: ignore
-    trace_statements:
-      - context: span
-        statements:
-          - set(resource.attributes["multiplayer.workspace._id"], attributes["multiplayer.workspace._id"])
-          - set(resource.attributes["multiplayer.project._id"], attributes["multiplayer.project._id"])
-          - set(resource.attributes["multiplayer.integration._id"], attributes["multiplayer.integration._id"])
-
-  attributes/from_auth_context:
-    actions:
-      - key: multiplayer.workspace._id
-        from_context: auth.workspace
-        action: insert
-      - key: multiplayer.project._id
-        from_context: auth.project
-        action: insert
-      - key: multiplayer.integration._id
-        from_context: auth.integration
-        action: insert
-
   batch:
     send_batch_size: 5
     send_batch_max_size: 5
     timeout: 3s
-
-  size:
 
   memory_limiter/deb:
     check_interval: 1s
@@ -98,7 +68,6 @@ processors:
     error_mode: ignore
     traces:
       span:
-        - 'attributes["span.size"] > 1000000'
         - 'resource.attributes["multiplayer.trace_type"] != "debdeb"'
         - 'attributes["http.target"] == "/jaeger/v1/traces"'
         - 'attributes["http.target"] == "/v1/traces"'
@@ -107,14 +76,12 @@ processors:
         - 'attributes["http.route"] == "/healthz"'
     logs:
       log_record:
-        - 'attributes["log.size"] > 1000000'
         - 'resource.attributes["multiplayer.trace_type"] != "debdeb"'
 
   filter/d0c:
     error_mode: ignore
     traces:
       span:
-        - 'attributes["span.size"] > 1000000'
         - 'attributes["multiplayer.trace_type"] != "d0cd0c"'
         - 'attributes["http.target"] == "/jaeger/v1/traces"'
         - 'attributes["http.target"] == "/v1/traces"'
@@ -138,29 +105,16 @@ processors:
     sampling_percentage: 30
 
 exporters:
-  kafka/d0c-trace:
-    brokers:
-      - host.docker.internal:9092
-    protocol_version: 2.0.0
-    partition_traces_by_id: true
-    encoding: otlp_json
-    topic: otlp_spans_d0c
-
-  kafka/deb-trace:
-    brokers:
-      - host.docker.internal:9092
-    protocol_version: 2.0.0
-    partition_traces_by_id: true
-    encoding: otlp_json
-    topic: otlp_spans_deb
-
-  kafka/deb-log:
-    brokers:
-      - host.docker.internal:9092
-    protocol_version: 2.0.0
-    partition_traces_by_id: true
-    encoding: otlp_json
-    topic: otlp_logs_deb
+  otlp/multiplayer:
+    endpoint: "https://api.multiplayer.app:443"
+    headers:
+      Authorization: "${MULTIPLAYER_OTLP_KEY}"
+    timeout: 10s
+  # otlp/logs:
+  #   endpoint: "https://api.multiplayer.app:443/v1/logs"
+  #   headers:
+  #     Authorization: "${MULTIPLAYER_OTLP_KEY}"
+  #   timeout: 10s
 
 service:
   telemetry:
@@ -181,52 +135,38 @@ service:
                 host: '0.0.0.0'
                 port: 8888
 
-  extensions: [ healthcheckv2, jwtauth ]
+  extensions: [ healthcheckv2 ]
   pipelines:
     logs/deb:
       receivers: [ otlp ]
       processors:
-        - size
         - transform/set_trace_type
         - filter/deb
-        - attributes/from_auth_context
         - memory_limiter/deb
-        - resourcedetection/system
         - batch
-      exporters: [ kafka/deb-log ]
+      exporters: [ otlp/multiplayer ]
     traces/deb:
       receivers: [ otlp ]
       processors:
-        - size
         - transform/set_trace_type
         - filter/deb
-        - attributes/from_auth_context
-        - transform/add_resource_from_attributes
         - memory_limiter/deb
         - resourcedetection/system
         - batch
-      exporters: [ kafka/deb-trace ]
+      exporters: [ otlp/multiplayer ]
     traces/d0c:
       receivers: [ otlp ]
       processors:
-        - size
         - transform/set_trace_type
         - filter/d0c
-        - attributes/from_auth_context
-        - transform/add_resource_from_attributes
-        # - memory_limiter/d0c
         - resourcedetection/system
         - batch
-      exporters: [ kafka/d0c-trace ]
+      exporters: [ otlp/multiplayer ]
     traces/random-d0c:
       receivers: [ otlp ]
       processors:
-        - size
         - filter/not-d0c-deb
         - probabilistic_sampler
-        - attributes/from_auth_context
-        - transform/add_resource_from_attributes
-        # - memory_limiter/d0c
         - resourcedetection/system
         - batch
-      exporters: [ kafka/d0c-trace ]
+      exporters: [ otlp/multiplayer ]

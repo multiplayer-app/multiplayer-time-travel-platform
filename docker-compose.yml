@@ -128,13 +128,13 @@ services:
     ports:
       - "6379:6379"
 
-  # otel-collector:
-  #   image: otelcontribcol
-  #   container_name: otel-collector
-  #   hostname: otel-collector
-  #   restart: on-failure
-  #   command: ["--config=/etc/otel/config.yaml"]
-  #   env_file:
-  #     - ./.env
-  #   volumes:
-  #     - ./services/otel-collector/config.yaml:/etc/otel/config.yaml
+  otel-collector:
+    image: otelcontribcol
+    container_name: otel-collector
+    hostname: otel-collector
+    restart: on-failure
+    command: ["--config=/etc/otel/config.yaml"]
+    env_file:
+      - ./.env
+    volumes:
+      - ./services/otel-collector/config.yaml:/etc/otel/config.yaml

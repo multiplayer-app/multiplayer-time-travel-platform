@@ -29,11 +29,11 @@ public class OpenTelemetryConfig {
         // Sampler sampler = MultiplayerTraceIdRatioBasedSampler.create(Config.OTLP_MULTIPLAYER_SPAN_RATIO);
         // MultiplayerRandomIdGenerator idGenerator = new MultiplayerRandomIdGenerator(Config.OTLP_MULTIPLAYER_DOC_SPAN_RATIO)
 
-        SpanExporter multiplayerSpanExporter = OtlpHttpSpanExporter.builder()
+        SpanExporter spanExporter = OtlpHttpSpanExporter.builder()
             .setEndpoint(Config.OTLP_TRACES_ENDPOINT)
             .addHeader("Authorization", Config.MULTIPLAYER_OTLP_KEY)
             .build();
-        LogRecordExporter multiplayerLogsExporter = OtlpHttpLogRecordExporter.builder()
+        LogRecordExporter logsExporter = OtlpHttpLogRecordExporter.builder()
             .setEndpoint(Config.OTLP_LOGS_ENDPOINT)
             .addHeader("Authorization", Config.MULTIPLAYER_OTLP_KEY)
             .build();
@@ -42,11 +42,11 @@ public class OpenTelemetryConfig {
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
                 // .setIdGenerator(idGenerator)
                 .setSampler(sampler)
-                .addSpanProcessor(BatchSpanProcessor.builder(multiplayerSpanExporter).build())
+                .addSpanProcessor(BatchSpanProcessor.builder(spanExporter).build())
                 .build();
 
         SdkLoggerProvider loggerProvider = SdkLoggerProvider.builder()
-                .addLogRecordProcessor(BatchLogRecordProcessor.builder(multiplayerLogsExporter).build())
+                .addLogRecordProcessor(BatchLogRecordProcessor.builder(logsExporter).build())
                 .build();
 
         OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()

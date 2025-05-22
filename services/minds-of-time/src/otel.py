@@ -9,16 +9,18 @@ from opentelemetry._logs import set_logger_provider
 from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 
 from multiplayer.opentelemetry.exporter.http.trace_exporter import MultiplayerOTLPSpanExporter
+# from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+# from opentelemetry.exporter.otlp.proto.http._log_exporter import OTLPLogExporter
 from multiplayer.opentelemetry.exporter.http.log_exporter import MultiplayerOTLPLogExporter
 from multiplayer.opentelemetry.trace.sampler import MultiplayerTraceIdRatioBasedSampler
 from multiplayer.opentelemetry.trace.id_generator import MultiplayerRandomIdGenerator
 
-from config import MULTIPLAYER_OTLP_KEY, OTLP_TRACES_ENDPOINT, OTLP_LOGS_ENDPOINT
+from config import OTLP_TRACES_ENDPOINT, OTLP_LOGS_ENDPOINT, MULTIPLAYER_OTLP_KEY, OTLP_MULTIPLAYER_DOC_SPAN_RATIO, OTLP_MULTIPLAYER_SPAN_RATIO
 
 
 def init_tracing(app):
-    id_generator = MultiplayerRandomIdGenerator(autoDocTracesRatio = 1/2)
-    sampler = MultiplayerTraceIdRatioBasedSampler(rate = 1/2)
+    id_generator = MultiplayerRandomIdGenerator(autoDocTracesRatio = OTLP_MULTIPLAYER_DOC_SPAN_RATIO)
+    sampler = MultiplayerTraceIdRatioBasedSampler(rate = OTLP_MULTIPLAYER_SPAN_RATIO)
 
     # Service name is required for most backends
     resource = Resource(attributes={
@@ -32,10 +34,15 @@ def init_tracing(app):
         sampler = sampler,
         id_generator = id_generator
     )
-    processor = BatchSpanProcessor(MultiplayerOTLPSpanExporter(
-        apiKey = MULTIPLAYER_OTLP_KEY,
-        endpoint = OTLP_TRACES_ENDPOINT
-    ))
+
+
+    # traceExporter = OTLPSpanExporter(OTLP_TRACES_ENDPOINT)
+    traceExporter = MultiplayerOTLPSpanExporter(
+        endpoint = OTLP_TRACES_ENDPOINT,
+        apiKey = MULTIPLAYER_OTLP_KEY
+    )
+
+    processor = BatchSpanProcessor(traceExporter)
     traceProvider.add_span_processor(processor)
     trace.set_tracer_provider(traceProvider)
 
@@ -47,11 +54,17 @@ def init_tracing(app):
         ),
     )
     set_logger_provider(logger_provider)
-    exporter = MultiplayerOTLPLogExporter(
-        apiKey = MULTIPLAYER_OTLP_KEY,
-        endpoint = OTLP_LOGS_ENDPOINT
+    
+    logExporter = MultiplayerOTLPLogExporter(
+        endpoint = OTLP_LOGS_ENDPOINT,
+        apiKey = MULTIPLAYER_OTLP_KEY
     )
-    logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
+    # logExporter = OTLPLogExporter(
+    #     endpoint = OTLP_LOGS_ENDPOINT
+    # )
+
+
+    logger_provider.add_log_record_processor(BatchLogRecordProcessor(logExporter))
 
     FlaskInstrumentor().instrument_app(app)
     # handler = LoggingHandler(level=logging.NOTSET, logger_provider=logger_provider)

@@ -7,7 +7,7 @@ const router = Router({ mergeParams: true })
 const { MindsOfTimeValidationMiddleware } = ValidationMiddleware
 
 
-router.route('/').get(
+router.route('/prominent-persons').get(
   MindsOfTimeValidationMiddleware.validateListProminentPersons,
   listPersons,
 )

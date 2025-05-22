@@ -7,7 +7,7 @@ const router = Router({ mergeParams: true })
 const { VaultOfTimeValidationMiddleware } = ValidationMiddleware
 
 
-router.route('/').get(
+router.route('/historical-events').get(
   VaultOfTimeValidationMiddleware.validateListEvents,
   listEvents,
 )

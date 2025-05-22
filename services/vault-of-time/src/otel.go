@@ -7,6 +7,7 @@ import (
 
 	multiplayer "github.com/multiplayer-app/multiplayer-otlp-go"
 	"github.com/multiplayer-app/multiplayer-time-travel-platform/services/vault-of-time/src/config"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/propagation"
@@ -47,6 +48,7 @@ func setupOTelSDK(ctx context.Context) (shutdown func(context.Context) error, er
 	}
 	shutdownFuncs = append(shutdownFuncs, tracerProvider.Shutdown)
 	otel.SetTracerProvider(tracerProvider)
+
 	return
 }
 
@@ -58,7 +60,19 @@ func newPropagator() propagation.TextMapPropagator {
 }
 
 func newTraceProvider() (*trace.TracerProvider, error) {
-	traceExporter := multiplayer.NewExporter(config.MULTIPLAYER_OTLP_KEY)
+	ctx := context.Background()
+
+	// traceExporter := multiplayer.NewExporter(config.MULTIPLAYER_OTLP_KEY)
+
+	traceExporter, err := otlptracehttp.New(ctx,
+		otlptracehttp.WithEndpoint(config.OTLP_TRACES_ENDPOINT),
+		otlptracehttp.WithInsecure(), // If not using HTTPS
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
 	traceProvider := trace.NewTracerProvider(
 		trace.WithIDGenerator(multiplayer.NewRatioDependentIdGenerator(1)),
 		trace.WithSampler(multiplayer.NewSampler(trace.TraceIDRatioBased(config.OTLP_MULTIPLAYER_SPAN_RATIO))),

@@ -12,4 +12,11 @@ public static class Config
     public static string MULTIPLAYER_OTLP_KEY = Environment.GetEnvironmentVariable("MULTIPLAYER_OTLP_KEY") ?? "<multiplayer-key>";
     public static string OTLP_TRACES_ENDPOINT = Environment.GetEnvironmentVariable("OTLP_TRACES_ENDPOINT") ?? $"http://localhost/v1/traces";
     public static string OTLP_LOGS_ENDPOINT = Environment.GetEnvironmentVariable("OTLP_LOGS_ENDPOINT") ?? $"http://localhost/v1/logs";
+
+    public static double OTLP_MULTIPLAYER_DOC_SPAN_RATIO = double.TryParse(Environment.GetEnvironmentVariable("OTLP_MULTIPLAYER_DOC_SPAN_RATIO"), out var value)
+        ? value
+        : 0.05;
+    public static double OTLP_MULTIPLAYER_SPAN_RATIO = double.TryParse(Environment.GetEnvironmentVariable("OTLP_MULTIPLAYER_SPAN_RATIO"), out var value)
+        ? value
+        : 0.1;
 }

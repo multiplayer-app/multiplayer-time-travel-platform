@@ -6,7 +6,7 @@ const { Router } = express
 const router = Router({ mergeParams: true })
 const { EpochEngineValidationMiddleware } = ValidationMiddleware
 
-router.route('/').get(
+router.route('/epoch').get(
   EpochEngineValidationMiddleware.validateListEpochs,
   listEpoch,
 )

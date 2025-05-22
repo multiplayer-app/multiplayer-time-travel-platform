@@ -9,11 +9,30 @@ using WebApiOpenApi;
 using Multiplayer.OpenTelemetry.Exporter;
 using Multiplayer.OpenTelemetry.Trace;
 
-MultiplayerTraceIdConfiguration.ConfigureMultiplayerTraceIdGenerator(0.5);
-
+MultiplayerTraceIdConfiguration.ConfigureMultiplayerTraceIdGenerator(Config.OTLP_MULTIPLAYER_DOC_SPAN_RATIO);
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls($"http://0.0.0.0:{Config.PORT}");
+
+var logExporter = new MultiplayerOtlpHttpLogsExporter(
+    Config.MULTIPLAYER_OTLP_KEY,
+    new Uri(Config.OTLP_TRACES_ENDPOINT)
+);
+// var logExporter = new OtlpHttpLogExporter(new OtlpExporterOptions
+// {
+//     Endpoint = new Uri(Config.OTLP_LOGS_ENDPOINT),
+//     Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf,
+// });
+
+var traceExporter = new MultiplayerOtlpHttpTracesExporter(
+    Config.MULTIPLAYER_OTLP_KEY,
+    new Uri(Config.OTLP_TRACES_ENDPOINT)
+);
+// var traceExporter = new OtlpHttpTraceExporter(new OtlpExporterOptions
+// {
+//     Endpoint = new Uri(Config.OTLP_TRACES_ENDPOINT),
+//     Protocol = OtlpExportProtocol.HttpProtobuf,
+// })
 
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource =>
@@ -34,17 +53,10 @@ builder.Services.AddOpenTelemetry()
     {
         tracing.AddHttpClientInstrumentation()
             .AddAspNetCoreInstrumentation()
-            .SetSampler(new MultiplayerTraceIdRatioBasedSampler(0.5))
-            .AddProcessor(new SimpleActivityExportProcessor(new MultiplayerOtlpHttpTracesExporter(
-              Config.MULTIPLAYER_OTLP_KEY,
-              new Uri(Config.OTLP_TRACES_ENDPOINT)
-            )));
+            .SetSampler(new MultiplayerTraceIdRatioBasedSampler(Config.OTLP_MULTIPLAYER_SPAN_RATIO))
+            .AddProcessor(new SimpleActivityExportProcessor(traceExporter));
     })
-    .WithLogging(logs => logs
-        .AddProcessor(new BatchLogRecordExportProcessor(new MultiplayerOtlpHttpLogsExporter(
-            Config.MULTIPLAYER_OTLP_KEY,
-            new Uri(Config.OTLP_TRACES_ENDPOINT)
-        ))));
+    .WithLogging(logs => logs.AddProcessor(new BatchLogRecordExportProcessor(logExporter)));
 
 builder.Services.AddControllers(options =>
 {
