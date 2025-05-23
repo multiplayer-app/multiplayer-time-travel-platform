@@ -25,9 +25,13 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            name=app
+            multiplayerapp/dialogue-hub
+            multiplayerapp/epoch-engine
+            multiplayerapp/minds-of-time
+            multiplayerapp/timegate
+            multiplayerapp/vault-of-time
           tags: |
-            type=raw,value=${{ github.ref_name }}-${{ github.sha }}
+            type=raw,value=${{ github.ref_name }}-${{ github.sha::7 }}
 
       - name: Build and push dialogue-hub
         uses: docker/build-push-action@v6
