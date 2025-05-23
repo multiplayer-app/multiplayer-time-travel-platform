@@ -31,7 +31,7 @@ jobs:
             multiplayerapp/timegate
             multiplayerapp/vault-of-time
           tags: |
-            type=raw,value=${{ github.ref_name }}-${{ github.sha::7 }}
+            type=sha,prefix={{branch}}-
 
       - name: Build and push dialogue-hub
         uses: docker/build-push-action@v6
