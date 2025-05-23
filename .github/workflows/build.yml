@@ -25,32 +25,32 @@ jobs:
         with:
           context: ./services/dialogue-hub
           push: true
-          tags: dialogue-hub:latest
+          tags: multiplayerapp/dialogue-hub:latest
 
       - name: Build and push epoch-engine
         uses: docker/build-push-action@v6
         with:
           context: ./services/epoch-engine
           push: true
-          tags: epoch-engine:latest
+          tags: multiplayerapp/epoch-engine:latest
 
       - name: Build and push minds-of-time
         uses: docker/build-push-action@v6
         with:
           context: ./services/minds-of-time
           push: true
-          tags: minds-of-time:latest
+          tags: multiplayerapp/minds-of-time:latest
 
       - name: Build and push timegate
         uses: docker/build-push-action@v6
         with:
           context: ./services/timegate
           push: true
-          tags: timegate:latest
+          tags: multiplayerapp/timegate:latest
 
       - name: Build and push vault-of-time
         uses: docker/build-push-action@v6
         with:
           context: ./services/vault-of-time
           push: true
-          tags: vault-of-time:latest
+          tags: multiplayerapp/vault-of-time:latest
