@@ -20,34 +20,34 @@ jobs:
       - name: Build and push dialogue-hub
         uses: docker/build-push-action@v6
         with:
-          context: services/dialogue-hub
+          context: ./services/dialogue-hub
           push: true
           tags: dialogue-hub:latest
 
       - name: Build and push epoch-engine
         uses: docker/build-push-action@v6
         with:
-          context: services/epoch-engine
+          context: ./services/epoch-engine
           push: true
           tags: epoch-engine:latest
 
       - name: Build and push minds-of-time
         uses: docker/build-push-action@v6
         with:
-          context: services/minds-of-time
+          context: ./services/minds-of-time
           push: true
           tags: minds-of-time:latest
 
       - name: Build and push timegate
         uses: docker/build-push-action@v6
         with:
-          context: services/timegate
+          context: ./services/timegate
           push: true
           tags: timegate:latest
 
       - name: Build and push vault-of-time
         uses: docker/build-push-action@v6
         with:
-          context: services/vault-of-time
+          context: ./services/vault-of-time
           push: true
           tags: vault-of-time:latest
