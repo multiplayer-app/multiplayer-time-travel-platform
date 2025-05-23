@@ -84,6 +84,7 @@ services:
       - EPOCH_ENGINE_SERVICE_URL=http://multiplayer-time-travel-platform-epoch-engine:3000/v1/epoch-engine
       - MINDS_OF_TIME_SERVICE_URL=http://multiplayer-time-travel-platform-minds-of-time:3000/v1/minds-of-time
       - VAULT_OF_TIME_SERVICE_URL=http://multiplayer-time-travel-platform-vault-of-time:3000/v1/vault-of-time
+      - MONGODB_URI=mongodb://mongo:27017/time-travel-demo
     env_file:
       - ./.env
     # volumes:
@@ -125,8 +126,8 @@ services:
     command: redis-server
     environment:
       ALLOW_EMPTY_PASSWORD: "yes"
-    ports:
-      - "6379:6379"
+    # ports:
+    #   - "6379:6379"
 
   otel-collector:
     image: otelcontribcol
@@ -138,3 +139,20 @@ services:
       - ./.env
     volumes:
       - ./services/otel-collector/config.yaml:/etc/otel/config.yaml
+  
+  mongo:
+    image: mongo:8.0.0
+    container_name: mongo
+    hostname: mongo
+    restart: on-failure
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+      # - MONGO_INITDB_ROOT_USERNAME=admin
+      # - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=time-travel-demo
+    volumes:
+      - time-travel-mongo-data:/data/db
+
+volumes:
+  time-travel-mongo-data:

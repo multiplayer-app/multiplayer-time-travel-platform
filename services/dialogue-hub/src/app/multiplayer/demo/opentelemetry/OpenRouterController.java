@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -31,7 +33,17 @@ public class OpenRouterController {
       @ApiResponse(responseCode = "500", description = "Server error")
   })
   // @ResponseBody
-  public ResponseEntity<?> sendMessageToOpenRouter(@RequestBody MessageRequest request) {
+  public ResponseEntity<?> sendMessageToOpenRouter(
+    @Parameter(
+      name = "errorRate",
+      in = ParameterIn.QUERY,
+      description = "Probability of random error injection, between 0 and 1",
+      required = false,
+      schema = @Schema(type = "number", format = "double", minimum = "0", maximum = "1")
+    )
+    @RequestParam(name = "errorRate", required = false) Double errorRate,
+    @RequestBody MessageRequest request
+  ) {
     String contextId = request.getContextId();
     String userMessage = request.getMessage() != null ? request.getMessage() : "";
 

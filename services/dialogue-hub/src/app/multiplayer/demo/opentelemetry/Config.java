@@ -50,4 +50,8 @@ public class Config {
     public static Integer REDIS_PORT = System.getenv("REDIS_PORT") != null && !System.getenv("REDIS_PORT").isEmpty() 
         ? Integer.parseInt(System.getenv("REDIS_PORT"))
         : 6379;
+
+    public static double RANDOM_ERROR_RATE = System.getenv("RANDOM_ERROR_RATE") != null && !System.getenv("RANDOM_ERROR_RATE").isEmpty()
+        ? Integer.parseInt(System.getenv("RANDOM_ERROR_RATE"))
+        : 0.3;
 }

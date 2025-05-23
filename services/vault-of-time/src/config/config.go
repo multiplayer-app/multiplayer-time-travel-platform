@@ -19,6 +19,7 @@ var (
 	SERVICE_NAME                    string
 	SERVICE_VERSION                 string
 	PLATFORM_ENV                    string
+	RANDOM_ERROR_RATE               float64
 )
 
 func LoadConfig() {
@@ -43,6 +44,12 @@ func LoadConfig() {
 	OTLP_MULTIPLAYER_SPAN_RATIO, parseSpanRatioErr = strconv.ParseFloat(getEnv("OTLP_MULTIPLAYER_SPAN_RATIO", "0.01"), 64)
 	if parseSpanRatioErr != nil {
 		OTLP_MULTIPLAYER_DOC_SPAN_RATIO = 0.02
+	}
+
+	var parseRandomErrRateErr error
+	RANDOM_ERROR_RATE, parseRandomErrRateErr = strconv.ParseFloat(getEnv("RANDOM_ERROR_RATE", "0.4"), 64)
+	if parseRandomErrRateErr != nil {
+		RANDOM_ERROR_RATE = 0.4
 	}
 
 	SERVICE_NAME = getEnv("SERVICE_NAME", "<example-service-name>")

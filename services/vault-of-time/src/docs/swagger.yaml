@@ -29,6 +29,11 @@ paths:
   /historical-events:
     get:
       description: Returns a list of fictional and real historical events
+      parameters:
+      - description: Error injection rate between 0 and 1
+        in: query
+        name: errorRate
+        type: number
       produces:
       - application/json
       responses:

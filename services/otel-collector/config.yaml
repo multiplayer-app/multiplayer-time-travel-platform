@@ -93,7 +93,6 @@ processors:
     error_mode: ignore
     traces:
       span:
-        - 'attributes["span.size"] > 1000000'
         - 'attributes["multiplayer.trace_type"] == "debdeb" and attributes["multiplayer.trace_type"] == "d0cd0c"'
         - 'attributes["http.target"] == "/jaeger/v1/traces"'
         - 'attributes["http.target"] == "/v1/traces"'
@@ -118,6 +117,8 @@ exporters:
 
 service:
   telemetry:
+    logs:
+        level: "debug"  # Options: debug, info, warn, error
     # traces:
     #   processors:
     #     - batch:

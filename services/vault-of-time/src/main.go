@@ -93,7 +93,10 @@ func newHTTPHandler() http.Handler {
 	handleFunc(config.API_PREFIX+"/health/", health_api.HealthHandler)
 	handleFunc(config.API_PREFIX+"/historical-events/", vault_of_time_api.HistoricalEventsHandler)
 
-	// Add HTTP instrumentation for the whole server.
-	handler := otelhttp.NewHandler(mux, "/")
+	handler := otelhttp.NewHandler(
+		AttachTraceIDMiddleware(errorMiddleware(mux)),
+		"/",
+	)
+
 	return handler
 }

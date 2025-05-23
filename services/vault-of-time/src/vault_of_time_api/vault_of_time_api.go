@@ -15,6 +15,7 @@ type HistoricalEvent struct {
 // @Description  Returns a list of fictional and real historical events
 // @Tags         events
 // @Produce      json
+// @Param        errorRate  query  number  false  "Error injection rate between 0 and 1"
 // @Success      200  {array}  HistoricalEvent
 // @Router       /historical-events [get]
 func HistoricalEventsHandler(w http.ResponseWriter, r *http.Request) {

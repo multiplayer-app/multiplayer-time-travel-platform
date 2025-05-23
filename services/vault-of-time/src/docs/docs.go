@@ -45,6 +45,14 @@ const docTemplate = `{
                     "events"
                 ],
                 "summary": "List historical events",
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "Error injection rate between 0 and 1",
+                        "name": "errorRate",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
