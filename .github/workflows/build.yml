@@ -20,37 +20,46 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Docker meta
+        id: docker_meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            name=app
+          tags: |
+            type=raw,value=${{ github.ref_name }}-${{ github.sha }}
+
       - name: Build and push dialogue-hub
         uses: docker/build-push-action@v6
         with:
           context: ./services/dialogue-hub
           push: true
-          tags: multiplayerapp/dialogue-hub:latest
+          tags: multiplayerapp/dialogue-hub:${{ steps.docker_meta.outputs.tags }}
 
       - name: Build and push epoch-engine
         uses: docker/build-push-action@v6
         with:
           context: ./services/epoch-engine
           push: true
-          tags: multiplayerapp/epoch-engine:latest
+          tags: multiplayerapp/epoch-engine:${{ steps.docker_meta.outputs.tags }}
 
       - name: Build and push minds-of-time
         uses: docker/build-push-action@v6
         with:
           context: ./services/minds-of-time
           push: true
-          tags: multiplayerapp/minds-of-time:latest
+          tags: multiplayerapp/minds-of-time:${{ steps.docker_meta.outputs.tags }}
 
       - name: Build and push timegate
         uses: docker/build-push-action@v6
         with:
           context: ./services/timegate
           push: true
-          tags: multiplayerapp/timegate:latest
+          tags: multiplayerapp/timegate:${{ steps.docker_meta.outputs.tags }}
 
       - name: Build and push vault-of-time
         uses: docker/build-push-action@v6
         with:
           context: ./services/vault-of-time
           push: true
-          tags: multiplayerapp/vault-of-time:latest
+          tags: multiplayerapp/vault-of-time:${{ steps.docker_meta.outputs.tags }}
