@@ -134,7 +134,7 @@ const MultiplayerChat = ({
                         className="mtt-debugger-toggle"
                         onClick={onDebuggerOpen}
                       >
-                        Open the debugger
+                        Start Debugging
                       </div>
                     </Message.CustomContent>
                   )}
