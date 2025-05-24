@@ -1,0 +1,86 @@
+.mtt-sidepanel {
+  background-image: url("../../assets/panel-bg-default.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom;
+  height: 100%;
+  width: 30%;
+  position: relative;
+  padding: 24px;
+}
+
+.mtt-logo-container {
+  display: inline-flex;
+  padding: 10px 13px;
+  align-items: center;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: white;
+  max-width: 100%;
+  box-shadow: 0 1px 1px -0.5px rgba(0, 0, 0, 0.06), 0 3px 3px -1.5px rgba(0, 0, 0, 0.06);
+  a {
+    height: 40px;
+  }
+  .mtt-logo-main {
+    height: 40px;
+    max-width: 100%;
+    object-fit: contain;
+  }
+}
+
+.mtt-bg-1 {
+  background-image: url("../../assets/panel_imgs/Freddie_Mercury.jpg");
+}
+
+.mtt-bg-2 {
+  background-image: url("../../assets/panel_imgs/Pikachu.png");
+}
+
+.mtt-bg-3 {
+  background-image: url("../../assets/panel_imgs/Yoda.jpg");
+}
+
+.mtt-bg-4 {
+  background-image: url("../../assets/panel_imgs/Ada-Lovelace.webp");
+}
+
+.mtt-bg-5 {
+  background-image: url("../../assets/panel_imgs/Julia_Child.jpg");
+}
+
+.mtt-bg-6 {
+  background-image: url("../../assets/panel_imgs/EllenRipley.webp");
+}
+
+.mtt-bg-7 {
+  background-image: url("../../assets/panel_imgs/DocBrown.jpg");
+}
+
+.mtt-bg-8 {
+  background-image: url("../../assets/panel_imgs/Alan_Turing.jpg");
+}
+
+.mtt-bg-9 {
+  background-image: url("../../assets/panel_imgs/Hamilton-Margaret.webp");
+}
+
+.mtt-bg-10 {
+  background-image: url("../../assets/panel_imgs/Frida_Kahlo.webp");
+}
+
+@media screen and (max-width: 768px) {
+  .mtt-sidepanel {
+    background-image: unset !important;
+    height: unset;
+    width: unset;
+    position: relative;
+    padding: 10px;
+  }
+  .mtt-logo-container {
+    padding: 6px 8px;
+    border-radius: 12px;
+    a, .mtt-logo-main {
+      height: 30px;
+    }
+  }
+}

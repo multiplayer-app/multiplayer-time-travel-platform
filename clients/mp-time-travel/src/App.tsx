@@ -1,8 +1,12 @@
-import React, { useState } from "react";
-import debuggerInstance from "@multiplayer-app/session-debugger";
+import React, { useEffect, useState } from "react";
+import debuggerInstance, {
+  recorderEventBus,
+} from "@multiplayer-app/session-debugger";
 import SidePanel from "./components/SidePanel";
 import Board from "./components/Board";
-import ModalComponent from "./components/NavigationModal";
+import NavigationModal from "./components/NavigationModal";
+import EmailModal from "./components/EmailModal";
+import { hasSubmittedEmail } from "utils/emailModalStorage";
 import "./App.scss";
 
 debuggerInstance.init({
@@ -32,16 +36,33 @@ debuggerInstance.init({
 });
 
 function App() {
-  const [selectedCharacter, setSelectedCharacter] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isNavigationModalOpen, setIsNavigationModalOpen] = useState(false);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(
+    !hasSubmittedEmail()
+  );
+  const [navigationData, setNavigationData] = useState({});
+
+  useEffect(() => {
+    recorderEventBus?.on("multiplayer-debug-session-response", (res) => {
+      setNavigationData(res);
+      setIsNavigationModalOpen(true);
+    });
+
+    return recorderEventBus?.off("multiplayer-debug-session-response");
+  }, []);
 
   return (
     <div className="mtt-app">
-      <SidePanel character={selectedCharacter} />
-      <Board selectCharacter={setSelectedCharacter} />
-      <ModalComponent
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+      <SidePanel />
+      <Board />
+      <NavigationModal
+        isOpen={isNavigationModalOpen}
+        data={navigationData}
+        onClose={() => setIsNavigationModalOpen(false)}
+      />
+      <EmailModal
+        isOpen={isEmailModalOpen}
+        onClose={() => setIsEmailModalOpen(false)}
       />
     </div>
   );

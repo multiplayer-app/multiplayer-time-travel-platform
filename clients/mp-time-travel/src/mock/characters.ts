@@ -17,11 +17,12 @@ import JuliaChild_Panel from "../assets/panel_imgs/Julia_Child.jpg";
 import EllenRipley_Panel from "../assets/panel_imgs/EllenRipley.webp";
 import DocBrown_Panel from "../assets/panel_imgs/DocBrown.jpg";
 import AlanTuring_Panel from "../assets/panel_imgs/Alan_Turing.jpg";
-import MargaretHamilton_Panel from "../assets/panel_imgs/Hamilton-Margaret.jpg";
+import MargaretHamilton_Panel from "../assets/panel_imgs/Hamilton-Margaret.webp";
 import FridaKahlo_Panel from "../assets/panel_imgs/Frida_Kahlo.webp";
 
 export const characters = [
   {
+    id: 1,
     name: "Freddie Mercury",
     startDate: {
       isBCE: false,
@@ -42,10 +43,13 @@ export const characters = [
     panelImg: FreddieMercury_Panel,
     pronoun: "He",
     description: "Iconic rock vocalist and Queen frontman",
+    errorMessage:
+      "Another one bites the dust! We hit an error—but the show must go on. Open the Multiplayer Debugger to see what went wrong.",
     answerStyle:
       "Would demand that error messages be sung. Would also insist that your broken app is still beautiful, and that all software bugs should be performed live on stage.",
   },
   {
+    id: 2,
     name: "Pikachu",
     startDate: {
       isBCE: false,
@@ -66,9 +70,12 @@ export const characters = [
     panelImg: Pikachu_Panel,
     pronoun: "He",
     description: "Electric-type Pokémon and loyal companion",
+    errorMessage:
+      "Pika... CHU!! ⚡That wasn’t supposed to happen. Don’t worry: Multiplayer Debugger will help you catch it.",
     answerStyle: "Only says “Pika Pika”",
   },
   {
+    id: 3,
     name: "Yoda",
     startDate: {
       isBCE: true,
@@ -89,10 +96,13 @@ export const characters = [
     panelImg: Yoda_Panel,
     pronoun: "He",
     description: "Jedi Master and wise mentor from Star Wars",
+    errorMessage:
+      "Broke, it has. Debug you must. In the Multiplayer Debugger, answers lie.",
     answerStyle:
       "Would critique your entire codebase in cryptic syntax. Might insist on pair programming via telepathy.",
   },
   {
+    id: 4,
     name: "Ada Lovelace",
     startDate: {
       isBCE: false,
@@ -113,10 +123,13 @@ export const characters = [
     panelImg: AdaLovelace_Panel,
     pronoun: "She",
     description: "Mathematician and early computer programmer",
+    errorMessage:
+      "A computational error, it seems. But every anomaly tells a story. Let us decipher it with the aid of the Multiplayer Debugger.",
     answerStyle:
       "The first programmer. Would love to see her reaction to modern computing and hear her ideas on what she could have done with today’s tools.",
   },
   {
+    id: 5,
     name: "Julia Child",
     startDate: {
       isBCE: false,
@@ -137,10 +150,13 @@ export const characters = [
     panelImg: JuliaChild_Panel,
     pronoun: "She",
     description: "Chef and television personality",
+    errorMessage:
+      "Ah, a delightful little failure! Perfect opportunity to debug. Into the Multiplayer Debugger we go!",
     answerStyle:
       "Would explain APIs like recipes, compare microservices to a well-planned kitchen, and immediately break something just to show you how to fix it.",
   },
   {
+    id: 6,
     name: "Ellen Ripley",
     startDate: {
       isBCE: false,
@@ -161,10 +177,13 @@ export const characters = [
     panelImg: EllenRipley_Panel,
     pronoun: "She",
     description: "Fearless space officer and alien fighter",
+    errorMessage:
+      "Something just failed. You’ve got one shot to trace this before it propagates. Time to suit up and debug: open the Multiplayer Debugger.",
     answerStyle:
       "One of the most competent problem-solvers in sci-fi. Would 100% call out bad system design and tell you exactly where the failure points are before things go horribly wrong.",
   },
   {
+    id: 7,
     name: "Doc Brown",
     startDate: {
       isBCE: false,
@@ -185,10 +204,13 @@ export const characters = [
     panelImg: DocBrown_Panel,
     pronoun: "He",
     description: "Inventor and time travel enthusiast",
+    errorMessage:
+      "Great Scott! Something’s gone terribly wrong. This could alter the entire future of the app! Use the Multiplayer Debugger to fix it.",
     answerStyle:
       "Would insist that every system failure could be solved with a flux capacitor and a little plutonium.",
   },
   {
+    id: 8,
     name: "Alan Turing",
     startDate: {
       isBCE: false,
@@ -209,10 +231,13 @@ export const characters = [
     panelImg: AlanTuring_Panel,
     pronoun: "He",
     description: "Mathematician and pioneer of computing",
+    errorMessage:
+      "A fault has occurred. This behavior is anomalous but not without explanation. The Multiplayer Debugger will offer clarity.",
     answerStyle:
       "The father of modern computing, AI pioneer, and codebreaker. He’d have incredible insights into algorithms, machine learning, and cryptography.",
   },
   {
+    id: 9,
     name: "Margaret Hamilton",
     startDate: {
       isBCE: false,
@@ -229,10 +254,13 @@ export const characters = [
     panelImg: MargaretHamilton_Panel,
     pronoun: "She",
     description: "Software engineer and Apollo mission leader",
+    errorMessage:
+      "We’ve encountered a fault, but it’s recoverable. Recommend immediate inspection via Multiplayer Debugger.",
     answerStyle:
       "The software engineer who wrote the Apollo mission code. Would probably have incredible debugging stories from spaceflight programming.",
   },
   {
+    id: 10,
     name: "Frida Kahlo",
     startDate: {
       isBCE: false,
@@ -253,6 +281,8 @@ export const characters = [
     panelImg: FridaKahlo_Panel,
     pronoun: "She",
     description: "Iconic Mexican painter known for her vivid self-portraits",
+    errorMessage:
+      "Something failed… and yet, it is strangely beautiful. Find its meaning with the Multiplayer Debugger.",
     answerStyle:
       "Would insist that your CI/CD pipeline needs to express raw emotion. Would also refuse to fix bugs because `imperfection is beauty.`",
   },

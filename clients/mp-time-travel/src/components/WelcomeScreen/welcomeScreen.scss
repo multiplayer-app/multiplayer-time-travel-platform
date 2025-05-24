@@ -1,0 +1,37 @@
+.mtt-welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px 0;
+  flex: 2;
+}
+
+.mtt-welcome-title {
+  color: #292828;
+  font-size: 32px;
+  letter-spacing: 0.32px;
+  margin: 0 0 16px;
+}
+
+.mtt-subtext {
+  color: #999;
+  font-size: 24px;
+  letter-spacing: 0.24px;
+  margin: 0 0 32px;
+}
+
+@media screen and (max-width: 768px) {
+  .mtt-welcome-container {
+    padding: 10px 10px 0;
+  }
+  .mtt-welcome-title {
+    font-size: 24px;
+    margin: 0 0 12px;
+  }
+  .mtt-subtext {
+    font-size: 16px;
+    margin: 0 0 24px;
+  }
+}

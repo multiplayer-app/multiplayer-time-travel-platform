@@ -1,0 +1,36 @@
+.mtt-character-card {
+  display: flex;
+  white-space: nowrap;
+  padding: 4px 16px 4px 4px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 16px;
+  background: #F0F0F0;
+  user-select: none;
+  cursor: pointer;
+  color: #505050;
+  &.card-selected {
+    background: #493BFF;
+    color: white;
+  }
+  .mtt-character-name {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.14px;
+  }
+}
+
+.mtt-character-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  object-fit: cover;
+  &.avatar-sm {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    &.selected {
+      border: 1px solid #493BFF;
+    }
+  }
+}
