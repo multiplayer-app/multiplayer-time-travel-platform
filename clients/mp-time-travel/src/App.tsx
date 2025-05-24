@@ -40,11 +40,11 @@ function App() {
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(
     !hasSubmittedEmail()
   );
-  const [navigationData, setNavigationData] = useState({});
+  const [navigationUrl, setNavigationUrl] = useState({});
 
   useEffect(() => {
     recorderEventBus?.on("multiplayer-debug-session-response", (res) => {
-      setNavigationData(res);
+      setNavigationUrl(res?.url);
       setIsNavigationModalOpen(true);
     });
 
@@ -57,7 +57,7 @@ function App() {
       <Board />
       <NavigationModal
         isOpen={isNavigationModalOpen}
-        data={navigationData}
+        url={navigationUrl}
         onClose={() => setIsNavigationModalOpen(false)}
       />
       <EmailModal

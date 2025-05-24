@@ -5,13 +5,10 @@ import "./navigationModal.scss";
 // Required for accessibility
 Modal.setAppElement("#root");
 
-const NavigationModal = ({ isOpen, onClose, data }) => {
+const NavigationModal = ({ isOpen, onClose, url }) => {
   const handleNavigate = () => {
     onClose();
-    window.open(
-      `https://go.multiplayer.app/project/${data.workspace}/${data.project}/default/debugger/session/${data._id}`,
-      "_blank"
-    );
+    window.open(url, "_blank");
   };
 
   return (
