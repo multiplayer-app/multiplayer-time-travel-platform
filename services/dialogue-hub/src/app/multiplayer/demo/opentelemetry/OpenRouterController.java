@@ -55,7 +55,7 @@ public class OpenRouterController {
       contextId = UUID.randomUUID().toString();
     }
 
-    if (Config.OPENROUTER_API_KEY == null || Config.OPENROUTER_API_KEY.isEmpty()) {
+    if (Config.OPENAI_API_KEY == null || Config.OPENAI_API_KEY.isEmpty()) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(Map.of("error", "OpenRouter API key is not configured"));
     }
@@ -79,7 +79,7 @@ public class OpenRouterController {
 
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-    headers.setBearerAuth(Config.OPENROUTER_API_KEY);
+    headers.setBearerAuth(Config.OPENAI_API_KEY);
 
     HttpEntity<Map<String, Object>> openrouterRequest = new HttpEntity<>(messagePayload, headers);
 
@@ -87,7 +87,7 @@ public class OpenRouterController {
 
     try {
       ResponseEntity<String> response = restTemplate.postForEntity(
-          Config.OPENROUTER_API_URL,
+          Config.OPENAI_API_URL,
           openrouterRequest,
           String.class);
 

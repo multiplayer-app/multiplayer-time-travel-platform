@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Config {
 
-    public static String OPENROUTER_API_KEY = System.getenv("OPENROUTER_API_KEY");
-    public static String OPENROUTER_API_URL = System.getenv("OPENROUTER_API_URL") != null && !System.getenv("OPENROUTER_API_URL").isEmpty()
-        ? System.getenv("OPENROUTER_API_URL")
+    public static String OPENAI_API_KEY = System.getenv("OPENAI_API_KEY");
+    public static String OPENAI_API_URL = System.getenv("OPENAI_API_URL") != null && !System.getenv("OPENAI_API_URL").isEmpty()
+        ? System.getenv("OPENAI_API_URL")
         : "https://openrouter.ai/api/v1/chat/completions";
     
     public static String PORT = System.getenv("PORT") != null && !System.getenv("PORT").isEmpty()
