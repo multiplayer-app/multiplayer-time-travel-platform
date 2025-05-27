@@ -1,6 +1,6 @@
 .mtt-character-list {
-  border-top: 1px solid #C1C1C1;
-  border-bottom: 1px solid #C1C1C1;
+  border-top: 1px solid #c1c1c1;
+  border-bottom: 1px solid #c1c1c1;
   padding: 16px 24px 4px;
   .mtt-character-list-header {
     color: #888;
@@ -19,6 +19,10 @@
   width: 100%;
   overflow: scroll;
   padding-bottom: 12px;
+}
+
+.mtt-characters-row::-webkit-scrollbar {
+  display: none;
 }
 
 .mtt-no-characters {

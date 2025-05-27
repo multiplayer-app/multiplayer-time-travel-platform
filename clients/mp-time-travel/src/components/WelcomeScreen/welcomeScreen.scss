@@ -2,10 +2,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   text-align: center;
   padding: 40px 20px 0;
-  flex: 2;
+  // flex: 1;
+  margin: auto 0;
+  overflow: auto;
 }
 
 .mtt-welcome-title {

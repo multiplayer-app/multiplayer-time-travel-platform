@@ -1,18 +1,31 @@
-import React, { memo } from "react";
-import CharacterCard from "components/CharacterCard";
-import "./characterList.scss";
-import { useTimeTravel } from "hooks/time-travel";
+import { memo, useEffect, useRef } from 'react';
+import CharacterCard from 'components/CharacterCard';
+import './characterList.scss';
 
-const CharacterList = ({ characters }) => {
-  const { selectedCharacter, setSelectedCharacter } = useTimeTravel();
+const CharacterList = ({ characters, selectedCharacter, setSelectedCharacter }) => {
+  const charactersRowRef = useRef(null);
+
+  useEffect(() => {
+    const targetElement = charactersRowRef.current;
+    if (!targetElement) return;
+
+    const handleWheel = (e) => {
+      if (targetElement && e.deltaY) {
+        e.preventDefault();
+        targetElement.scrollLeft += e.deltaY;
+      }
+    };
+
+    targetElement.addEventListener('wheel', handleWheel, { passive: false });
+    return () => {
+      targetElement.removeEventListener('wheel', handleWheel);
+    };
+  }, [characters]);
 
   return (
-    <div className="mtt-character-list">
-      <header className="mtt-character-list-header semibold-text">
-        Available Personalities
-      </header>
-
-      <div className="mtt-characters-row">
+    <div className='mtt-character-list'>
+      <header className='mtt-character-list-header semibold-text'>Available Personalities</header>
+      <div className='mtt-characters-row' ref={charactersRowRef}>
         {characters?.length ? (
           characters.map((character) => (
             <CharacterCard
@@ -23,9 +36,7 @@ const CharacterList = ({ characters }) => {
             />
           ))
         ) : (
-          <p className="mtt-no-characters medium-text">
-            No characters found, please select another year
-          </p>
+          <p className='mtt-no-characters medium-text'>No characters found, please select another year</p>
         )}
       </div>
     </div>

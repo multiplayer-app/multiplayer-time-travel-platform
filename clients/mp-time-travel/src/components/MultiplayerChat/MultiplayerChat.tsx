@@ -1,18 +1,11 @@
-import React, { useCallback, useEffect, useState, memo } from "react";
-import {
-  MainContainer,
-  ChatContainer,
-  MessageList,
-  Message,
-  MessageInput,
-  TypingIndicator,
-} from "@chatscope/chat-ui-kit-react";
-import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import { MessageModel } from "@chatscope/chat-ui-kit-react";
-import MessageAvatar from "components/MessageAvatar";
-import { sendMessage } from "services";
-import { generalErrors } from "mock/generalErrors";
-import "./multiplayerChat.scss";
+import { useCallback, useEffect, useState, memo, useRef } from 'react';
+import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
+import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import { MessageModel } from '@chatscope/chat-ui-kit-react';
+import MessageAvatar from 'components/MessageAvatar';
+import { sendMessage } from 'services';
+import { generalErrors } from 'mock/generalErrors';
+import './multiplayerChat.scss';
 
 type BaseChatMessage = Partial<MessageModel> & {
   systemError?: boolean;
@@ -23,7 +16,7 @@ interface ChatMessage extends BaseChatMessage {
   message: string;
   sentTime: string;
   sender: string;
-  direction: "incoming" | "outgoing";
+  direction: 'incoming' | 'outgoing';
 }
 
 const getRandomErrorMessage = () => {
@@ -31,15 +24,19 @@ const getRandomErrorMessage = () => {
   return generalErrors[randomIndex];
 };
 
-const MultiplayerChat = ({
-  character,
-  preselectedQuestion,
-  setQuestion,
-  onDebuggerOpen,
-}) => {
+const MultiplayerChat = ({ character, preselectedQuestion, setQuestion, onDebuggerOpen }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [contextId, setContextId] = useState(null);
+  const messageInputRef = useRef<HTMLInputElement>(null);
+
+  const isDisabled = isTyping || !character;
+
+  useEffect(() => {
+    if (messageInputRef.current && !isDisabled) {
+      messageInputRef.current.focus();
+    }
+  }, [isDisabled]);
 
   useEffect(() => {
     setContextId(null);
@@ -50,9 +47,9 @@ const MultiplayerChat = ({
       try {
         const userMessage: ChatMessage = {
           message,
-          sentTime: "just now",
+          sentTime: 'just now',
           sender: character.name,
-          direction: "outgoing",
+          direction: 'outgoing'
         };
 
         setQuestion(message);
@@ -65,19 +62,19 @@ const MultiplayerChat = ({
 
         const botMessage: ChatMessage = {
           message: data?.reply,
-          sentTime: "just now",
-          sender: "Multiplayer",
-          direction: "incoming",
+          sentTime: 'just now',
+          sender: 'Multiplayer',
+          direction: 'incoming'
         };
 
         setMessages((prev) => [...prev, botMessage]);
         setContextId(data?.contextId);
       } catch (err) {
         const botMessage: ChatMessage = {
-          message: "",
-          sentTime: "just now",
-          sender: "Multiplayer",
-          direction: "incoming",
+          message: '',
+          sentTime: 'just now',
+          sender: 'Multiplayer',
+          direction: 'incoming'
         };
         if (err.statusCode !== 500) {
           botMessage.message = getRandomErrorMessage();
@@ -109,31 +106,18 @@ const MultiplayerChat = ({
   }, [character]);
 
   return (
-    <div className="mtt-chat-container">
+    <div className='mtt-chat-container'>
       <MainContainer>
         <ChatContainer>
-          <MessageList
-            typingIndicator={
-              isTyping && (
-                <TypingIndicator content={`${character.name} is typing...`} />
-              )
-            }
-          >
+          <MessageList typingIndicator={isTyping && <TypingIndicator content={`${character.name} is typing...`} />}>
             {messages.map((msg, i) => (
               <div className={`mtt-message-row mtt-${msg.direction}`} key={i}>
-                <MessageAvatar
-                  direction={msg.direction}
-                  character={character}
-                  systemError={msg.systemError}
-                />
-                <div className="cs-message__content">
-                  <Message.TextContent text={msg.message} />
+                <MessageAvatar direction={msg.direction} character={character} systemError={msg.systemError} />
+                <div className='cs-message__content'>
+                  <Message.HtmlContent html={msg.message} />
                   {(msg.systemError || msg.characterError) && (
                     <Message.CustomContent>
-                      <div
-                        className="mtt-debugger-toggle"
-                        onClick={onDebuggerOpen}
-                      >
+                      <div className='mtt-debugger-toggle' onClick={onDebuggerOpen}>
                         Start Debugging
                       </div>
                     </Message.CustomContent>
@@ -144,14 +128,13 @@ const MultiplayerChat = ({
           </MessageList>
 
           <MessageInput
-            placeholder={
-              character
-                ? "Type your message here..."
-                : "Please select a character to chat"
-            }
+            placeholder={character ? 'Type your message here...' : 'Please select a character to chat'}
+            className='mtt-message-input-container'
             onSend={postMessage}
             attachButton={false}
-            disabled={isTyping || !character}
+            autoFocus={true}
+            ref={messageInputRef}
+            disabled={isDisabled}
             sendButton={!isTyping}
           />
         </ChatContainer>
