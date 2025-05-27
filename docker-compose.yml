@@ -9,6 +9,7 @@ x-common-variables: &common-variables
    OTLP_MULTIPLAYER_SPAN_RATIO: 0.05
    
    REACT_APP_PLATFORM_ENV: demo-env
+   REACT_APP_BASE_API_URL: http://localhost:8080/v1
    REACT_APP_OTLP_MULTIPLAYER_DOC_SPAN_RATIO: 0.04
    REACT_APP_OTLP_MULTIPLAYER_SPAN_RATIO: 0.05
 
@@ -133,9 +134,8 @@ services:
     restart: on-failure
     environment:
       <<: *common-variables
-      SERVICE_NAME: mp-time-travel-frontend
-      SERVICE_VERSION: 0.0.1
-      REACT_APP_BASE_API_URL: http://localhost:8080/v1
+      REACT_APP_SERVICE_NAME: mp-time-travel-frontend
+      REACT_APP_SERVICE_VERSION: 0.0.1
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 20s

@@ -10,8 +10,8 @@ import { hasSubmittedEmail } from "utils/emailModalStorage";
 import "./App.scss";
 
 debuggerInstance.init({
-  version: "0.0.1",
-  application: "multiplayer-web-app",
+  version: process.env.REACT_APP_SERVICE_VERSION,
+  application: process.env.REACT_APP_SERVICE_NAME,
   environment: process.env.REACT_APP_PLATFORM_ENV,
   apiKey: process.env.REACT_APP_SESSION_DEBUGGER_KEY,
   ...process.env.REACT_APP_SESSION_DEBUGGER_API_BASE_URL
@@ -25,14 +25,13 @@ debuggerInstance.init({
     /posthog\.com.*/,
     /https:\/\/pixel\.source\.app\/.*/,
   ],
-  propagateTraceHeaderCorsUrls: new RegExp(
-    `${process.env.REACT_APP_API_BASE_URL}.*`,
-    "i"
-  ),
+  propagateTraceHeaderCorsUrls: [
+    process.env.REACT_APP_BASE_API_URL,
+  ],
   schemifyDocSpanPayload: true,
   maskDebSpanPayload: false,
-  docTraceRatio: process.env.REACT_APP_OTLP_MULTIPLAYER_DOC_SPAN_RATIO,
-  sampleTraceRatio: process.env.REACT_APP_OTLP_MULTIPLAYER_SPAN_RATIO,
+  docTraceRatio: Number(process.env.REACT_APP_OTLP_MULTIPLAYER_DOC_SPAN_RATIO) || 0.05,
+  sampleTraceRatio: Number(process.env.REACT_APP_OTLP_MULTIPLAYER_SPAN_RATIO) || 0.04,
   maxCapturingHttpPayloadSize: 100000,
   disableCapturingHttpPayload: false,
 });
