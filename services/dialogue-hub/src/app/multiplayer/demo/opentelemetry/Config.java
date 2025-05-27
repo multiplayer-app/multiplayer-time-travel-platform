@@ -38,10 +38,10 @@ public class Config {
         ? System.getenv("API_PREFIX")
         : "/v1/dialogue-hub";
     public static double OTLP_MULTIPLAYER_DOC_SPAN_RATIO = System.getenv("OTLP_MULTIPLAYER_DOC_SPAN_RATIO") != null && !System.getenv("OTLP_MULTIPLAYER_DOC_SPAN_RATIO").isEmpty()
-        ? Integer.parseInt(System.getenv("OTLP_MULTIPLAYER_DOC_SPAN_RATIO"))
+        ? Double.parseDouble(System.getenv("OTLP_MULTIPLAYER_DOC_SPAN_RATIO"))
         : 0.02;
     public static double OTLP_MULTIPLAYER_SPAN_RATIO = System.getenv("OTLP_MULTIPLAYER_SPAN_RATIO") != null && !System.getenv("OTLP_MULTIPLAYER_SPAN_RATIO").isEmpty()
-        ? Integer.parseInt(System.getenv("OTLP_MULTIPLAYER_SPAN_RATIO"))
+        ? Double.parseDouble(System.getenv("OTLP_MULTIPLAYER_SPAN_RATIO"))
         : 0.01;
 
     public static String REDIS_HOST = System.getenv("REDIS_HOST") != null && !System.getenv("REDIS_HOST").isEmpty() 
@@ -52,6 +52,6 @@ public class Config {
         : 6379;
 
     public static double RANDOM_ERROR_RATE = System.getenv("RANDOM_ERROR_RATE") != null && !System.getenv("RANDOM_ERROR_RATE").isEmpty()
-        ? Integer.parseInt(System.getenv("RANDOM_ERROR_RATE"))
+        ? Double.parseDouble(System.getenv("RANDOM_ERROR_RATE"))
         : 0.3;
 }

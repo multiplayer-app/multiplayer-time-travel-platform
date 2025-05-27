@@ -3,7 +3,7 @@ import axios from "axios";
 export const submitEmail = async (email) => {
   try {
     return await axios.post(
-      `${process.env.REACT_APP_BASE_API_URL}/v1/timegate/user/info/email`,
+      `${process.env.REACT_APP_BASE_API_URL}/timegate/user/info/email`,
       {
         email,
       }
@@ -16,7 +16,7 @@ export const submitEmail = async (email) => {
 export const sendMessage = async (message, contextId, character) => {
   try {
     return await axios.post(
-      `${process.env.REACT_APP_BASE_API_URL}/v1/dialogue-hub/openrouter/messages`,
+      `${process.env.REACT_APP_BASE_API_URL}/dialogue-hub/openrouter/messages`,
       {
         message:
           message +

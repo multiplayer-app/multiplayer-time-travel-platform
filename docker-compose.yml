@@ -1,8 +1,21 @@
 version: "3"
+
+x-common-variables: &common-variables
+   PLATFORM_ENV: demo-env
+
+   OTLP_TRACES_ENDPOINT: http://otel-collector/v1/traces
+   OTLP_LOGS_ENDPOINT: http://otel-collector/v1/logs
+   OTLP_MULTIPLAYER_DOC_SPAN_RATIO: 0.04
+   OTLP_MULTIPLAYER_SPAN_RATIO: 0.05
+   
+   REACT_APP_PLATFORM_ENV: demo-env
+   REACT_APP_OTLP_MULTIPLAYER_DOC_SPAN_RATIO: 0.04
+   REACT_APP_OTLP_MULTIPLAYER_SPAN_RATIO: 0.05
+
 services:
   envoy:
     image: envoyproxy/envoy-alpine:v1.18-latest
-    container_name: multiplayer-time-travel-platform-envoy
+    container_name: mp-time-travel-envoy
     ports:
       - "8080:8080"
     depends_on:
@@ -16,20 +29,23 @@ services:
         condition: service_started
       minds-of-time:
         condition: service_started
+      frontend:
+        condition: service_healthy
     volumes:
       - ./services/envoy/envoy.yaml:/etc/envoy/envoy.yaml
 
   epoch-engine: # dotnet
     build:
       context: ./services/epoch-engine
-    container_name: multiplayer-time-travel-platform-epoch-engine
-    hostname: multiplayer-time-travel-platform-epoch-engine
+    container_name: mp-time-travel-epoch-engine
+    hostname: mp-time-travel-epoch-engine
     restart: on-failure
     environment:
-      - ASPNETCORE_URLS=http://0.0.0.0:3000
-      - PORT=3000
-      - SERVICE_NAME=epoch-engine
-      - SERVICE_VERSION=0.0.1
+      <<: *common-variables
+      ASPNETCORE_URLS: http://0.0.0.0:3000
+      PORT: 3000
+      SERVICE_NAME: epoch-engine
+      SERVICE_VERSION: 0.0.1
     env_file:
       - ./.env
     # volumes:
@@ -38,13 +54,14 @@ services:
   vault-of-time: # go
     build:
       context: ./services/vault-of-time
-    container_name: multiplayer-time-travel-platform-vault-of-time
-    hostname: multiplayer-time-travel-platform-vault-of-time
+    container_name: mp-time-travel-vault-of-time
+    hostname: mp-time-travel-vault-of-time
     restart: on-failure
     environment:
-      - PORT=3000
-      - SERVICE_NAME=vault-of-time
-      - SERVICE_VERSION=0.0.1
+      <<: *common-variables
+      PORT: 3000
+      SERVICE_NAME: vault-of-time
+      SERVICE_VERSION: 0.0.1
     env_file:
       - ./.env
     # volumes:
@@ -53,15 +70,16 @@ services:
   dialogue-hub: # java
     build:
       context: ./services/dialogue-hub
-    container_name: multiplayer-time-travel-platform-dialogue-hub
-    hostname: multiplayer-time-travel-platform-dialogue-hub
+    container_name: mp-time-travel-dialogue-hub
+    hostname: mp-time-travel-dialogue-hub
     restart: on-failure
     environment:
-      - SERVER_PORT=3000
-      - REDIS_HOST=multiplayer-time-travel-platform-redis
-      - REDIS_PORT=6379
-      - SERVICE_NAME=dialogue-hub
-      - SERVICE_VERSION=0.0.1
+      <<: *common-variables
+      SERVER_PORT: 3000
+      REDIS_HOST: mp-time-travel-redis
+      REDIS_PORT: 6379
+      SERVICE_NAME: mp-time-travel-dialogue-hub
+      SERVICE_VERSION: 0.0.1
     depends_on:
       redis:
         condition: service_started
@@ -73,18 +91,19 @@ services:
   timegate: # nodejs
     build:
       context: ./services/timegate
-    container_name: multiplayer-time-travel-platform-timegate
-    hostname: multiplayer-time-travel-platform-timegate
+    container_name: mp-time-travel-timegate
+    hostname: mp-time-travel-timegate
     restart: on-failure
     environment:
-      - PORT=3000
-      - SERVICE_NAME=timegate
-      - SERVICE_VERSION=0.0.1
-      - DIALOGUE_HUB_SERVICE_URL=http://multiplayer-time-travel-platform-dialogue-hub:3000/v1/dialogue-hub
-      - EPOCH_ENGINE_SERVICE_URL=http://multiplayer-time-travel-platform-epoch-engine:3000/v1/epoch-engine
-      - MINDS_OF_TIME_SERVICE_URL=http://multiplayer-time-travel-platform-minds-of-time:3000/v1/minds-of-time
-      - VAULT_OF_TIME_SERVICE_URL=http://multiplayer-time-travel-platform-vault-of-time:3000/v1/vault-of-time
-      - MONGODB_URI=mongodb://mongo:27017/time-travel-demo
+      <<: *common-variables
+      PORT: 3000
+      SERVICE_NAME: mp-time-travel-timegate
+      SERVICE_VERSION: 0.0.1
+      DIALOGUE_HUB_SERVICE_URL: http://mp-time-travel-dialogue-hub:3000/v1/dialogue-hub
+      EPOCH_ENGINE_SERVICE_URL: http://mp-time-travel-epoch-engine:3000/v1/epoch-engine
+      MINDS_OF_TIME_SERVICE_URL: http://mp-time-travel-minds-of-time:3000/v1/minds-of-time
+      VAULT_OF_TIME_SERVICE_URL: http://mp-time-travel-vault-of-time:3000/v1/vault-of-time
+      MONGODB_URI: mongodb://mongo:27017/time-travel-demo
     env_file:
       - ./.env
     # volumes:
@@ -93,13 +112,14 @@ services:
   minds-of-time: # python
     build:
       context: ./services/minds-of-time
-    container_name: multiplayer-time-travel-platform-minds-of-time
-    hostname: multiplayer-time-travel-platform-minds-of-time
+    container_name: mp-time-travel-minds-of-time
+    hostname: mp-time-travel-minds-of-time
     restart: on-failure
     environment:
-      - PORT=3000
-      - SERVICE_NAME=minds-of-time
-      - SERVICE_VERSION=0.0.1
+      <<: *common-variables
+      PORT: 3000
+      SERVICE_NAME: mp-time-travel-minds-of-time
+      SERVICE_VERSION: 0.0.1
     env_file:
       - ./.env
     # volumes:
@@ -108,12 +128,20 @@ services:
   frontend:
     build:
       context: ./clients/mp-time-travel
-    container_name: multiplayer-time-travel-platform-frontend
-    hostname: multiplayer-time-travel-platform-frontend
+    container_name: mp-time-travel-frontend
+    hostname: mp-time-travel-frontend
     restart: on-failure
     environment:
-      - SERVICE_NAME=mp-time-travel-frontend
-      - SERVICE_VERSION=0.0.1
+      <<: *common-variables
+      SERVICE_NAME: mp-time-travel-frontend
+      SERVICE_VERSION: 0.0.1
+      REACT_APP_BASE_API_URL: http://localhost:8080/v1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 20s
+      timeout: 30s
+      retries: 3
+      start_period: 15s
     env_file:
       - ./.env
     # volumes:
@@ -121,8 +149,8 @@ services:
 
   redis:
     image: redis:7.0.12-alpine
-    container_name: multiplayer-time-travel-platform-redis
-    hostname: multiplayer-time-travel-platform-redis
+    container_name: mp-time-travel-redis
+    hostname: mp-time-travel-redis
     command: redis-server
     environment:
       ALLOW_EMPTY_PASSWORD: "yes"

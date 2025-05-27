@@ -8,6 +8,8 @@ COPY package*.json ./
  
 # Install dependencies
 RUN npm install --legacy-peer-deps
+
+RUN apk add curl
  
 # Copy the rest of your application files
 COPY . .

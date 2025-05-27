@@ -14,7 +14,9 @@ debuggerInstance.init({
   application: "multiplayer-web-app",
   environment: process.env.REACT_APP_PLATFORM_ENV,
   apiKey: process.env.REACT_APP_SESSION_DEBUGGER_KEY,
-  exporterApiBaseUrl: process.env.REACT_APP_SESSION_DEBUGGER_API_BASE_URL,
+  ...process.env.REACT_APP_SESSION_DEBUGGER_API_BASE_URL
+    ? { exporterApiBaseUrl: process.env.REACT_APP_SESSION_DEBUGGER_API_BASE_URL }
+    : {},
   canvasEnabled: true,
   showWidget: true,
   ignoreUrls: [
@@ -24,13 +26,13 @@ debuggerInstance.init({
     /https:\/\/pixel\.source\.app\/.*/,
   ],
   propagateTraceHeaderCorsUrls: new RegExp(
-    `${process.env.REACT_APP_API_BASE_URL}\.*`,
+    `${process.env.REACT_APP_API_BASE_URL}.*`,
     "i"
   ),
   schemifyDocSpanPayload: true,
   maskDebSpanPayload: false,
-  docTraceRatio: 0.3,
-  sampleTraceRatio: 0.3,
+  docTraceRatio: process.env.REACT_APP_OTLP_MULTIPLAYER_DOC_SPAN_RATIO,
+  sampleTraceRatio: process.env.REACT_APP_OTLP_MULTIPLAYER_SPAN_RATIO,
   maxCapturingHttpPayloadSize: 100000,
   disableCapturingHttpPayload: false,
 });
