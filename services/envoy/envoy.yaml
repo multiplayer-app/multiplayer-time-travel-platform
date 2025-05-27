@@ -66,7 +66,7 @@ static_resources:
           - lb_endpoints:
               - endpoint:
                   address:
-                    socket_address: { address: multiplayer-time-travel-platform-timegate, port_value: 3000 }
+                    socket_address: { address: mp-time-travel-timegate, port_value: 3000 }
 
     - name: epoch_engine_service
       connect_timeout: 0.25s
@@ -78,7 +78,7 @@ static_resources:
           - lb_endpoints:
               - endpoint:
                   address:
-                    socket_address: { address: multiplayer-time-travel-platform-epoch-engine, port_value: 3000 }
+                    socket_address: { address: mp-time-travel-epoch-engine, port_value: 3000 }
 
     - name: minds_of_time_service
       connect_timeout: 0.25s
@@ -90,7 +90,7 @@ static_resources:
           - lb_endpoints:
               - endpoint:
                   address:
-                    socket_address: { address: multiplayer-time-travel-platform-minds-of-time, port_value: 3000 }
+                    socket_address: { address: mp-time-travel-minds-of-time, port_value: 3000 }
 
     - name: vault_of_time_service
       connect_timeout: 0.25s
@@ -102,7 +102,7 @@ static_resources:
           - lb_endpoints:
               - endpoint:
                   address:
-                    socket_address: { address: multiplayer-time-travel-platform-vault-of-time, port_value: 3000 }
+                    socket_address: { address: mp-time-travel-vault-of-time, port_value: 3000 }
 
     - name: dialogue_hub_service
       connect_timeout: 0.25s
@@ -114,7 +114,7 @@ static_resources:
           - lb_endpoints:
               - endpoint:
                   address:
-                    socket_address: { address: multiplayer-time-travel-platform-dialogue-hub, port_value: 3000 }
+                    socket_address: { address: mp-time-travel-dialogue-hub, port_value: 3000 }
 
     # - name: otel_collector_service
     #   connect_timeout: 0.25s
@@ -150,7 +150,7 @@ static_resources:
           - lb_endpoints:
               - endpoint:
                   address:
-                    socket_address: { address: multiplayer-time-travel-platform-frontend, port_value: 3000 }
+                    socket_address: { address: mp-time-travel-frontend, port_value: 3000 }
 
 # admin:
 #   access_log_path: /tmp/admin_access.log
