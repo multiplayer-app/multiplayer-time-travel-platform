@@ -8,6 +8,7 @@ import {
   vaultOfTime,
   user
 } from './routes'
+import { RandomErrorMiddleware } from './middleware'
 
 const { Router } = express
 const router = Router()
@@ -15,10 +16,10 @@ const router = Router()
 router.use('/health', health)
 router.use('/healthz', healthz)
 
-router.use('/dialogue-hub', dialogueHub)
-router.use('/epoch-engine', epochEngine)
-router.use('/minds-of-time', mindsOfTime)
-router.use('/vault-of-time', vaultOfTime)
+router.use('/dialogue-hub', RandomErrorMiddleware, dialogueHub)
+router.use('/epoch-engine', RandomErrorMiddleware, epochEngine)
+router.use('/minds-of-time', RandomErrorMiddleware, mindsOfTime)
+router.use('/vault-of-time', RandomErrorMiddleware, vaultOfTime)
 router.use('/user', user)
 
 export default router

@@ -107,7 +107,8 @@ exporters:
   otlp/multiplayer:
     endpoint: "https://api.multiplayer.app:443"
     headers:
-      Authorization: "${MULTIPLAYER_OTLP_KEY}"
+      # Authorization: "${MULTIPLAYER_OTLP_KEY}"
+      Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnRlZ3JhdGlvbiI6IjY4MmRjYWRmOTllM2Q5YzY4ZGQ5NTQ4NyIsIndvcmtzcGFjZSI6IjY4MmRjYWEyYWM2ZmQzMTNkZjBiZTIxZSIsInByb2plY3QiOiI2ODJkY2FkNmRjMmU3NDRiMDI3NzVjZTEiLCJ0eXBlIjoiT1RFTCIsImlhdCI6MTc0NzgzMTUxOX0.W_4yT8BCCMiLPpW7vh3qhGWMtHKXY4u8BHAA12bRRco
     timeout: 10s
   # otlp/logs:
   #   endpoint: "https://api.multiplayer.app:443/v1/logs"

@@ -13,7 +13,7 @@ info:
   title: Vault of time API
   version: 0.0.1
 paths:
-  /health:
+  /healthz:
     get:
       description: Returns OK if service is running
       produces:

@@ -74,7 +74,7 @@ func newTraceProvider() (*trace.TracerProvider, error) {
 	}
 
 	traceProvider := trace.NewTracerProvider(
-		trace.WithIDGenerator(multiplayer.NewRatioDependentIdGenerator(1)),
+		trace.WithIDGenerator(multiplayer.NewRatioDependentIdGenerator(config.OTLP_MULTIPLAYER_DOC_SPAN_RATIO)),
 		trace.WithSampler(multiplayer.NewSampler(trace.TraceIDRatioBased(config.OTLP_MULTIPLAYER_SPAN_RATIO))),
 		trace.WithBatcher(traceExporter,
 			trace.WithBatchTimeout(time.Second)),

@@ -31,7 +31,7 @@ var funnyMessages = []string{
 // errorMiddleware wraps an http.Handler and injects errors based on trace ID
 func errorMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if strings.Contains(r.URL.Path, "/docs") {
+		if strings.Contains(r.URL.Path, "/docs") || strings.Contains(r.URL.Path, "/health") {
 			// next.ServeHTTP(w, r)
 			next.ServeHTTP(w, r)
 			return

@@ -40,7 +40,7 @@ public class ErrorInjectionMiddleWare implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
 
         String path = request.getRequestURI();
-        if (path.contains("docs") || path.contains("swagger")) {
+        if (path.contains("docs") || path.contains("swagger") || path.contains("health")) {
             chain.doFilter(req, res);
             return;
         }
