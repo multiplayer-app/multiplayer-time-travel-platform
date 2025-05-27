@@ -5,20 +5,27 @@
   font-family: 'PP Neue Montreal', sans-serif;
   font-weight: 400;
   font-style: normal;
-  p, h1, h2, h3, h4, h5, h6 {
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     margin: 0;
   }
 }
-
+html,
 body {
   margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .mtt-app {
   display: flex;
   height: 100vh;
   width: 100vw;
-  border-radius: 40px;
   background: white;
   overflow: hidden;
 }
@@ -26,7 +33,7 @@ body {
 .mtt-button {
   color: #fff;
   border-radius: 12px;
-  background: #493BFF;
+  background: #493bff;
   box-shadow: 0 1px 1px -0.5px rgba(0, 0, 0, 0.06), 0px 3px 3px -1.5px rgba(0, 0, 0, 0.06);
   padding: 10px 60px;
   border: none;
@@ -84,7 +91,7 @@ body {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     &.button-open {
       color: #fff;
-      background: #493BFF;
+      background: #493bff;
     }
   }
 }
@@ -118,9 +125,10 @@ body {
   color: #718096;
   padding: 14px 40px;
   border-radius: 12px;
-  border: 1px solid #CBD5E0;
-  &:focus, &:active {
-    border: 1px solid #CBD5E0;
+  border: 1px solid #cbd5e0;
+  &:focus,
+  &:active {
+    border: 1px solid #cbd5e0;
   }
   &::placeholder {
     color: rgba(113, 128, 150, 0.6);
@@ -146,7 +154,7 @@ body {
 .mtt-modal-button {
   width: 100%;
   color: white;
-  background: #473CFB;
+  background: #473cfb;
   text-align: center;
   font-size: 14px;
   border-radius: 12px;
@@ -160,7 +168,7 @@ body {
   left: 32px !important;
   bottom: 32px !important;
   z-index: 9;
-  &:not([data-tooltip=""]):before {
+  &:not([data-tooltip='']):before {
     left: calc(100% + 20px);
     right: unset;
   }
@@ -175,7 +183,7 @@ body {
     left: unset !important;
     bottom: unset !important;
     top: 10px !important;
-    &:not([data-tooltip=""]):before {
+    &:not([data-tooltip='']):before {
       left: unset;
       right: 100%;
     }

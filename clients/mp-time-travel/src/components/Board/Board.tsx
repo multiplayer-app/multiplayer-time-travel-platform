@@ -5,9 +5,10 @@ import CharacterList from 'components/CharacterList';
 import WelcomeScreen from 'components/WelcomeScreen';
 import MultiplayerChat from 'components/MultiplayerChat';
 import { characters } from 'mock/characters';
-import { useTimeTravel } from 'hooks/time-travel';
+
 import './board.scss';
 import triggerMouseEvent from 'utils/triggerMouseEvent';
+import { useTimeTravel } from 'hooks/useTimeTravel';
 
 const TERMS_URL = 'https://www.multiplayer.app/terms-of-service/';
 const PRIVACY_URL = 'https://www.multiplayer.app/privacy/';

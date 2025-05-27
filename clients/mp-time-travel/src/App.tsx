@@ -5,6 +5,7 @@ import Board from './components/Board';
 import NavigationModal from './components/NavigationModal';
 import EmailModal from './components/EmailModal';
 import { hasSubmittedEmail } from 'utils/emailModalStorage';
+import { TimeTravelProvider } from './contexts/TimeTravelContext';
 import './App.scss';
 
 debuggerInstance.init({
@@ -47,12 +48,14 @@ function App() {
   }, []);
 
   return (
-    <div className='mtt-app'>
-      <SidePanel />
-      <Board />
-      <NavigationModal isOpen={isNavigationModalOpen} url={navigationUrl} onClose={() => setIsNavigationModalOpen(false)} />
-      <EmailModal isOpen={isEmailModalOpen} onClose={() => setIsEmailModalOpen(false)} />
-    </div>
+    <TimeTravelProvider>
+      <div className='mtt-app'>
+        <SidePanel />
+        <Board />
+        <NavigationModal isOpen={isNavigationModalOpen} url={navigationUrl} onClose={() => setIsNavigationModalOpen(false)} />
+        <EmailModal isOpen={isEmailModalOpen} onClose={() => setIsEmailModalOpen(false)} />
+      </div>
+    </TimeTravelProvider>
   );
 }
 
