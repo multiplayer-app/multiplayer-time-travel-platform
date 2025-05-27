@@ -63,9 +63,8 @@ func newTraceProvider() (*trace.TracerProvider, error) {
 	ctx := context.Background()
 
 	// traceExporter := multiplayer.NewExporter(config.MULTIPLAYER_OTLP_KEY)
-
 	traceExporter, err := otlptracehttp.New(ctx,
-		otlptracehttp.WithEndpoint(config.OTLP_TRACES_ENDPOINT),
+		otlptracehttp.WithEndpointURL(config.OTLP_TRACES_ENDPOINT),
 		otlptracehttp.WithInsecure(), // If not using HTTPS
 	)
 

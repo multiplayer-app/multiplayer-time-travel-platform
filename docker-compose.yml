@@ -3,8 +3,8 @@ version: "3"
 x-common-variables: &common-variables
    PLATFORM_ENV: demo-env
 
-   OTLP_TRACES_ENDPOINT: http://otel-collector/v1/traces
-   OTLP_LOGS_ENDPOINT: http://otel-collector/v1/logs
+   OTLP_TRACES_ENDPOINT: http://otel-collector:4318/v1/traces
+   OTLP_LOGS_ENDPOINT: http://otel-collector:4318/v1/logs
    OTLP_MULTIPLAYER_DOC_SPAN_RATIO: 0.04
    OTLP_MULTIPLAYER_SPAN_RATIO: 0.05
    
