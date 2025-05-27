@@ -1,0 +1,49 @@
+basePath: /v1/vault-of-time
+definitions:
+  src_vault_of_time_api.HistoricalEvent:
+    properties:
+      event:
+        type: string
+      name:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a sample server.
+  title: Vault of time API
+  version: 0.0.1
+paths:
+  /health:
+    get:
+      description: Returns OK if service is running
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Health check
+      tags:
+      - health
+  /historical-events:
+    get:
+      description: Returns a list of fictional and real historical events
+      parameters:
+      - description: Error injection rate between 0 and 1
+        in: query
+        name: errorRate
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/src_vault_of_time_api.HistoricalEvent'
+            type: array
+      summary: List historical events
+      tags:
+      - events
+swagger: "2.0"

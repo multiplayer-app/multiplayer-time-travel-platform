@@ -1,0 +1,142 @@
+.mtt-chat-container {
+  padding: 10px 100px 0;
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  .cs-main-container {
+    border: none;
+    width: 100%;
+    .cs-chat-container {
+      justify-content: flex-end;
+    }
+    .cs-chat-container .cs-message-input {
+      border: none;
+      margin-top: unset;
+      .cs-message-input__content-editor-wrapper {
+        margin-left: 0;
+        border-radius: 20px;
+        border: 1px solid #F0F0F0;
+        background: #F2F2F2;
+      }
+      .cs-message-input__content-editor {
+        background: #F2F2F2;
+        color: #8B8B8B;
+        font-family: 'PP Neue Montreal', sans-serif;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: 0.15px;
+      }
+    }
+    .cs-message-input__tools {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      align-items: center;
+      justify-content: center;
+      button {
+        background-image: url('../../assets/message-send-icon.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 32px;
+        width: 32px;
+        &:hover:not(:disabled) {
+          opacity: .9;
+        }
+        svg {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .cs-message-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: auto;
+    .cs-typing-indicator {
+      position: relative;
+    }
+  }
+
+  .cs-message-list__scroll-wrapper {
+    padding: 0;
+  }
+}
+
+.mtt-chat-error {
+  color: #ff4d4f;
+  padding: 8px 16px;
+  background: #fff2f0;
+  border-radius: 4px;
+  margin: 8px;
+  font-size: 14px;
+}
+
+.mtt-message-row {
+  display: flex;
+  &:not(:only-child) {
+    margin: 0 0 24px;
+  }
+  .cs-message {
+    margin: 0;
+    overflow: unset;
+  }
+  &.mtt-outgoing {
+    .cs-message__content {
+      background: white;
+    }
+  }
+  &.mtt-incoming {
+    .cs-message__content {
+      background: #F2F2F2;
+    }
+  }
+  .cs-message__content {
+    border-radius: 16px;
+    border: 1px solid #F5F5F5;
+    padding: 12px 14px;
+    box-shadow: 0 1px 1px -0.5px rgba(0, 0, 0, 0.06), 0px 3px 3px -1.5px rgba(0, 0, 0, 0.06), 0px 6px 6px -3px rgba(0, 0, 0, 0.06), 0px 12px 12px -12px rgba(0, 0, 0, 0.06);
+    color: #474747;
+    font-family: 'PP Neue Montreal', sans-serif;
+    .cs-message__text-content {
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: 0.15px;
+    }
+    .cs-message__custom-content {
+      margin-top: 10px;
+    }
+  }
+}
+
+.mtt-debugger-toggle {
+  background-color: #ED8936;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 0 5px;
+  line-height: 24px;
+  color: white;
+  display: inline-block;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  user-select: none;
+}
+
+@media screen and (max-width: 1024px) {
+  .mtt-chat-container {
+    padding: 10px 20px 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mtt-chat-container {
+    padding: 10px 10px 0;
+  }
+}

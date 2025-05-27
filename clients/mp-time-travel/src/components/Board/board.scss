@@ -1,0 +1,37 @@
+.mtt-board {
+  width: 70%;
+  height: 100vh;
+  padding: 24px 0 6px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.mtt-terms-info {
+  color: #C3C3C3;
+  font-size: 10px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  padding-left: 116px;
+  a {
+    color: inherit;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .mtt-terms-info {
+    padding-left: 36px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mtt-board {
+    width: 100%;
+    height: calc(100vh - 64px);
+    flex: 1;
+    padding: 10px 0 6px;
+  }
+  .mtt-terms-info {
+    padding: 0 10px;
+  }
+}

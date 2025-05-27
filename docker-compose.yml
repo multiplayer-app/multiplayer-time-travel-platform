@@ -1,0 +1,158 @@
+version: "3"
+services:
+  envoy:
+    image: envoyproxy/envoy-alpine:v1.18-latest
+    container_name: multiplayer-time-travel-platform-envoy
+    ports:
+      - "8080:8080"
+    depends_on:
+      vault-of-time:
+        condition: service_started
+      dialogue-hub:
+        condition: service_started
+      timegate:
+        condition: service_started
+      epoch-engine:
+        condition: service_started
+      minds-of-time:
+        condition: service_started
+    volumes:
+      - ./services/envoy/envoy.yaml:/etc/envoy/envoy.yaml
+
+  epoch-engine: # dotnet
+    build:
+      context: ./services/epoch-engine
+    container_name: multiplayer-time-travel-platform-epoch-engine
+    hostname: multiplayer-time-travel-platform-epoch-engine
+    restart: on-failure
+    environment:
+      - ASPNETCORE_URLS=http://0.0.0.0:3000
+      - PORT=3000
+      - SERVICE_NAME=epoch-engine
+      - SERVICE_VERSION=0.0.1
+    env_file:
+      - ./.env
+    # volumes:
+    #   - ./services/epoch-engine:/source:cached
+
+  vault-of-time: # go
+    build:
+      context: ./services/vault-of-time
+    container_name: multiplayer-time-travel-platform-vault-of-time
+    hostname: multiplayer-time-travel-platform-vault-of-time
+    restart: on-failure
+    environment:
+      - PORT=3000
+      - SERVICE_NAME=vault-of-time
+      - SERVICE_VERSION=0.0.1
+    env_file:
+      - ./.env
+    # volumes:
+    #   - ./services/vault-of-time:/app:cached
+
+  dialogue-hub: # java
+    build:
+      context: ./services/dialogue-hub
+    container_name: multiplayer-time-travel-platform-dialogue-hub
+    hostname: multiplayer-time-travel-platform-dialogue-hub
+    restart: on-failure
+    environment:
+      - SERVER_PORT=3000
+      - REDIS_HOST=multiplayer-time-travel-platform-redis
+      - REDIS_PORT=6379
+      - SERVICE_NAME=dialogue-hub
+      - SERVICE_VERSION=0.0.1
+    depends_on:
+      redis:
+        condition: service_started
+    env_file:
+      - ./.env
+    # volumes:
+    #   - ./services/dialogue-hub:/usr/app:cached
+
+  timegate: # nodejs
+    build:
+      context: ./services/timegate
+    container_name: multiplayer-time-travel-platform-timegate
+    hostname: multiplayer-time-travel-platform-timegate
+    restart: on-failure
+    environment:
+      - PORT=3000
+      - SERVICE_NAME=timegate
+      - SERVICE_VERSION=0.0.1
+      - DIALOGUE_HUB_SERVICE_URL=http://multiplayer-time-travel-platform-dialogue-hub:3000/v1/dialogue-hub
+      - EPOCH_ENGINE_SERVICE_URL=http://multiplayer-time-travel-platform-epoch-engine:3000/v1/epoch-engine
+      - MINDS_OF_TIME_SERVICE_URL=http://multiplayer-time-travel-platform-minds-of-time:3000/v1/minds-of-time
+      - VAULT_OF_TIME_SERVICE_URL=http://multiplayer-time-travel-platform-vault-of-time:3000/v1/vault-of-time
+      - MONGODB_URI=mongodb://mongo:27017/time-travel-demo
+    env_file:
+      - ./.env
+    # volumes:
+    #   - ./services/timegate:/usr/src/app:cached
+
+  minds-of-time: # python
+    build:
+      context: ./services/minds-of-time
+    container_name: multiplayer-time-travel-platform-minds-of-time
+    hostname: multiplayer-time-travel-platform-minds-of-time
+    restart: on-failure
+    environment:
+      - PORT=3000
+      - SERVICE_NAME=minds-of-time
+      - SERVICE_VERSION=0.0.1
+    env_file:
+      - ./.env
+    # volumes:
+    #   - ./services/minds-of-time:/usr/src/app:cached
+
+  frontend:
+    build:
+      context: ./clients/mp-time-travel
+    container_name: multiplayer-time-travel-platform-frontend
+    hostname: multiplayer-time-travel-platform-frontend
+    restart: on-failure
+    environment:
+      - SERVICE_NAME=mp-time-travel-frontend
+      - SERVICE_VERSION=0.0.1
+    env_file:
+      - ./.env
+    # volumes:
+    #   - ./clients/mp-time-travel:/app:cached
+
+  redis:
+    image: redis:7.0.12-alpine
+    container_name: multiplayer-time-travel-platform-redis
+    hostname: multiplayer-time-travel-platform-redis
+    command: redis-server
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
+    # ports:
+    #   - "6379:6379"
+
+  otel-collector:
+    image: otelcontribcol
+    container_name: otel-collector
+    hostname: otel-collector
+    restart: on-failure
+    command: ["--config=/etc/otel/config.yaml"]
+    env_file:
+      - ./.env
+    volumes:
+      - ./services/otel-collector/config.yaml:/etc/otel/config.yaml
+  
+  mongo:
+    image: mongo:8.0.0
+    container_name: mongo
+    hostname: mongo
+    restart: on-failure
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+      # - MONGO_INITDB_ROOT_USERNAME=admin
+      # - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=time-travel-demo
+    volumes:
+      - time-travel-mongo-data:/data/db
+
+volumes:
+  time-travel-mongo-data:

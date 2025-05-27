@@ -1,0 +1,379 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "Timegate API service"
+  },
+  "servers": [
+    {
+      "url": "/v1/timegate"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Health",
+      "description": "Health"
+    },
+    {
+      "name": "Healthz",
+      "description": "Healthz"
+    },
+    {
+      "name": "Dialogue hub"
+    },
+    {
+      "name": "Epoch engine"
+    },
+    {
+      "name": "Minds of time"
+    },
+    {
+      "name": "Vault of time"
+    },
+    {
+      "name": "User"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Get health.",
+        "description": "Get health.",
+        "tags": [
+          "Health"
+        ],
+        "operationId": "geHealth",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Health.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/healthz": {
+      "get": {
+        "summary": "Get healthz.",
+        "description": "Get healthz.",
+        "tags": [
+          "Healthz"
+        ],
+        "operationId": "geHealthz",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Healthz.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Healthz"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/info/email": {
+      "post": {
+        "summary": "Save user email.",
+        "tags": [
+          "User"
+        ],
+        "operationId": "saveUserEmail",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveUserEmailPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Email saved."
+          }
+        }
+      }
+    },
+    "/dialogue-hub/openrouter/message": {
+      "post": {
+        "summary": "Post message to openrouter.",
+        "tags": [
+          "Dialogue hub"
+        ],
+        "operationId": "postMessage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostMessageToOpenrouter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Openrouter reply.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenrouterReply"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/epoch-engine/epoch": {
+      "get": {
+        "summary": "List epochs.",
+        "tags": [
+          "Epoch engine"
+        ],
+        "operationId": "listEpochs",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Epochs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Epochs"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/minds-of-time/prominent-persons": {
+      "get": {
+        "summary": "List prominent persons.",
+        "tags": [
+          "Minds of time"
+        ],
+        "operationId": "listProminentPersons",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Prominent persons.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProminentPersons"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vault-of-time/historical-events": {
+      "get": {
+        "summary": "List historical events.",
+        "tags": [
+          "Vault of time"
+        ],
+        "operationId": "listHistoricalEvents",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Historical events.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HistoricalEvents"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Health": {
+        "type": "object",
+        "properties": {
+          "messageQueue": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "mongodb": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        }
+      },
+      "Healthz": {
+        "type": "string"
+      },
+      "SaveUserEmailPayload": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "PostMessageToOpenrouter": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "contextId": {
+            "type": "string"
+          }
+        }
+      },
+      "OpenrouterReply": {
+        "type": "object",
+        "properties": {
+          "reply": {
+            "type": "string"
+          },
+          "contextId": {
+            "type": "string"
+          }
+        }
+      },
+
+      "Epochs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "startDate": {
+              "type": "object",
+               "properties": {
+                "isBCE": {
+                  "type": "boolean"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "bceString": {
+                  "type": "string"
+                }
+              }
+            },
+            "endDate": {
+              "type": "object",
+              "properties": {
+                "isBCE": {
+                  "type": "boolean"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "bceString": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ProminentPersons": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "HistoricalEvents": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "event": {
+              "type": "string"
+            }
+          }
+        }
+      },
+
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "message",
+          "status"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

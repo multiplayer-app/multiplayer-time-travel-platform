@@ -1,0 +1,36 @@
+.mtt-character-list {
+  border-top: 1px solid #C1C1C1;
+  border-bottom: 1px solid #C1C1C1;
+  padding: 16px 24px 4px;
+  .mtt-character-list-header {
+    color: #888;
+    font-size: 11px;
+    line-height: normal;
+    letter-spacing: 0.88px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+}
+
+.mtt-characters-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  overflow: scroll;
+  padding-bottom: 12px;
+}
+
+.mtt-no-characters {
+  color: #888;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 768px) {
+  .mtt-character-list {
+    padding: 10px;
+  }
+  .mtt-characters-row {
+    padding-bottom: 6px;
+  }
+}

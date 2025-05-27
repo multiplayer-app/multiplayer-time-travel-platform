@@ -1,0 +1,160 @@
+static_resources:
+  listeners:
+    - name: listener_http
+      address:
+        socket_address:
+          address: 0.0.0.0
+          port_value: 8080
+      filter_chains:
+        - filters:
+            - name: envoy.filters.network.http_connection_manager
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                stat_prefix: ingress_http
+                upgrade_configs:
+                  - upgrade_type: websocket
+                route_config:
+                  name: local_route
+                  virtual_hosts:
+                    - name: backend
+                      domains: ["*"]
+                      routes:
+                        - match: { prefix: "/v1/timegate" }
+                          route: { prefix_rewrite: "/v1/timegate", cluster: timegate_service }
+
+                        - match: { prefix: "/v1/timegate/ws" }
+                          route:
+                            prefix_rewrite: "/v1/timegate/ws"
+                            cluster: timegate_service
+                            upgrade_configs:
+                              - upgrade_type: websocket
+
+                        - match: { prefix: "/v1/epoch-engine" }
+                          route: { prefix_rewrite: "/v1/epoch-engine", cluster: epoch_engine_service }
+
+                        - match: { prefix: "/v1/minds-of-time" }
+                          route: { prefix_rewrite: "/v1/minds-of-time", cluster: minds_of_time_service }
+
+                        - match: { prefix: "/v1/vault-of-time" }
+                          route: { prefix_rewrite: "/v1/vault-of-time", cluster: vault_of_time_service }
+
+                        - match: { prefix: "/v1/dialogue-hub" }
+                          route: { prefix_rewrite: "/v1/dialogue-hub", cluster: dialogue_hub_service }
+
+                        # - match: { prefix: "/v1/traces" }
+                        #   route: { prefix_rewrite: "/v1/traces", cluster: otel_collector_service }
+
+                        # - match: { prefix: "/v1/logs" }
+                        #   route: { prefix_rewrite: "/v1/logs", cluster: otel_collector_service }
+
+                        # - match: { prefix: "/jaeger/v1/traces" }
+                        #   route: { prefix_rewrite: "/v1/traces", cluster: jaeger_service }
+
+                        - match: { prefix: "/" }
+                          route: { prefix_rewrite: "/", cluster: frontend_service }
+                http_filters:
+                  - name: envoy.filters.http.router
+
+  clusters:
+    - name: timegate_service
+      connect_timeout: 0.25s
+      type: logical_dns
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: timegate_service
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address: { address: multiplayer-time-travel-platform-timegate, port_value: 3000 }
+
+    - name: epoch_engine_service
+      connect_timeout: 0.25s
+      type: logical_dns
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: epoch_engine_service
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address: { address: multiplayer-time-travel-platform-epoch-engine, port_value: 3000 }
+
+    - name: minds_of_time_service
+      connect_timeout: 0.25s
+      type: logical_dns
+      lb_policy: LEAST_REQUEST
+      load_assignment:
+        cluster_name: minds_of_time_service
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address: { address: multiplayer-time-travel-platform-minds-of-time, port_value: 3000 }
+
+    - name: vault_of_time_service
+      connect_timeout: 0.25s
+      type: logical_dns
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: vault_of_time_service
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address: { address: multiplayer-time-travel-platform-vault-of-time, port_value: 3000 }
+
+    - name: dialogue_hub_service
+      connect_timeout: 0.25s
+      type: logical_dns
+      lb_policy: LEAST_REQUEST
+      load_assignment:
+        cluster_name: dialogue_hub_service
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address: { address: multiplayer-time-travel-platform-dialogue-hub, port_value: 3000 }
+
+    # - name: otel_collector_service
+    #   connect_timeout: 0.25s
+    #   type: logical_dns
+    #   lb_policy: ROUND_ROBIN
+    #   load_assignment:
+    #     cluster_name: otel_collector_service
+    #     endpoints:
+    #       - lb_endpoints:
+    #           - endpoint:
+    #               address:
+    #                 socket_address: { address: host.docker.internal, port_value: 7318 }
+
+    # - name: jaeger_service
+    #   connect_timeout: 0.25s
+    #   type: logical_dns
+    #   lb_policy: ROUND_ROBIN
+    #   load_assignment:
+    #     cluster_name: jaeger_service
+    #     endpoints:
+    #       - lb_endpoints:
+    #           - endpoint:
+    #               address:
+    #                 socket_address: { address: host.docker.internal, port_value: 6318 }
+
+    - name: frontend_service
+      connect_timeout: 0.25s
+      type: logical_dns
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: frontend_service
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address: { address: multiplayer-time-travel-platform-frontend, port_value: 3000 }
+
+# admin:
+#   access_log_path: /tmp/admin_access.log
+#   address:
+#     socket_address:
+#       address: 127.0.0.1
+#       port_value: 9901

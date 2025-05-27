@@ -1,0 +1,76 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server.",
+        "title": "Vault of time API",
+        "contact": {},
+        "version": "0.0.1"
+    },
+    "basePath": "/v1/vault-of-time",
+    "paths": {
+        "/health": {
+            "get": {
+                "description": "Returns OK if service is running",
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "health"
+                ],
+                "summary": "Health check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/historical-events": {
+            "get": {
+                "description": "Returns a list of fictional and real historical events",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "events"
+                ],
+                "summary": "List historical events",
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "Error injection rate between 0 and 1",
+                        "name": "errorRate",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/src_vault_of_time_api.HistoricalEvent"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "src_vault_of_time_api.HistoricalEvent": {
+            "type": "object",
+            "properties": {
+                "event": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
