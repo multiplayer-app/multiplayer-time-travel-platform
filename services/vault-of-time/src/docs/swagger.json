@@ -8,7 +8,7 @@
     },
     "basePath": "/v1/vault-of-time",
     "paths": {
-        "/health": {
+        "/healthz": {
             "get": {
                 "description": "Returns OK if service is running",
                 "produces": [

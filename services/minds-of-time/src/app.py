@@ -4,6 +4,7 @@ from config import PORT, API_PREFIX
 from flasgger import Swagger
 from opentelemetry import trace
 from prominent_persons import bp as prominent_persons_bp
+from healthz import bp as healthz_bp
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -45,6 +46,7 @@ def add_trace_id_header(response):
     return response
 
 app.register_blueprint(prominent_persons_bp, url_prefix = API_PREFIX)
+app.register_blueprint(healthz_bp, url_prefix = API_PREFIX)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=PORT)
