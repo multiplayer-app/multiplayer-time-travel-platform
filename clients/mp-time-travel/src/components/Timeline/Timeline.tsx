@@ -1,6 +1,7 @@
-import React, { memo } from "react";
-import { characters } from "mock/characters";
-import "./timeline.scss";
+import { memo, useEffect } from 'react';
+import { characters } from 'mock/characters';
+import './timeline.scss';
+import { getHistoricalEvents } from 'services';
 
 function categorizeCharacters(characters) {
   const bceCe = [];
@@ -20,12 +21,17 @@ function categorizeCharacters(characters) {
 const Timeline = ({ selectedCharacter, setSelectedCharacter }) => {
   const { bceCe, laterCe } = categorizeCharacters(characters);
 
-  return (
-    <div className="mtt-timeline">
-      <header className="mtt-timeline-header semibold-text">Timeline</header>
+  useEffect(() => {
+    // Make requests to generate traces
+    getHistoricalEvents();
+  }, []);
 
-      <div className="mtt-timeline-scroll-container">
-        <div className="mtt-timeline-era-container">
+  return (
+    <div className='mtt-timeline'>
+      <header className='mtt-timeline-header semibold-text'>Timeline</header>
+
+      <div className='mtt-timeline-scroll-container'>
+        <div className='mtt-timeline-era-container'>
           <YearDivider />
           {bceCe.map((character, index) => (
             <CharacterAvatar
@@ -36,7 +42,7 @@ const Timeline = ({ selectedCharacter, setSelectedCharacter }) => {
             />
           ))}
           <YearDivider />
-          <div className="mtt-timeline-zero">0</div>
+          <div className='mtt-timeline-zero'>0</div>
           <YearDivider />
           {laterCe.map((character, index) => (
             <CharacterAvatar
@@ -54,26 +60,20 @@ const Timeline = ({ selectedCharacter, setSelectedCharacter }) => {
 };
 
 const YearDivider = () => (
-  <div className="mtt-year-divider">
-    <div className="mtt-year-dot" />
-    <div className="mtt-year-dot" />
-    <div className="mtt-year-h-line" />
-    <div className="mtt-year-dot" />
-    <div className="mtt-year-dot" />
+  <div className='mtt-year-divider'>
+    <div className='mtt-year-dot' />
+    <div className='mtt-year-dot' />
+    <div className='mtt-year-h-line' />
+    <div className='mtt-year-dot' />
+    <div className='mtt-year-dot' />
   </div>
 );
 
-const CharacterAvatar = ({
-  character,
-  selectedCharacter,
-  setSelectedCharacter,
-}) => {
+const CharacterAvatar = ({ character, selectedCharacter, setSelectedCharacter }) => {
   return (
     <img
       src={character.avatar}
-      className={`mtt-character-avatar avatar-sm ${
-        selectedCharacter?.name === character.name ? "selected" : ""
-      }`}
+      className={`mtt-character-avatar avatar-sm ${selectedCharacter?.name === character.name ? 'selected' : ''}`}
       alt={character.description}
       onClick={() => setSelectedCharacter(character)}
     />

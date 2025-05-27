@@ -1,4 +1,5 @@
-import React, { createContext, ReactNode, useState } from 'react';
+import React, { createContext, ReactNode, useEffect, useState } from 'react';
+import { getEpoch, getProminentPersons } from 'services';
 
 const TimeTravelContext = createContext(undefined);
 
@@ -9,6 +10,17 @@ interface TimeTravelProviderProps {
 export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({ children }) => {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [question, setQuestion] = useState(null);
+
+  useEffect(() => {
+    getEpoch();
+  }, []);
+
+  useEffect(() => {
+    // Make requests to generate traces
+    if (selectedCharacter) {
+      getProminentPersons();
+    }
+  }, [selectedCharacter]);
 
   const value = { selectedCharacter, question, setSelectedCharacter, setQuestion };
 
