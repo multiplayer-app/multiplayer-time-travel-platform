@@ -55,13 +55,13 @@ const instrumentations = [
         headersToMask: ["X-Api-Key"],
         maxPayloadSize: 5000,
         schemifyDocSpanPayload: true,
-        maskDebSpanPayload: true,
+        maskDebSpanPayload: false,
       }),
       responseHook: MultiplayerHttpInstrumentationHooks.responseHook({
         headersToMask: ["X-Api-Key"],
         maxPayloadSize: 5000,
         schemifyDocSpanPayload: true,
-        maskDebSpanPayload: true
+        maskDebSpanPayload: false
       }),
     },
   }),

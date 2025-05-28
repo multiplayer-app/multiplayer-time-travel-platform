@@ -104,17 +104,12 @@ processors:
     sampling_percentage: 30
 
 exporters:
-  otlp/multiplayer:
-    endpoint: "https://api.multiplayer.app:443"
+  otlphttp/multiplayer:
+    endpoint: https://api.multiplayer.app:443
     headers:
-      # Authorization: "${MULTIPLAYER_OTLP_KEY}"
-      Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnRlZ3JhdGlvbiI6IjY4MmRjYWRmOTllM2Q5YzY4ZGQ5NTQ4NyIsIndvcmtzcGFjZSI6IjY4MmRjYWEyYWM2ZmQzMTNkZjBiZTIxZSIsInByb2plY3QiOiI2ODJkY2FkNmRjMmU3NDRiMDI3NzVjZTEiLCJ0eXBlIjoiT1RFTCIsImlhdCI6MTc0NzgzMTUxOX0.W_4yT8BCCMiLPpW7vh3qhGWMtHKXY4u8BHAA12bRRco
+      Authorization: "${MULTIPLAYER_OTLP_KEY}"
     timeout: 10s
-  # otlp/logs:
-  #   endpoint: "https://api.multiplayer.app:443/v1/logs"
-  #   headers:
-  #     Authorization: "${MULTIPLAYER_OTLP_KEY}"
-  #   timeout: 10s
+    encoding: json
 
 service:
   telemetry:
@@ -144,18 +139,18 @@ service:
       processors:
         - transform/set_trace_type
         - filter/deb
-        - memory_limiter/deb
+        # - memory_limiter/deb
         - batch
-      exporters: [ otlp/multiplayer ]
+      exporters: [ otlphttp/multiplayer ]
     traces/deb:
       receivers: [ otlp ]
       processors:
         - transform/set_trace_type
         - filter/deb
-        - memory_limiter/deb
+        # - memory_limiter/deb
         - resourcedetection/system
         - batch
-      exporters: [ otlp/multiplayer ]
+      exporters: [ otlphttp/multiplayer ]
     traces/d0c:
       receivers: [ otlp ]
       processors:
@@ -163,7 +158,7 @@ service:
         - filter/d0c
         - resourcedetection/system
         - batch
-      exporters: [ otlp/multiplayer ]
+      exporters: [ otlphttp/multiplayer ]
     traces/random-d0c:
       receivers: [ otlp ]
       processors:
@@ -171,4 +166,4 @@ service:
         - probabilistic_sampler
         - resourcedetection/system
         - batch
-      exporters: [ otlp/multiplayer ]
+      exporters: [ otlphttp/multiplayer ]
