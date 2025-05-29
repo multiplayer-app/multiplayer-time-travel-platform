@@ -100,10 +100,10 @@ services:
       PORT: 3000
       SERVICE_NAME: mp-time-travel-timegate
       SERVICE_VERSION: 0.0.1
-      DIALOGUE_HUB_SERVICE_URL: http://mp-time-travel-dialogue-hub:3000/v1/dialogue-hub
-      EPOCH_ENGINE_SERVICE_URL: http://mp-time-travel-epoch-engine:3000/v1/epoch-engine
-      MINDS_OF_TIME_SERVICE_URL: http://mp-time-travel-minds-of-time:3000/v1/minds-of-time
-      VAULT_OF_TIME_SERVICE_URL: http://mp-time-travel-vault-of-time:3000/v1/vault-of-time
+      DIALOGUE_HUB_SERVICE_URL: http://mp-time-travel-dialogue-hub:3000
+      EPOCH_ENGINE_SERVICE_URL: http://mp-time-travel-epoch-engine:3000
+      MINDS_OF_TIME_SERVICE_URL: http://mp-time-travel-minds-of-time:3000
+      VAULT_OF_TIME_SERVICE_URL: http://mp-time-travel-vault-of-time:3000
       MONGODB_URI: mongodb://mongo:27017/time-travel-demo
     env_file:
       - ./.env
@@ -158,7 +158,7 @@ services:
     #   - "6379:6379"
 
   otel-collector:
-    image: otelcontribcol
+    image: otel/opentelemetry-collector-contrib-dev:e9276a78341765d080347ee23f274f01e562fe5a
     container_name: otel-collector
     hostname: otel-collector
     restart: on-failure

@@ -16,7 +16,7 @@ interface HistoricalDate {
 }
 
 export const fetchEpochs = async (): Promise<HistoricalDate[]> => {
-    const { data: epochs } = await axios.get(`${EPOCH_ENGINE_SERVICE_URL}/epoch`)
+    const { data: epochs } = await axios.get(`${EPOCH_ENGINE_SERVICE_URL}/v1/epoch-engine/epoch`)
 
     return epochs
 }
