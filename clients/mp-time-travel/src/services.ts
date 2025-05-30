@@ -5,12 +5,12 @@ const instance = axios.create({
 });
 
 export const submitEmail = async (email) => {
-  return instance.post(`/timegate/user/info/email`, { email });
+  return instance.post(`/v1/timegate/user/info/email`, { email });
 };
 
 export const sendMessage = async (message, contextId, character) => {
   return instance.post(
-    `/timegate/dialogue-hub/openrouter/message`,
+    `/v1/timegate/dialogue-hub/openrouter/message`,
     {
       message: `${message} ${contextId ? "" : `. Answer like you are the ${character.name}, using this answer style: ${character.answerStyle}`}`,
       ...(contextId ? { contextId } : {}),
@@ -21,7 +21,7 @@ export const sendMessage = async (message, contextId, character) => {
 // Dummy requests to generate traces
 export const getEpoch = async () => {
   try {
-    await instance.get(`/timegate/epoch-engine/epoch`);
+    await instance.get(`/v1/timegate/epoch-engine/epoch`);
     console.log('Epoch fetched successfully');
   } catch (error) {
     console.error('Error fetching epoch:', error);
@@ -30,7 +30,7 @@ export const getEpoch = async () => {
 
 export const getHistoricalEvents = async () => {
   try {
-    await instance.get(`/timegate/vault-of-time/historical-events`);
+    await instance.get(`/v1/timegate/vault-of-time/historical-events`);
   } catch (error) {
     console.log('Historical events fetched successfully');
     console.error('Error fetching historical events:', error);
@@ -39,7 +39,7 @@ export const getHistoricalEvents = async () => {
 
 export const getProminentPersons = async () => {
   try {
-    await instance.get(`/timegate/minds-of-time/prominent-persons`);
+    await instance.get(`/v1/timegate/minds-of-time/prominent-persons`);
     console.log('Prominent persons fetched successfully');
   } catch (error) {
     console.error('Error fetching prominent persons:', error);
