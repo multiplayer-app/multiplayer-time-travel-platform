@@ -22,8 +22,8 @@ module.exports = {
       "process.env.REACT_APP_PLATFORM_ENV": JSON.stringify(
         process.env.REACT_APP_PLATFORM_ENV
       ),
-      "process.env.REACT_APP_API_BASE_URL": JSON.stringify(
-        process.env.REACT_APP_API_BASE_URL
+      "process.env.REACT_APP_BASE_API_URL": JSON.stringify(
+        process.env.REACT_APP_BASE_API_URL
       ),
       "process.env.BASE_API_URL": JSON.stringify(process.env.BASE_API_URL),
     }),
