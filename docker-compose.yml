@@ -79,7 +79,7 @@ services:
       SERVER_PORT: 3000
       REDIS_HOST: mp-time-travel-redis
       REDIS_PORT: 6379
-      SERVICE_NAME: mp-time-travel-dialogue-hub
+      SERVICE_NAME: dialogue-hub
       SERVICE_VERSION: 0.0.1
     depends_on:
       redis:
@@ -98,7 +98,7 @@ services:
     environment:
       <<: *common-variables
       PORT: 3000
-      SERVICE_NAME: mp-time-travel-timegate
+      SERVICE_NAME: travel-timegate
       SERVICE_VERSION: 0.0.1
       DIALOGUE_HUB_SERVICE_URL: http://mp-time-travel-dialogue-hub:3000
       EPOCH_ENGINE_SERVICE_URL: http://mp-time-travel-epoch-engine:3000
@@ -119,7 +119,7 @@ services:
     environment:
       <<: *common-variables
       PORT: 3000
-      SERVICE_NAME: mp-time-travel-minds-of-time
+      SERVICE_NAME: minds-of-time
       SERVICE_VERSION: 0.0.1
     env_file:
       - ./.env
@@ -134,7 +134,7 @@ services:
     restart: on-failure
     environment:
       <<: *common-variables
-      REACT_APP_SERVICE_NAME: mp-time-travel-frontend
+      REACT_APP_SERVICE_NAME: time-travel-frontend
       REACT_APP_SERVICE_VERSION: 0.0.1
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
