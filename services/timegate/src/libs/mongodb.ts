@@ -34,6 +34,7 @@ const connect = async () => {
     connectTimeoutMS: 10000,
     socketTimeoutMS: 25000,
     minPoolSize: 3,
+    dbName: Config.MONGODB_DB_NAME
   }
   await Mongoose.connect(Config.MONGODB_URI, options)
 }
