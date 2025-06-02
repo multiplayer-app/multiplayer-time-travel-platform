@@ -98,6 +98,8 @@ app.UseSwaggerUI(options =>
     options.RoutePrefix = $"{Config.API_PREFIX.Substring(1)}/docs";
 });
 
+app.UseRandomErrorMiddleware(Config.RANDOM_ERROR_RATE);
+
 app.UseRouting();
 app.MapControllers();
 

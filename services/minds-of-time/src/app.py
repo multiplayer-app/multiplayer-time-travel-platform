@@ -4,6 +4,7 @@ from config import PORT, API_PREFIX
 from flasgger import Swagger
 from opentelemetry import trace
 from prominent_persons import bp as prominent_persons_bp
+from random_error_middleware import random_error_middleware
 from healthz import bp as healthz_bp
 import logging
 
@@ -28,6 +29,8 @@ swagger_config = {
 swagger = Swagger(app, config=swagger_config)
 
 init_tracing(app)
+
+random_error_middleware(app)
 
 logger = logging.getLogger(__name__)
 

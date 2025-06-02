@@ -7,6 +7,14 @@ def get_prominent_persons():
     """
     Get a list of prominent persons by name only.
     ---
+    parameters:
+      - name: errorRate
+        in: query
+        type: number
+        required: false
+        minimum: 0.0
+        maximum: 1.0
+        description: Probability (0.0–1.0) to inject a random error based on trace ID
     responses:
       200:
         description: A list of prominent person names

@@ -19,4 +19,8 @@ public static class Config
     public static double OTLP_MULTIPLAYER_SPAN_RATIO = double.TryParse(Environment.GetEnvironmentVariable("OTLP_MULTIPLAYER_SPAN_RATIO"), out var value)
         ? value
         : 0.1;
+        
+    public static double RANDOM_ERROR_RATE = double.TryParse(Environment.GetEnvironmentVariable("RANDOM_ERROR_RATE"), out var value)
+        ? value
+        : 0.1;
 }
