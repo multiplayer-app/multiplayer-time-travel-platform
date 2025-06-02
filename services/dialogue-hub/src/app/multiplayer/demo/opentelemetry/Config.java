@@ -53,5 +53,5 @@ public class Config {
 
     public static double RANDOM_ERROR_RATE = System.getenv("RANDOM_ERROR_RATE") != null && !System.getenv("RANDOM_ERROR_RATE").isEmpty()
         ? Double.parseDouble(System.getenv("RANDOM_ERROR_RATE"))
-        : 0.3;
+        : 0.1;
 }

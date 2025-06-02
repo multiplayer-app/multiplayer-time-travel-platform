@@ -47,9 +47,9 @@ func LoadConfig() {
 	}
 
 	var parseRandomErrRateErr error
-	RANDOM_ERROR_RATE, parseRandomErrRateErr = strconv.ParseFloat(getEnv("RANDOM_ERROR_RATE", "0.4"), 64)
+	RANDOM_ERROR_RATE, parseRandomErrRateErr = strconv.ParseFloat(getEnv("RANDOM_ERROR_RATE", "0.1"), 64)
 	if parseRandomErrRateErr != nil {
-		RANDOM_ERROR_RATE = 0.4
+		RANDOM_ERROR_RATE = 0.1
 	}
 
 	SERVICE_NAME = getEnv("SERVICE_NAME", "<example-service-name>")
