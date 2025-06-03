@@ -70,7 +70,7 @@ public class RandomErrorMiddleware
 
             var errorResponse = new
             {
-                code = "WARP_ENGINE_ERROR",
+                code = "WARP_ENGINE_ERROR_EPOCH_ENGINE",
                 message
             };
 

@@ -48,7 +48,7 @@ def random_error_middleware(app):
         if normalized < error_rate:
             message = random.choice(ERROR_MESSAGES)
             response = {
-                "code": "WARP_ENGINE_ERROR",
+                "code": "WARP_ENGINE_ERROR_MINDS_OF_TIME",
                 "message": message
             }
             return make_response(json.dumps(response), 500, {"Content-Type": "application/json"})

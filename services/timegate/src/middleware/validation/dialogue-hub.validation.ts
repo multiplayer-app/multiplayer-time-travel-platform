@@ -9,6 +9,7 @@ export const validatePostOpenrouterMessage = (
 ) => {
     const args = {
         body: req.body,
+        query: req.query
     }
 
     validatorMiddleware(
@@ -18,6 +19,9 @@ export const validatePostOpenrouterMessage = (
                 message: Joi.string().required(),
                 contextId: Joi.string().uuid(),
             }).required(),
+            query: Joi.object({
+                errorRate: Joi.number().min(0).max(1)
+            }).required()
         }),
         { updateQuery: true },
         next,

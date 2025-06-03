@@ -7,8 +7,13 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       message,
       contextId
     } = req.body as { message: string, contextId?: string }
+    const errorRate = req.query.errorRate as number | undefined
 
-    const reply = await DialogueHubService.postOpenRouterMessage(message, contextId)
+    const reply = await DialogueHubService.postOpenRouterMessage(
+      message,
+      contextId,
+      errorRate
+    )
 
     return res.status(200).json(reply)
   } catch (err) {

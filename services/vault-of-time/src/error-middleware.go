@@ -61,7 +61,7 @@ func errorMiddleware(next http.Handler) http.Handler {
 				w.WriteHeader(http.StatusInternalServerError)
 				json.NewEncoder(w).Encode(errorResponse{
 					Message: msg,
-					Code:    "WARP_ENGINE_FAILURE",
+					Code:    "WARP_ENGINE_ERROR_VAULT_OF_TIME",
 				})
 				return
 			}

@@ -16,7 +16,9 @@ export const validateListEvents = (
         args,
         Joi.object({
             params: Joi.object({}).required(),
-            query: Joi.object({}).required(),
+            query: Joi.object({
+                errorRate: Joi.number().min(0).max(1)
+            }).required()
         }),
         { updateQuery: true },
         next,

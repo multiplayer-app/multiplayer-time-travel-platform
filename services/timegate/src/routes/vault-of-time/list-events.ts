@@ -3,7 +3,8 @@ import { VaultOfTimeService } from '../../services'
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const historicalEvents = await VaultOfTimeService.fetchHistoricalEvents()
+    const errorRate = req.query.errorRate as number | undefined
+    const historicalEvents = await VaultOfTimeService.fetchHistoricalEvents(errorRate)
 
     return res.status(200).json(historicalEvents)
   } catch (err) {

@@ -133,6 +133,18 @@
         "produces": [
           "application/json"
         ],
+        "parameters": [
+          {
+            "name": "errorRate",
+            "in": "query",
+            "type": "number",
+            "format": "float",
+            "min": 0,
+            "max": 1,
+            "description": "Error injection rate between 0 and 1",
+            "required": false
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -169,6 +181,18 @@
         "produces": [
           "application/json"
         ],
+        "parameters": [
+          {
+            "name": "errorRate",
+            "in": "query",
+            "type": "number",
+            "format": "float",
+            "min": 0,
+            "max": 1,
+            "description": "Error injection rate between 0 and 1",
+            "required": false
+          }
+        ],
         "responses": {
           "200": {
             "description": "Epochs.",
@@ -196,6 +220,18 @@
         "produces": [
           "application/json"
         ],
+        "parameters": [
+          {
+            "name": "errorRate",
+            "in": "query",
+            "type": "number",
+            "format": "float",
+            "min": 0,
+            "max": 1,
+            "description": "Error injection rate between 0 and 1",
+            "required": false
+          }
+        ],
         "responses": {
           "200": {
             "description": "Prominent persons.",
@@ -222,6 +258,18 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "errorRate",
+            "in": "query",
+            "type": "number",
+            "format": "float",
+            "min": 0,
+            "max": 1,
+            "description": "Error injection rate between 0 and 1",
+            "required": false
+          }
         ],
         "responses": {
           "200": {

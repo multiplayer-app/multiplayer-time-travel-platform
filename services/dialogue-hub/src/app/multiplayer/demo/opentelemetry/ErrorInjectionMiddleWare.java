@@ -71,7 +71,7 @@ public class ErrorInjectionMiddleWare implements Filter {
 
                 response.setContentType("application/json");
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                String json = String.format("{\"message\":\"%s\",\"code\":\"WARP_ENGINE_ERROR\"}", message);
+                String json = String.format("{\"message\":\"%s\",\"code\":\"WARP_ENGINE_ERROR_DIALOGUE_HUB\"}", message);
                 response.getWriter().write(json);
                 return;
             }

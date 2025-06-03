@@ -37,7 +37,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
         if (val < errorRate) {
             return res.status(500).json({
                 message: getRandomErrorMessage(traceId),
-                code: 'WARP_ENGINE_ERROR'
+                code: 'WARP_ENGINE_ERROR_TIMEGATE'
             })
         }
     }
