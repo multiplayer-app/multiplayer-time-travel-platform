@@ -40,7 +40,7 @@ public class OpenTelemetryConfig {
         // Sampler sampler = Sampler.traceIdRatioBased(Config.OTLP_MULTIPLAYER_SPAN_RATIO);
 
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-                // .setIdGenerator(idGenerator)
+                .setIdGenerator(idGenerator)
                 .setSampler(sampler)
                 .addSpanProcessor(BatchSpanProcessor.builder(spanExporter).build())
                 .build();
