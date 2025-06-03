@@ -17,27 +17,27 @@ import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter;
 import io.opentelemetry.exporter.otlp.http.logs.OtlpHttpLogRecordExporter;
 
 // mp exporters
-// import app.multiplayer.opentelemetry.trace.MultiplayerRandomIdGenerator;
-// import app.multiplayer.opentelemetry.exporter.MultiplayerOtlpHttpLogExporter;
-// import app.multiplayer.opentelemetry.exporter.MultiplayerOtlpHttpSpanExporter;
-// import app.multiplayer.opentelemetry.trace.samplers.MultiplayerTraceIdRatioBasedSampler;
+import app.multiplayer.opentelemetry.trace.MultiplayerRandomIdGenerator;
+import app.multiplayer.opentelemetry.exporter.MultiplayerOtlpHttpLogExporter;
+import app.multiplayer.opentelemetry.exporter.MultiplayerOtlpHttpSpanExporter;
+import app.multiplayer.opentelemetry.trace.samplers.MultiplayerTraceIdRatioBasedSampler;
 
 public class OpenTelemetryConfig {
     public static void initialize() {
-        // SpanExporter multiplayerSpanExporter = new MultiplayerOtlpHttpSpanExporter(MULTIPLAYER_OTLP_KEY, "http://localhost/v1/traces");
-        // LogRecordExporter multiplayerLogsExporter = new MultiplayerOtlpHttpLogExporter(MULTIPLAYER_OTLP_KEY, "http://localhost/v1/logs");
-        // Sampler sampler = MultiplayerTraceIdRatioBasedSampler.create(Config.OTLP_MULTIPLAYER_SPAN_RATIO);
-        // MultiplayerRandomIdGenerator idGenerator = new MultiplayerRandomIdGenerator(Config.OTLP_MULTIPLAYER_DOC_SPAN_RATIO)
+        SpanExporter spanExporter = new MultiplayerOtlpHttpSpanExporter(Config.MULTIPLAYER_OTLP_KEY, Config.OTLP_TRACES_ENDPOINT);
+        LogRecordExporter logsExporter = new MultiplayerOtlpHttpLogExporter(Config.MULTIPLAYER_OTLP_KEY, Config.OTLP_LOGS_ENDPOINT);
+        Sampler sampler = MultiplayerTraceIdRatioBasedSampler.create(Config.OTLP_MULTIPLAYER_SPAN_RATIO);
+        MultiplayerRandomIdGenerator idGenerator = new MultiplayerRandomIdGenerator(Config.OTLP_MULTIPLAYER_DOC_SPAN_RATIO);
 
-        SpanExporter spanExporter = OtlpHttpSpanExporter.builder()
-            .setEndpoint(Config.OTLP_TRACES_ENDPOINT)
-            .addHeader("Authorization", Config.MULTIPLAYER_OTLP_KEY)
-            .build();
-        LogRecordExporter logsExporter = OtlpHttpLogRecordExporter.builder()
-            .setEndpoint(Config.OTLP_LOGS_ENDPOINT)
-            .addHeader("Authorization", Config.MULTIPLAYER_OTLP_KEY)
-            .build();
-        Sampler sampler = Sampler.traceIdRatioBased(Config.OTLP_MULTIPLAYER_SPAN_RATIO);
+        // SpanExporter spanExporter = OtlpHttpSpanExporter.builder()
+        //     .setEndpoint(Config.OTLP_TRACES_ENDPOINT)
+        //     .addHeader("Authorization", Config.MULTIPLAYER_OTLP_KEY)
+        //     .build();
+        // LogRecordExporter logsExporter = OtlpHttpLogRecordExporter.builder()
+        //     .setEndpoint(Config.OTLP_LOGS_ENDPOINT)
+        //     .addHeader("Authorization", Config.MULTIPLAYER_OTLP_KEY)
+        //     .build();
+        // Sampler sampler = Sampler.traceIdRatioBased(Config.OTLP_MULTIPLAYER_SPAN_RATIO);
 
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
                 // .setIdGenerator(idGenerator)

@@ -48,5 +48,5 @@ dependencies {
 
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    // implementation 'app.multiplayer:opentelemetry:0.0.1'
+    implementation 'app.multiplayer:opentelemetry:0.0.1'
 }
