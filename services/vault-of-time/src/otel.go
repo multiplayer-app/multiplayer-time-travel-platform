@@ -3,15 +3,18 @@ package main
 import (
 	"context"
 	"errors"
+	"log"
 	"time"
 
 	multiplayer "github.com/multiplayer-app/multiplayer-otlp-go"
 	"github.com/multiplayer-app/multiplayer-time-travel-platform/services/vault-of-time/src/config"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
-
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	"go.opentelemetry.io/otel/propagation"
+	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.24.0"
 )
 
 // setupOTelSDK bootstraps the OpenTelemetry pipeline.
@@ -62,6 +65,17 @@ func newPropagator() propagation.TextMapPropagator {
 func newTraceProvider() (*trace.TracerProvider, error) {
 	ctx := context.Background()
 
+	res, err := resource.New(context.Background(),
+		resource.WithAttributes(
+			semconv.ServiceNameKey.String(config.SERVICE_NAME),
+			semconv.ServiceVersion(config.SERVICE_VERSION),
+			attribute.String("environment", config.PLATFORM_ENV),
+		),
+	)
+	if err != nil {
+		log.Fatalf("failed to create resource: %v", err)
+	}
+
 	// traceExporter := multiplayer.NewExporter(config.MULTIPLAYER_OTLP_KEY)
 	traceExporter, err := otlptracehttp.New(ctx,
 		otlptracehttp.WithEndpointURL(config.OTLP_TRACES_ENDPOINT),
@@ -77,6 +91,7 @@ func newTraceProvider() (*trace.TracerProvider, error) {
 		trace.WithSampler(multiplayer.NewSampler(trace.TraceIDRatioBased(config.OTLP_MULTIPLAYER_SPAN_RATIO))),
 		trace.WithBatcher(traceExporter,
 			trace.WithBatchTimeout(time.Second)),
+		trace.WithResource(res),
 	)
 	return traceProvider, nil
 }
