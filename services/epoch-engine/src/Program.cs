@@ -3,57 +3,50 @@ using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using OpenTelemetry.Exporter;
 using OpenTelemetry;
 using NetEscapades.AspNetCore.SecurityHeaders.Infrastructure;
 using WebApiOpenApi;
-using Multiplayer.OpenTelemetry.Exporter;
 using Multiplayer.OpenTelemetry.Trace;
+using Multiplayer.OpenTelemetry.Constants;
 
 MultiplayerTraceIdConfiguration.ConfigureMultiplayerTraceIdGenerator(Config.OTLP_MULTIPLAYER_DOC_SPAN_RATIO);
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls($"http://0.0.0.0:{Config.PORT}");
 
-var logExporter = new MultiplayerOtlpHttpLogsExporter(
-    Config.MULTIPLAYER_OTLP_KEY,
-    new Uri(Config.OTLP_TRACES_ENDPOINT)
-);
-// var logExporter = new OtlpHttpLogExporter(new OtlpExporterOptions
-// {
-//     Endpoint = new Uri(Config.OTLP_LOGS_ENDPOINT),
-//     Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf,
-// });
+var logExporter = new OtlpLogExporter(new OtlpExporterOptions
+{
+    Endpoint = new Uri(Config.OTLP_LOGS_ENDPOINT),
+    Headers = "Authorization=" + Config.MULTIPLAYER_OTLP_KEY,
+    Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf,
+});
 
-var traceExporter = new MultiplayerOtlpHttpTracesExporter(
-    Config.MULTIPLAYER_OTLP_KEY,
-    new Uri(Config.OTLP_TRACES_ENDPOINT)
-);
-// var traceExporter = new OtlpHttpTraceExporter(new OtlpExporterOptions
-// {
-//     Endpoint = new Uri(Config.OTLP_TRACES_ENDPOINT),
-//     Protocol = OtlpExportProtocol.HttpProtobuf,
-// })
+var traceExporter = new OtlpTraceExporter(new OtlpExporterOptions
+{
+    Endpoint = new Uri(Config.OTLP_TRACES_ENDPOINT),
+    Headers = "Authorization=" + Config.MULTIPLAYER_OTLP_KEY,
+    Protocol = OtlpExportProtocol.HttpProtobuf,
+});
 
-builder.Services.AddOpenTelemetry()
-    .ConfigureResource(resource =>
-    {
-        resource.AddService(
-            serviceName: Config.SERVICE_NAME,
-            serviceNamespace: Config.PLATFORM_ENV,
-            serviceVersion: Config.SERVICE_VERSION,
-            serviceInstanceId: Environment.MachineName
-        )
+var resourceBuilder =
+    ResourceBuilder
+        .CreateDefault()
+        .AddService(serviceName: Config.SERVICE_NAME, serviceVersion: Config.SERVICE_VERSION)
         .AddAttributes(new Dictionary<string, object>
         {
-            { "deployment.environment", Config.PLATFORM_ENV },
-            { "service.name", Config.SERVICE_NAME },
+            ["deployment.environment"] = Config.PLATFORM_ENV,
+            ["service.instance.id"] = Environment.MachineName
         });
-    })
+
+builder.Services.AddOpenTelemetry()
     .WithTracing(tracing =>
     {
-        tracing.AddHttpClientInstrumentation()
+        tracing
+            .SetResourceBuilder(resourceBuilder)
+            .AddHttpClientInstrumentation()
             .AddAspNetCoreInstrumentation()
-            .SetSampler(new MultiplayerTraceIdRatioBasedSampler(Config.OTLP_MULTIPLAYER_SPAN_RATIO))
+            .SetSampler(new MultiplayerTraceIdRatioBasedSampler(1)) // Config.OTLP_MULTIPLAYER_SPAN_RATIO
             .AddProcessor(new SimpleActivityExportProcessor(traceExporter));
     })
     .WithLogging(logs => logs.AddProcessor(new BatchLogRecordExportProcessor(logExporter)));
