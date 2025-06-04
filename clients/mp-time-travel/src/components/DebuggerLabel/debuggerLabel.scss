@@ -1,0 +1,22 @@
+.mtt-debugger-label {
+  position: absolute;
+  right: unset !important;
+  left: 71px !important;
+  bottom: 32px !important;
+  z-index: 10;
+  height: 42px;
+  background-color: white;
+  border-radius: 0 36px 36px 0;
+  border: solid 1px #BEBFC1;
+  border-left: none;
+  padding: 12px 12px 12px 0;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+@media screen and (max-width: 768px) {
+  .mtt-debugger-label {
+    display: none;
+  }
+}

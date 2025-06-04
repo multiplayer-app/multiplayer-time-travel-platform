@@ -1,5 +1,6 @@
-import React, { createContext, ReactNode, useEffect, useState } from 'react';
-import { getEpoch, getProminentPersons } from 'services';
+import React, { createContext, ReactNode, useEffect, useState } from "react";
+import { recorderEventBus } from "@multiplayer-app/session-debugger";
+import { getEpoch, getProminentPersons } from "services";
 
 const TimeTravelContext = createContext(undefined);
 
@@ -7,9 +8,12 @@ interface TimeTravelProviderProps {
   children: ReactNode;
 }
 
-export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({ children }) => {
+export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
+  children,
+}) => {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [question, setQuestion] = useState(null);
+  const [navigationUrl, setNavigationUrl] = useState({});
 
   useEffect(() => {
     getEpoch();
@@ -22,9 +26,29 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({ children
     }
   }, [selectedCharacter]);
 
-  const value = { selectedCharacter, question, setSelectedCharacter, setQuestion };
+  useEffect(() => {
+    const handleSetUrl = (res) => {
+      setNavigationUrl(res?.url);
+    };
+    recorderEventBus?.on("debug-session:started", handleSetUrl);
+    return () => {
+      recorderEventBus?.off("debug-session:started", handleSetUrl);
+    };
+  }, []);
 
-  return <TimeTravelContext.Provider value={value}>{children}</TimeTravelContext.Provider>;
+  const value = {
+    selectedCharacter,
+    question,
+    setSelectedCharacter,
+    setQuestion,
+    navigationUrl,
+  };
+
+  return (
+    <TimeTravelContext.Provider value={value}>
+      {children}
+    </TimeTravelContext.Provider>
+  );
 };
 
 export { TimeTravelContext };

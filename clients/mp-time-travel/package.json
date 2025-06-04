@@ -5,7 +5,7 @@
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "2.1.1",
     "@chatscope/chat-ui-kit-styles": "1.4.0",
-    "@multiplayer-app/session-debugger": "2.0.1",
+    "@multiplayer-app/session-debugger": "2.1.1",
     "@testing-library/dom": "10.4.0",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.2.0",

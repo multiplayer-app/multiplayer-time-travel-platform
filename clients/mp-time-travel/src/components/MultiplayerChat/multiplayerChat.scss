@@ -116,6 +116,23 @@
       margin-top: 10px;
     }
   }
+  &:hover {
+    .mtt-message-actions {
+      opacity: 1;
+    }
+  }
+}
+
+.mtt-message-actions {
+  display: flex;
+  gap: 4px;
+  margin-left: 4px;
+  align-items: flex-start;
+  opacity: 0;
+  transition: opacity 0.1s ease-in;
+  img {
+    cursor: pointer;
+  }
 }
 
 .mtt-debugger-toggle {

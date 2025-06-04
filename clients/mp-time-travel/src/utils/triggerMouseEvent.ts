@@ -1,14 +1,14 @@
 const triggerMouseEvent = (element: HTMLElement) => {
-  const mouseDownEvent = new MouseEvent('mousedown', {
+  const mouseDownEvent = new MouseEvent("mousedown", {
     bubbles: true,
     cancelable: true,
-    view: window
+    view: window,
   });
 
-  const mouseUpEvent = new MouseEvent('mouseup', {
+  const mouseUpEvent = new MouseEvent("mouseup", {
     bubbles: true,
     cancelable: true,
-    view: window
+    view: window,
   });
 
   element.dispatchEvent(mouseDownEvent);
@@ -17,4 +17,24 @@ const triggerMouseEvent = (element: HTMLElement) => {
   }, 100);
 };
 
-export default triggerMouseEvent;
+const triggerMouseDownEvent = (element: HTMLElement) => {
+  const mouseDownEvent = new MouseEvent("mousedown", {
+    bubbles: true,
+    cancelable: true,
+    view: window,
+  });
+
+  element.dispatchEvent(mouseDownEvent);
+};
+
+const triggerMouseUpEvent = (element: HTMLElement) => {
+  const mouseUpEvent = new MouseEvent("mouseup", {
+    bubbles: true,
+    cancelable: true,
+    view: window,
+  });
+
+  element.dispatchEvent(mouseUpEvent);
+};
+
+export { triggerMouseEvent, triggerMouseDownEvent, triggerMouseUpEvent };

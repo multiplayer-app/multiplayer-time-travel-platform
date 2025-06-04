@@ -167,10 +167,13 @@ body {
   right: unset !important;
   left: 32px !important;
   bottom: 32px !important;
+  border-radius: 36px 0 0 36px;
   z-index: 9;
-  &:not([data-tooltip='']):before {
-    left: calc(100% + 20px);
-    right: unset;
+  &.no-draggable {
+    position: absolute;
+    &:not([data-tooltip='']):before {
+      display: none;
+    }
   }
 }
 
@@ -183,9 +186,13 @@ body {
     left: unset !important;
     bottom: unset !important;
     top: 10px !important;
-    &:not([data-tooltip='']):before {
-      left: unset;
-      right: 100%;
+    border-radius: 36px;
+    &.no-draggable:not([data-tooltip='']):before {
+      left: unset !important;
+      right: 100% !important;
+      display: block;
+      transform: translateX(-8px) !important;
+      top: 6px !important;
     }
   }
 }

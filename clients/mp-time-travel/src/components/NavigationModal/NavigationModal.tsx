@@ -1,14 +1,18 @@
 import React, { memo } from "react";
 import Modal from "react-modal";
+import { useTimeTravel } from "hooks/useTimeTravel";
 import "./navigationModal.scss";
 
 // Required for accessibility
 Modal.setAppElement("#root");
 
-const NavigationModal = ({ isOpen, onClose, url }) => {
+const NavigationModal = ({ isOpen, onClose }) => {
+  const { navigationUrl } = useTimeTravel();
   const handleNavigate = () => {
-    onClose();
-    window.open(url, "_blank");
+    if (navigationUrl) {
+      onClose();
+      window.open(navigationUrl, "_blank");
+    }
   };
 
   return (

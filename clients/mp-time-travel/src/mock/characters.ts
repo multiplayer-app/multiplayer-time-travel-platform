@@ -72,7 +72,7 @@ export const characters = [
     description: "Electric-type Pokémon and loyal companion",
     errorMessage:
       "Pika... CHU!! ⚡That wasn’t supposed to happen. Don’t worry: Multiplayer Debugger will help you catch it.",
-    answerStyle: "Only says “Pika Pika”",
+    answerStyle: "imagine Pikachu's response in English first, then translate it into Pika's language, but put Pika's language first, without parenthesis and the English response in parenthesis after it, for example: \"Pika Pika Pika (There seems to be an error in the system).",
   },
   {
     id: 3,

@@ -1,17 +1,17 @@
-import { useEffect, memo, useCallback } from 'react';
-import debuggerInstance from '@multiplayer-app/session-debugger';
-import Timeline from 'components/Timeline';
-import CharacterList from 'components/CharacterList';
-import WelcomeScreen from 'components/WelcomeScreen';
-import MultiplayerChat from 'components/MultiplayerChat';
-import { characters } from 'mock/characters';
+import { useEffect, memo, useCallback } from "react";
+import debuggerInstance from "@multiplayer-app/session-debugger";
+import Timeline from "components/Timeline";
+import CharacterList from "components/CharacterList";
+import WelcomeScreen from "components/WelcomeScreen";
+import MultiplayerChat from "components/MultiplayerChat";
+import { characters } from "mock/characters";
 
-import './board.scss';
-import triggerMouseEvent from 'utils/triggerMouseEvent';
-import { useTimeTravel } from 'hooks/useTimeTravel';
+import "./board.scss";
+import { triggerMouseEvent } from "utils/triggerMouseEvent";
+import { useTimeTravel } from "hooks/useTimeTravel";
 
-const TERMS_URL = 'https://www.multiplayer.app/terms-of-service/';
-const PRIVACY_URL = 'https://www.multiplayer.app/privacy/';
+const TERMS_URL = "https://www.multiplayer.app/terms-of-service/";
+const PRIVACY_URL = "https://www.multiplayer.app/privacy/";
 
 const getRandomCharacter = () => {
   const randomIndex = Math.floor(Math.random() * characters.length);
@@ -19,7 +19,8 @@ const getRandomCharacter = () => {
 };
 
 const Board = () => {
-  const { selectedCharacter, setSelectedCharacter, question, setQuestion } = useTimeTravel();
+  const { selectedCharacter, setSelectedCharacter, question, setQuestion } =
+    useTimeTravel();
 
   useEffect(() => {
     setQuestion(null);
@@ -34,9 +35,12 @@ const Board = () => {
   };
 
   return (
-    <div className='mtt-board'>
-      <div className='mtt-board-head'>
-        <Timeline selectedCharacter={selectedCharacter} setSelectedCharacter={setSelectedCharacter} />
+    <div className="mtt-board">
+      <div className="mtt-board-head">
+        <Timeline
+          selectedCharacter={selectedCharacter}
+          setSelectedCharacter={setSelectedCharacter}
+        />
         <CharacterList
           characters={characters}
           selectedCharacter={selectedCharacter}
@@ -45,7 +49,11 @@ const Board = () => {
       </div>
 
       {!question && (
-        <WelcomeScreen onCharacterPick={handleCharacterPick} pickedCharacter={selectedCharacter} setQuestion={setQuestion} />
+        <WelcomeScreen
+          onCharacterPick={handleCharacterPick}
+          pickedCharacter={selectedCharacter}
+          setQuestion={setQuestion}
+        />
       )}
 
       <MultiplayerChat
@@ -55,13 +63,23 @@ const Board = () => {
         onDebuggerOpen={onDebuggerOpen}
       />
 
-      <div className='mtt-terms-info medium-text'>
-        By messaging Multiplayer Time Travel, you agree to our{' '}
-        <a href={TERMS_URL} target='_blank' rel='noopener noreferrer' aria-label='Terms of Service'>
+      <div className="mtt-terms-info medium-text">
+        By messaging Multiplayer Time Travel, you agree to our{" "}
+        <a
+          href={TERMS_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Terms of Service"
+        >
           Terms
-        </a>{' '}
-        and have read our{' '}
-        <a href={PRIVACY_URL} target='_blank' rel='noopener noreferrer' aria-label='Privacy Policy'>
+        </a>{" "}
+        and have read our{" "}
+        <a
+          href={PRIVACY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Privacy Policy"
+        >
           Privacy Policy
         </a>
       </div>
