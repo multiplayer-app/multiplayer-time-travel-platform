@@ -11,6 +11,11 @@ import io.opentelemetry.sdk.logs.SdkLoggerProvider;
 import io.opentelemetry.sdk.logs.export.BatchLogRecordProcessor;
 import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
+import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.sdk.resources.Resource;
+// import io.opentelemetry.semconv.ResourceAttributes;
+// import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
 
 // otlp default exporters
 import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter;
@@ -39,13 +44,23 @@ public class OpenTelemetryConfig {
         //     .build();
         // Sampler sampler = Sampler.traceIdRatioBased(Config.OTLP_MULTIPLAYER_SPAN_RATIO);
 
+        Resource resource = Resource.getDefault().merge(
+                Resource.create(Attributes.of(
+                        AttributeKey.stringKey("service.name"), Config.SERVICE_NAME,
+                        AttributeKey.stringKey("service.version"), Config.SERVICE_VERSION,
+                        AttributeKey.stringKey("deployment.environment"), Config.PLATFORM_ENV
+                ))
+        );
+
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+                .setResource(resource)
                 .setIdGenerator(idGenerator)
                 .setSampler(sampler)
                 .addSpanProcessor(BatchSpanProcessor.builder(spanExporter).build())
                 .build();
 
         SdkLoggerProvider loggerProvider = SdkLoggerProvider.builder()
+                .setResource(resource)
                 .addLogRecordProcessor(BatchLogRecordProcessor.builder(logsExporter).build())
                 .build();
 

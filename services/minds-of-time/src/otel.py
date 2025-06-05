@@ -1,5 +1,5 @@
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
-from opentelemetry.sdk.resources import SERVICE_NAME, SERVICE_VERSION, DEPLOYMENT_ENVIRONMENT, Resource
+from opentelemetry.sdk.resources import SERVICE_NAME as SERVICE_NAME_ATTR, SERVICE_VERSION as SERVICE_VERSION_ATTR, DEPLOYMENT_ENVIRONMENT, Resource
 
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
@@ -15,17 +15,17 @@ from multiplayer.opentelemetry.exporter.http.log_exporter import MultiplayerOTLP
 from multiplayer.opentelemetry.trace.sampler import MultiplayerTraceIdRatioBasedSampler
 from multiplayer.opentelemetry.trace.id_generator import MultiplayerRandomIdGenerator
 
-from config import OTLP_TRACES_ENDPOINT, OTLP_LOGS_ENDPOINT, MULTIPLAYER_OTLP_KEY, OTLP_MULTIPLAYER_DOC_SPAN_RATIO, OTLP_MULTIPLAYER_SPAN_RATIO
+from config import OTLP_TRACES_ENDPOINT, OTLP_LOGS_ENDPOINT, MULTIPLAYER_OTLP_KEY, OTLP_MULTIPLAYER_DOC_SPAN_RATIO, OTLP_MULTIPLAYER_SPAN_RATIO, SERVICE_NAME, SERVICE_VERSION
 
 
 def init_tracing(app):
     id_generator = MultiplayerRandomIdGenerator(autoDocTracesRatio = OTLP_MULTIPLAYER_DOC_SPAN_RATIO)
-    sampler = MultiplayerTraceIdRatioBasedSampler(rate = OTLP_MULTIPLAYER_SPAN_RATIO)
+    sampler = MultiplayerTraceIdRatioBasedSampler(rate = 1) # OTLP_MULTIPLAYER_SPAN_RATIO
 
     # Service name is required for most backends
-    resource = Resource(attributes={
-        SERVICE_NAME: SERVICE_NAME,
-        SERVICE_VERSION: SERVICE_VERSION,
+    resource = Resource(attributes = {
+        SERVICE_NAME_ATTR: SERVICE_NAME,
+        SERVICE_VERSION_ATTR: SERVICE_VERSION,
         DEPLOYMENT_ENVIRONMENT: DEPLOYMENT_ENVIRONMENT
     })
 
@@ -34,7 +34,6 @@ def init_tracing(app):
         sampler = sampler,
         id_generator = id_generator
     )
-
 
     # traceExporter = OTLPSpanExporter(OTLP_TRACES_ENDPOINT)
     traceExporter = MultiplayerOTLPSpanExporter(
@@ -47,7 +46,7 @@ def init_tracing(app):
     trace.set_tracer_provider(traceProvider)
 
     logger_provider = LoggerProvider(
-        resource=Resource.create(
+        resource = Resource.create(
             {
                 "service.name": SERVICE_NAME,
             }

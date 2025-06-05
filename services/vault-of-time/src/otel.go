@@ -9,7 +9,6 @@ import (
 	multiplayer "github.com/multiplayer-app/multiplayer-otlp-go"
 	"github.com/multiplayer-app/multiplayer-time-travel-platform/services/vault-of-time/src/config"
 	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/resource"
@@ -69,7 +68,7 @@ func newTraceProvider() (*trace.TracerProvider, error) {
 		resource.WithAttributes(
 			semconv.ServiceNameKey.String(config.SERVICE_NAME),
 			semconv.ServiceVersion(config.SERVICE_VERSION),
-			attribute.String("environment", config.PLATFORM_ENV),
+			semconv.DeploymentEnvironmentKey.String(config.PLATFORM_ENV),
 		),
 	)
 	if err != nil {
@@ -87,11 +86,11 @@ func newTraceProvider() (*trace.TracerProvider, error) {
 	}
 
 	traceProvider := trace.NewTracerProvider(
+		trace.WithResource(res),
 		trace.WithIDGenerator(multiplayer.NewRatioDependentIdGenerator(config.OTLP_MULTIPLAYER_DOC_SPAN_RATIO)),
 		trace.WithSampler(multiplayer.NewSampler(trace.TraceIDRatioBased(config.OTLP_MULTIPLAYER_SPAN_RATIO))),
 		trace.WithBatcher(traceExporter,
 			trace.WithBatchTimeout(time.Second)),
-		trace.WithResource(res),
 	)
 	return traceProvider, nil
 }
