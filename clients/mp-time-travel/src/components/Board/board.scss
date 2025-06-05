@@ -1,6 +1,6 @@
 .mtt-board {
   width: 70%;
-  height: 100vh;
+  height: 100dvh;
   padding: 24px 0 6px;
   display: flex;
   justify-content: space-between;
@@ -27,7 +27,7 @@
 @media screen and (max-width: 768px) {
   .mtt-board {
     width: 100%;
-    height: calc(100vh - 64px);
+    height: calc(100dvh - 64px);
     flex: 1;
     padding: 10px 0 6px;
   }

@@ -5,7 +5,6 @@ import {
   Message,
   MessageInput,
   MessageList,
-  MessageModel,
   TypingIndicator,
 } from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
@@ -13,36 +12,15 @@ import MessageAvatar from "components/MessageAvatar";
 import { sendMessage } from "services";
 import { checkmarkIcon, copyIcon, retryIcon } from "utils/constants";
 import "./multiplayerChat.scss";
-import { SessionState } from "utils/enums";
+import { SessionState, ChatMessage, Character } from "utils/types";
+import {
+  createUserMessage,
+  createCharacterErrorMessage,
+  createErrorMessage,
+  createBotMessage,
+  getErrorRate,
+} from "utils/messageHelpers";
 import { useTimeTravel } from "hooks/useTimeTravel";
-
-type BaseChatMessage = Partial<MessageModel> & {
-  systemError?: boolean;
-  characterError?: boolean;
-};
-
-interface ChatMessage extends BaseChatMessage {
-  message: string;
-  sentTime: string;
-  sender: string;
-  direction: "incoming" | "outgoing";
-}
-
-const getErrorRate = (messages: ChatMessage[]) => {
-  const outgoingMessages = messages.filter(
-    (msg) => msg.direction === "outgoing"
-  );
-  const outgoingCount = outgoingMessages.length;
-
-  const cycleLength = 7; // 3 safe + 4 increasing
-  const cycleIndex = outgoingCount % cycleLength;
-
-  if (cycleIndex < 3) {
-    return 0;
-  }
-
-  return (cycleIndex - 2) * 0.25; // 0.25, 0.5, 0.75, 1.0
-};
 
 const MultiplayerChat = ({
   character,
@@ -70,16 +48,70 @@ const MultiplayerChat = ({
     setContextId(null);
   }, [character]);
 
+  const onHandleCharacterErrorResponse = useCallback(
+    async (errorMessage: string, character: Character, isRetry: boolean) => {
+      const delay = isRetry ? 500 : 0;
+      try {
+        const prompt = `You are ${character.name}. You've got the following system error: ${errorMessage}. 
+        Use the following answer style for explaining the error message: ${character.errorMessage}.
+        After explaining suggest users to use Multiplayer Debugger to investigate further, 
+        starting the debug session and writing more messages`;
+
+        const response = await sendMessage(prompt, contextId, null, 0);
+        const data = response?.data;
+
+        const botMessage = createCharacterErrorMessage(data?.reply);
+        addMessageWithDelay(botMessage, delay);
+      } catch (err) {
+        const fallbackMessage = createCharacterErrorMessage(
+          character.errorMessage
+        );
+        addMessageWithDelay(fallbackMessage, delay);
+        setTimeout(() => setIsTyping(false), delay);
+      }
+    },
+    [contextId]
+  );
+
+  const addMessageWithDelay = (message: ChatMessage, delay: number = 0) => {
+    setTimeout(() => {
+      setMessages((prev) => [...prev, message]);
+    }, delay);
+  };
+
+  const handleSuccess = (
+    reply: string,
+    newContextId: string,
+    delay: number
+  ) => {
+    const botMessage = createBotMessage(reply);
+    setTimeout(() => {
+      setMessages((prev) => [...prev, botMessage]);
+      setContextId(newContextId);
+    }, delay);
+  };
+
+  const handleError = useCallback(
+    async (error: any, delay: number, isRetry?: boolean) => {
+      const errorMessage = createErrorMessage(error);
+      setTimeout(() => {
+        setMessages((prev) => [...prev, errorMessage]);
+      }, delay);
+      await onHandleCharacterErrorResponse(
+        error.response?.data?.message || error.message,
+        character,
+        isRetry
+      );
+    },
+    [onHandleCharacterErrorResponse, character]
+  );
+
   const postMessage = useCallback(
     async (message: string, isRetry?: boolean) => {
-      try {
-        const userMessage: ChatMessage = {
-          message,
-          sentTime: "just now",
-          sender: character.name,
-          direction: "outgoing",
-        };
+      const delay = isRetry ? 500 : 0;
 
+      try {
+        const userMessage = createUserMessage(message, character);
         setQuestion(message);
         setMessages((prev) => [...prev, userMessage]);
         setIsTyping(true);
@@ -90,55 +122,15 @@ const MultiplayerChat = ({
           character,
           getErrorRate(messages)
         );
-
         const data = response?.data;
-
-        const botMessage: ChatMessage = {
-          message: data?.reply,
-          sentTime: "just now",
-          sender: "Multiplayer",
-          direction: "incoming",
-        };
-
-        setTimeout(
-          () => {
-            setMessages((prev) => [...prev, botMessage]);
-            setContextId(data?.contextId);
-          },
-          isRetry ? 500 : 0
-        );
+        handleSuccess(data?.reply, data?.contextId, delay);
       } catch (err) {
-        const botMessage: ChatMessage = {
-          message: character.errorMessage,
-          sentTime: "just now",
-          sender: "Multiplayer",
-          direction: "incoming",
-          characterError: true,
-        };
-        const errorMessage: ChatMessage = {
-          message: err.message,
-          sentTime: "just now",
-          sender: "Multiplayer",
-          direction: "incoming",
-          systemError: true,
-        };
-
-        setTimeout(
-          () => {
-            setMessages((prev) => [...prev, errorMessage, botMessage]);
-          },
-          isRetry ? 500 : 0
-        );
+        await handleError(err, delay, isRetry);
       } finally {
-        setTimeout(
-          () => {
-            setIsTyping(false);
-          },
-          isRetry ? 500 : 0
-        );
+        setTimeout(() => setIsTyping(false), delay);
       }
     },
-    [character, setQuestion, contextId, messages]
+    [character, setQuestion, contextId, messages, handleError]
   );
 
   // Handle preselected question
@@ -170,7 +162,7 @@ const MultiplayerChat = ({
   );
 
   const onRetry = useCallback(
-    async (msg: ChatMessage, index) => {
+    async (msg: ChatMessage, index: number) => {
       const prevUserMessage =
         msg.direction === "outgoing"
           ? msg.message

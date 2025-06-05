@@ -14,7 +14,7 @@ debuggerInstance.init({
         exporterApiBaseUrl: process.env.REACT_APP_SESSION_DEBUGGER_API_BASE_URL,
       }
     : {}),
-  canvasEnabled: true,
+  canvasEnabled: false,
   showWidget: true,
   ignoreUrls: [
     /https:\/\/cdn\.jsdelivr\.net\/.*/,

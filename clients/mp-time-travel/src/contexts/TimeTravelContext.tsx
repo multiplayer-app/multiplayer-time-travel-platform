@@ -1,6 +1,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { recorderEventBus } from "@multiplayer-app/session-debugger";
 import { getEpoch, getProminentPersons } from "services";
+import { Character } from "utils/types";
 
 const TimeTravelContext = createContext(undefined);
 
@@ -11,7 +12,7 @@ interface TimeTravelProviderProps {
 export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
   children,
 }) => {
-  const [selectedCharacter, setSelectedCharacter] = useState(null);
+  const [selectedCharacter, setSelectedCharacter] = useState<Character>(null);
   const [question, setQuestion] = useState(null);
   const [navigationUrl, setNavigationUrl] = useState({});
 
@@ -30,9 +31,9 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
     const handleSetUrl = (res) => {
       setNavigationUrl(res?.url);
     };
-    recorderEventBus?.on("debug-session:started", handleSetUrl);
+    recorderEventBus?.on("debug-session:stopped", handleSetUrl);
     return () => {
-      recorderEventBus?.off("debug-session:started", handleSetUrl);
+      recorderEventBus?.off("debug-session:stopped", handleSetUrl);
     };
   }, []);
 
@@ -42,6 +43,7 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
     setSelectedCharacter,
     setQuestion,
     navigationUrl,
+    setNavigationUrl,
   };
 
   return (

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Character } from "utils/types";
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_API_URL,
@@ -8,12 +9,17 @@ export const submitEmail = async (email) => {
   return instance.post(`/v1/timegate/user/info/email`, { email });
 };
 
-export const sendMessage = async (message, contextId, character, errorRate) => {
+export const sendMessage = async (
+  message: string,
+  contextId: string,
+  character: Character,
+  errorRate: number
+) => {
   return instance.post(
     `/v1/timegate/dialogue-hub/openrouter/message`,
     {
       message: `${message} ${
-        contextId
+        contextId || !character
           ? ""
           : `. Answer like you are the ${character.name}, using this answer style: ${character.answerStyle}`
       }`,

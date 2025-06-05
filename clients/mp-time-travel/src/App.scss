@@ -20,11 +20,12 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
 }
 
 .mtt-app {
   display: flex;
-  height: 100vh;
+  height: 100dvh;
   width: 100vw;
   background: white;
   overflow: hidden;
@@ -167,12 +168,12 @@ body {
   right: unset !important;
   left: 32px !important;
   bottom: 32px !important;
-  border-radius: 36px 0 0 36px;
-  z-index: 9;
+  border-radius: 36px 0 0 36px !important;
+  z-index: 9 !important;
   &.no-draggable {
-    position: absolute;
+    position: absolute !important;
     &:not([data-tooltip='']):before {
-      display: none;
+      display: none !important;
     }
   }
 }
@@ -186,11 +187,11 @@ body {
     left: unset !important;
     bottom: unset !important;
     top: 10px !important;
-    border-radius: 36px;
+    border-radius: 36px !important;
     &.no-draggable:not([data-tooltip='']):before {
       left: unset !important;
       right: 100% !important;
-      display: block;
+      display: block !important;
       transform: translateX(-8px) !important;
       top: 6px !important;
     }
