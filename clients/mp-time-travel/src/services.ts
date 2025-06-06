@@ -16,7 +16,7 @@ export const sendMessage = async (
   errorRate: number
 ) => {
   return instance.post(
-    `/v1/timegate/dialogue-hub/openrouter/message`,
+    `/v1/dialogue-hub/openrouter/message`,
     {
       message: `${message} ${
         contextId || !character
@@ -36,7 +36,7 @@ export const sendMessage = async (
 // Dummy requests to generate traces
 export const getEpoch = async () => {
   try {
-    await instance.get(`/v1/timegate/epoch-engine/epoch`);
+    await instance.get(`/v1/epoch-engine/epoch`);
     console.log("Epoch fetched successfully");
   } catch (error) {
     console.error("Error fetching epoch:", error);
@@ -45,7 +45,7 @@ export const getEpoch = async () => {
 
 export const getHistoricalEvents = async () => {
   try {
-    await instance.get(`/v1/timegate/vault-of-time/historical-events`);
+    await instance.get(`/v1/vault-of-time/historical-events`);
   } catch (error) {
     console.log("Historical events fetched successfully");
     console.error("Error fetching historical events:", error);
@@ -54,7 +54,7 @@ export const getHistoricalEvents = async () => {
 
 export const getProminentPersons = async () => {
   try {
-    await instance.get(`/v1/timegate/minds-of-time/prominent-persons`);
+    await instance.get(`/v1/minds-of-time/prominent-persons`);
     console.log("Prominent persons fetched successfully");
   } catch (error) {
     console.error("Error fetching prominent persons:", error);

@@ -13,13 +13,15 @@ import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
+import io.opentelemetry.context.propagation.ContextPropagators;
 import io.opentelemetry.sdk.resources.Resource;
 // import io.opentelemetry.semconv.ResourceAttributes;
 // import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
 
 // otlp default exporters
-import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter;
-import io.opentelemetry.exporter.otlp.http.logs.OtlpHttpLogRecordExporter;
+// import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter;
+// import io.opentelemetry.exporter.otlp.http.logs.OtlpHttpLogRecordExporter;
 
 // mp exporters
 import app.multiplayer.opentelemetry.trace.MultiplayerRandomIdGenerator;
@@ -64,10 +66,10 @@ public class OpenTelemetryConfig {
                 .addLogRecordProcessor(BatchLogRecordProcessor.builder(logsExporter).build())
                 .build();
 
-        // OpenTelemetrySdk openTelemetrySdk = 
         OpenTelemetrySdk.builder()
                 .setTracerProvider(tracerProvider)
                 .setLoggerProvider(loggerProvider)
+                .setPropagators(ContextPropagators.create(W3CTraceContextPropagator.getInstance()))
                 .buildAndRegisterGlobal();
     }
 }
