@@ -19,7 +19,7 @@ export const sendMessage = async (
     `/v1/timegate/dialogue-hub/openrouter/message`,
     {
       message: `${message} ${
-        contextId || !character
+        !character
           ? ""
           : `. Answer like you are the ${character.name}, using this answer style: ${character.answerStyle}`
       }`,

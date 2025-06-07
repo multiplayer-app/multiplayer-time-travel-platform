@@ -35,6 +35,7 @@ const MultiplayerChat = ({
   const [copiedIndex, setCopiedIndex] = useState(null);
   const [recordingState, setRecordingState] = useState(null);
   const messageInputRef = useRef<HTMLInputElement>(null);
+  const bottomRef = useRef(null);
 
   const isDisabled = isTyping || !character;
 
@@ -45,8 +46,17 @@ const MultiplayerChat = ({
   }, [isDisabled]);
 
   useEffect(() => {
+    // Reset chat when character changes
     setContextId(null);
+    setMessages([]);
+    setIsTyping(false);
   }, [character]);
+
+  useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView();
+    }
+  }, [messages]);
 
   const onHandleCharacterErrorResponse = useCallback(
     async (errorMessage: string, character: Character, isRetry: boolean) => {
@@ -120,7 +130,7 @@ const MultiplayerChat = ({
           message,
           contextId,
           character,
-          getErrorRate(messages)
+          isRetry ? 0 : getErrorRate(messages)
         );
         const data = response?.data;
         handleSuccess(data?.reply, data?.contextId, delay);
@@ -139,12 +149,6 @@ const MultiplayerChat = ({
       postMessage(preselectedQuestion);
     }
   }, [preselectedQuestion, messages.length, postMessage]);
-
-  // Reset chat when character changes
-  useEffect(() => {
-    setMessages([]);
-    setIsTyping(false);
-  }, [character]);
 
   const onCopy = useCallback(
     (message: string, index: number) => {
@@ -236,7 +240,7 @@ const MultiplayerChat = ({
                   systemError={msg.systemError}
                 />
                 <div className="cs-message__content">
-                  <Message.TextContent text={msg.message} />
+                  <Message.HtmlContent html={msg.message} />
                   {msg.characterError && (
                     <Message.CustomContent>
                       {recordingState !== SessionState.started ? (
@@ -273,8 +277,8 @@ const MultiplayerChat = ({
                 </div>
               </div>
             ))}
+            <div ref={bottomRef} />
           </MessageList>
-
           <MessageInput
             placeholder={
               character

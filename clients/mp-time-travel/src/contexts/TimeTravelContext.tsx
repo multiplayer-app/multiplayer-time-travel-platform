@@ -31,9 +31,9 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
     const handleSetUrl = (res) => {
       setNavigationUrl(res?.url);
     };
-    recorderEventBus?.on("debug-session:stopped", handleSetUrl);
+    recorderEventBus?.on("debug-session:started", handleSetUrl);
     return () => {
-      recorderEventBus?.off("debug-session:stopped", handleSetUrl);
+      recorderEventBus?.off("debug-session:started", handleSetUrl);
     };
   }, []);
 
