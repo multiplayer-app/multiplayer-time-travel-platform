@@ -1,5 +1,5 @@
 package app.multiplayer.demo.opentelemetry;
-
+import io.opentelemetry.api.internal.OtelEncodingUtils;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -57,6 +57,15 @@ public class ErrorInjectionMiddleWare implements Filter {
             }
         }
 
+        long idUpperBound = 0;
+        if (errorRate == 0.0) {
+            idUpperBound = Long.MIN_VALUE;
+        } else if (errorRate == 1.0) {
+            idUpperBound = Long.MAX_VALUE;
+        } else {
+            idUpperBound = (long) (errorRate * Long.MAX_VALUE);
+        }
+
         Span span = Span.current();
         SpanContext sc = span.getSpanContext();
         if (sc.isValid()) {
@@ -66,7 +75,9 @@ public class ErrorInjectionMiddleWare implements Filter {
             long seed = traceId.hashCode();
             Random random = new Random(seed);
 
-            if (random.nextDouble() < errorRate) {
+            long hash = Math.abs(OtelEncodingUtils.longFromBase16String(traceId, 16));
+
+            if (hash < idUpperBound) {
                 String message = funnyMessages.get(random.nextInt(funnyMessages.size()));
 
                 response.setContentType("application/json");

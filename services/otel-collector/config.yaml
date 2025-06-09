@@ -137,16 +137,16 @@ service:
     logs/deb:
       receivers: [ otlp ]
       processors:
-        - transform/set_trace_type
         - filter/deb
+        - transform/set_trace_type
         # - memory_limiter/deb
         - batch
       exporters: [ otlphttp/multiplayer ]
     traces/deb:
       receivers: [ otlp ]
       processors:
-        - transform/set_trace_type
         - filter/deb
+        - transform/set_trace_type
         # - memory_limiter/deb
         - resourcedetection/system
         - batch
@@ -154,8 +154,8 @@ service:
     traces/d0c:
       receivers: [ otlp ]
       processors:
-        - transform/set_trace_type
         - filter/d0c
+        - transform/set_trace_type
         - resourcedetection/system
         - batch
       exporters: [ otlphttp/multiplayer ]
