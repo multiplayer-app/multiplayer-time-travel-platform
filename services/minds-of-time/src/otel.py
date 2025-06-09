@@ -15,7 +15,7 @@ from multiplayer.opentelemetry.exporter.http.log_exporter import MultiplayerOTLP
 from multiplayer.opentelemetry.trace.sampler import MultiplayerTraceIdRatioBasedSampler
 from multiplayer.opentelemetry.trace.id_generator import MultiplayerRandomIdGenerator
 
-from config import OTLP_TRACES_ENDPOINT, OTLP_LOGS_ENDPOINT, MULTIPLAYER_OTLP_KEY, OTLP_MULTIPLAYER_DOC_SPAN_RATIO, OTLP_MULTIPLAYER_SPAN_RATIO, SERVICE_NAME, SERVICE_VERSION
+from config import OTLP_TRACES_ENDPOINT, OTLP_LOGS_ENDPOINT, MULTIPLAYER_OTLP_KEY, OTLP_MULTIPLAYER_DOC_SPAN_RATIO, OTLP_MULTIPLAYER_SPAN_RATIO, SERVICE_NAME, SERVICE_VERSION, PLATFORM_ENV
 
 
 def init_tracing(app):
@@ -26,7 +26,7 @@ def init_tracing(app):
     resource = Resource(attributes = {
         SERVICE_NAME_ATTR: SERVICE_NAME,
         SERVICE_VERSION_ATTR: SERVICE_VERSION,
-        DEPLOYMENT_ENVIRONMENT: DEPLOYMENT_ENVIRONMENT
+        DEPLOYMENT_ENVIRONMENT: PLATFORM_ENV
     })
 
     traceProvider = TracerProvider(
