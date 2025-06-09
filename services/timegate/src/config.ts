@@ -5,9 +5,9 @@ export const LOG_LEVEL = process.env.LOG_LEVEL || (isProduction ? 'info' : 'debu
 export const PORT = Number(process.env.PORT || 3000)
 export const API_PREFIX = process.env.API_PREFIX || '/v1/timegate'
 
-export const SERVICE_NAME = process.env.npm_package_name?.split('/').pop() as string || process.env.SERVICE_NAME || 'timetravel-nodejs'
+export const SERVICE_NAME = process.env.npm_package_name?.split('/').pop() as string || process.env.SERVICE_NAME || 'timegate'
 export const SERVICE_VERSION = process.env.npm_package_version || '0.0.1'
-export const PLATFORM_ENV = process.env.PLATFORM_ENV || "<environment-name>"
+export const PLATFORM_ENV = process.env.PLATFORM_ENV || "staging"
 
 export const MULTIPLAYER_OTLP_KEY = process.env.MULTIPLAYER_OTLP_KEY || "<multiplayer-key>"
 export const OTLP_TRACES_ENDPOINT = process.env.OTLP_TRACES_ENDPOINT || "https://api.multiplayer.app/v1/traces"

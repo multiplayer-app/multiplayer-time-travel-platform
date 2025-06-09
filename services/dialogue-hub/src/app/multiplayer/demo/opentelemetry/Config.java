@@ -16,13 +16,13 @@ public class Config {
         : "8080";
     public static String SERVICE_NAME = System.getenv("SERVICE_NAME") != null && !System.getenv("SERVICE_NAME").isEmpty() 
         ? System.getenv("SERVICE_NAME")
-        : "<example-service-name>"; 
+        : "dialogue-hub"; 
     public static String SERVICE_VERSION = System.getenv("SERVICE_VERSION") != null && !System.getenv("SERVICE_VERSION").isEmpty() 
         ? System.getenv("SERVICE_VERSION")
-        : "<service-version>";
+        : "0.0.1";
     public static String PLATFORM_ENV = System.getenv("PLATFORM_ENV") != null && !System.getenv("PLATFORM_ENV").isEmpty()
         ? System.getenv("PLATFORM_ENV")
-        : "<environment-name>";
+        : "staging";
     public static String MULTIPLAYER_OTLP_KEY = System.getenv("MULTIPLAYER_OTLP_KEY") != null && !System.getenv("MULTIPLAYER_OTLP_KEY").isEmpty()
         ? System.getenv("MULTIPLAYER_OTLP_KEY")
         : "";

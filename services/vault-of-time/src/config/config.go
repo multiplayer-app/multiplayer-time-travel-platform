@@ -52,9 +52,9 @@ func LoadConfig() {
 		RANDOM_ERROR_RATE = 0.1
 	}
 
-	SERVICE_NAME = getEnv("SERVICE_NAME", "<example-service-name>")
-	SERVICE_VERSION = getEnv("SERVICE_VERSION", "<service-version>")
-	PLATFORM_ENV = getEnv("PLATFORM_ENV", "<environment-name>")
+	SERVICE_NAME = getEnv("SERVICE_NAME", "vault-of-time")
+	SERVICE_VERSION = getEnv("SERVICE_VERSION", "0.0.1")
+	PLATFORM_ENV = getEnv("PLATFORM_ENV", "staging")
 }
 
 func getEnv(key, defaultVal string) string {
