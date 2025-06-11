@@ -5,10 +5,12 @@ import Board from "components/Board";
 import NavigationModal from "components/NavigationModal";
 import DebuggerLabel from "components/DebuggerLabel";
 import { TimeTravelProvider } from "contexts/TimeTravelContext";
+import { useAnonymousTimeTravelerName } from "hooks/useAnonymousTimeTravelerName";
 import "./App.scss";
 
 function App() {
   const [isNavigationModalOpen, setIsNavigationModalOpen] = useState(false);
+  const userName = useAnonymousTimeTravelerName();
 
   useEffect(() => {
     const handleNavigationModal = () => {
@@ -26,6 +28,12 @@ function App() {
       );
     };
   }, []);
+
+  useEffect(() => {
+    window["mpSessionDebuggerMetadata"] = {
+      userName: userName,
+    };
+  }, [userName]);
 
   return (
     <TimeTravelProvider>

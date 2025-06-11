@@ -39,12 +39,12 @@ export const getErrorRate = (messages: ChatMessage[]) => {
   );
   const outgoingCount = outgoingMessages.length;
 
-  const cycleLength = 7; // 3 safe + 4 increasing
+  const cycleLength = 4; // 2 safe + 2 increasing
   const cycleIndex = outgoingCount % cycleLength;
 
-  if (cycleIndex < 3) {
+  if (cycleIndex < 2) {
     return 0;
   }
 
-  return (cycleIndex - 2) * 0.25; // 0.25, 0.5, 0.75, 1.0
+  return (cycleIndex - 1) * 0.5; // 0.5, 1
 };
