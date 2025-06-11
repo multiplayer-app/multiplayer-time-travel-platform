@@ -59,6 +59,11 @@ processors:
     limit_percentage: 80
     spike_limit_percentage: 20
 
+  memory_limiter/cdb:
+    check_interval: 1s
+    limit_percentage: 80
+    spike_limit_percentage: 20
+
   resourcedetection/system:
     detectors: [ "system" ]
     system:
@@ -68,37 +73,53 @@ processors:
     error_mode: ignore
     traces:
       span:
-        - 'resource.attributes["multiplayer.trace_type"] != "debdeb"'
-        - 'attributes["http.target"] == "/jaeger/v1/traces"'
-        - 'attributes["http.target"] == "/v1/traces"'
-        - 'attributes["http.target"] == "/v1/logs"'
-        - 'attributes["http.route"] == "/health"'
-        - 'attributes["http.route"] == "/healthz"'
+        - resource.attributes["multiplayer.trace_type"] != "debdeb"
+        - attributes["http.target"] == "/jaeger/v1/traces"
+        - attributes["http.target"] == "/v1/traces"
+        - attributes["http.target"] == "/v1/logs"
+        - attributes["http.route"] == "/health"
+        - attributes["http.route"] == "/healthz"
     logs:
       log_record:
-        - 'resource.attributes["multiplayer.trace_type"] != "debdeb"'
+        - resource.attributes["multiplayer.trace_type"] != "debdeb"
 
   filter/d0c:
     error_mode: ignore
     traces:
       span:
-        - 'attributes["multiplayer.trace_type"] != "d0cd0c"'
-        - 'attributes["http.target"] == "/jaeger/v1/traces"'
-        - 'attributes["http.target"] == "/v1/traces"'
-        - 'attributes["http.target"] == "/v1/logs"'
-        - 'attributes["http.route"] == "/health"'
-        - 'attributes["http.route"] == "/healthz"'
+        - attributes["multiplayer.trace_type"] != "d0cd0c"
+        - attributes["http.target"] == "/jaeger/v1/traces"
+        - attributes["http.target"] == "/v1/traces"
+        - attributes["http.target"] == "/v1/logs"
+        - attributes["http.route"] == "/health"
+        - attributes["http.route"] == "/healthz"
 
-  filter/not-d0c-deb:
+  filter/cdb:
     error_mode: ignore
     traces:
       span:
-        - 'attributes["multiplayer.trace_type"] == "debdeb" and attributes["multiplayer.trace_type"] == "d0cd0c"'
-        - 'attributes["http.target"] == "/jaeger/v1/traces"'
-        - 'attributes["http.target"] == "/v1/traces"'
-        - 'attributes["http.target"] == "/v1/logs"'
-        - 'attributes["http.route"] == "/health"'
-        - 'attributes["http.route"] == "/healthz"'
+        - resource.attributes["multiplayer.trace_type"] != "cdbcdb"
+        - attributes["http.target"] == "/jaeger/v1/traces"
+        - attributes["http.target"] == "/v1/traces"
+        - attributes["http.target"] == "/v1/logs"
+        - attributes["http.route"] == "/health"
+        - attributes["http.route"] == "/healthz"
+    logs:
+      log_record:
+        - resource.attributes["multiplayer.trace_type"] != "cdbcdb"
+
+  filter/not-d0c-deb-cdb:
+    error_mode: ignore
+    traces:
+      span:
+        - attributes["multiplayer.trace_type"] != "debdeb"
+        - attributes["multiplayer.trace_type"] != "d0cd0c"
+        - attributes["multiplayer.trace_type"] != "cdbcdb"
+        - attributes["http.target"] == "/jaeger/v1/traces"
+        - attributes["http.target"] == "/v1/traces"
+        - attributes["http.target"] == "/v1/logs"
+        - attributes["http.route"] == "/health"
+        - attributes["http.route"] == "/healthz"
 
   probabilistic_sampler:
     sampling_percentage: 30
@@ -134,35 +155,59 @@ service:
 
   extensions: [ healthcheckv2 ]
   pipelines:
-    logs/deb:
-      receivers: [ otlp ]
-      processors:
-        - filter/deb
-        - transform/set_trace_type
-        # - memory_limiter/deb
-        - batch
-      exporters: [ otlphttp/multiplayer ]
     traces/deb:
       receivers: [ otlp ]
       processors:
-        - filter/deb
         - transform/set_trace_type
-        # - memory_limiter/deb
+        - filter/deb
+        - memory_limiter/deb
         - resourcedetection/system
         - batch
       exporters: [ otlphttp/multiplayer ]
+
+    logs/deb:
+      receivers: [ otlp ]
+      processors:
+        - transform/set_trace_type
+        - filter/deb
+        - memory_limiter/deb
+        - batch
+      exporters: [ otlphttp/multiplayer ]
+
+    traces/cdb:
+      receivers: [ otlp ]
+      processors:
+        - transform/set_trace_type
+        - filter/cdb
+        - memory_limiter/cdb
+        - resourcedetection/system
+        - batch
+      exporters: [ otlphttp/multiplayer ]
+
+    logs/cdb:
+      receivers: [ otlp ]
+      processors:
+        - transform/set_trace_type
+        - filter/cdb
+        - memory_limiter/cdb
+        - resourcedetection/system
+        - batch
+      exporters: [ otlphttp/multiplayer ]
+
     traces/d0c:
       receivers: [ otlp ]
       processors:
-        - filter/d0c
         - transform/set_trace_type
+        - filter/d0c
         - resourcedetection/system
         - batch
       exporters: [ otlphttp/multiplayer ]
+
     traces/random-d0c:
       receivers: [ otlp ]
       processors:
-        - filter/not-d0c-deb
+        - transform/set_trace_type
+        - filter/not-d0c-deb-cdb
         - probabilistic_sampler
         - resourcedetection/system
         - batch
