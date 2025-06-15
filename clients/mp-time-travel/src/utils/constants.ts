@@ -6,5 +6,16 @@ import loadingIcon from "../assets/loading-icon.svg";
 import copyIcon from "../assets/clipboard-copy.svg";
 import retryIcon from "../assets/retry.svg";
 import checkmarkIcon from "../assets/check-circle-icon.svg";
+import githubIcon from "../assets/github.svg";
 
-export { cursor1, cursor2, cursor3, emailIcon, loadingIcon, copyIcon, retryIcon, checkmarkIcon };
+export {
+  cursor1,
+  cursor2,
+  cursor3,
+  emailIcon,
+  loadingIcon,
+  copyIcon,
+  retryIcon,
+  checkmarkIcon,
+  githubIcon,
+};

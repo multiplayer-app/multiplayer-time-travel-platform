@@ -15,6 +15,7 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
   const [selectedCharacter, setSelectedCharacter] = useState<Character>(null);
   const [question, setQuestion] = useState(null);
   const [navigationUrl, setNavigationUrl] = useState({});
+  const [errorRate, setErrorRate] = useState(0);
 
   useEffect(() => {
     getEpoch();
@@ -40,10 +41,12 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
   const value = {
     selectedCharacter,
     question,
+    navigationUrl,
+    errorRate,
     setSelectedCharacter,
     setQuestion,
-    navigationUrl,
     setNavigationUrl,
+    setErrorRate,
   };
 
   return (

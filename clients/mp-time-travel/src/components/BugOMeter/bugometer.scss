@@ -1,0 +1,38 @@
+.mtt-bugometer {
+  background: white;
+  border-radius: 12px;
+  padding: 10px 12px;
+  width: 270px;
+  max-width: 90%;
+  box-shadow: 0 3px 3px -1.5px #0000000F, 0 1px 1px -0.5px #0000000F;
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2D3748;
+    span {
+      font-weight: 500;
+    }
+  }
+  &__description {
+    font-size: 14px;
+    color: #2D3748;
+    margin-bottom: 12px;
+  }
+  &__bar {
+    height: 6px;
+    border-radius: 4px;
+    background: #ddd;
+    overflow: hidden;
+    margin-bottom: 16px;
+    position: relative;
+    cursor: pointer;
+    touch-action: none;
+  }
+  &__bar-gradient {
+    height: 100%;
+    background: linear-gradient(to right, #E37486, #2F57DD);
+  }
+}

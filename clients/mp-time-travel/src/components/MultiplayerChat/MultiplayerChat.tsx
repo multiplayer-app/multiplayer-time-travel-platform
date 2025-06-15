@@ -11,7 +11,6 @@ import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import MessageAvatar from "components/MessageAvatar";
 import { sendMessage } from "services";
 import { checkmarkIcon, copyIcon, retryIcon } from "utils/constants";
-import "./multiplayerChat.scss";
 import { SessionState, ChatMessage, Character } from "utils/types";
 import {
   createUserMessage,
@@ -21,6 +20,7 @@ import {
   getErrorRate,
 } from "utils/messageHelpers";
 import { useTimeTravel } from "hooks/useTimeTravel";
+import "./multiplayerChat.scss";
 
 const MultiplayerChat = ({
   character,
@@ -28,7 +28,7 @@ const MultiplayerChat = ({
   setQuestion,
   onDebuggerOpen,
 }) => {
-  const { navigationUrl } = useTimeTravel();
+  const { navigationUrl, errorRate, setErrorRate } = useTimeTravel();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [contextId, setContextId] = useState(null);
@@ -122,16 +122,20 @@ const MultiplayerChat = ({
 
       try {
         const userMessage = createUserMessage(message, character);
+        const _errorRate = errorRate || (isRetry ? 0 : getErrorRate(messages));
+
         setQuestion(message);
         setMessages((prev) => [...prev, userMessage]);
         setIsTyping(true);
+        setErrorRate(_errorRate);
 
         const response = await sendMessage(
           message,
           contextId,
           character,
-          isRetry ? 0 : getErrorRate(messages)
+          _errorRate
         );
+
         const data = response?.data;
         handleSuccess(data?.reply, data?.contextId, delay);
       } catch (err) {
@@ -140,7 +144,15 @@ const MultiplayerChat = ({
         setTimeout(() => setIsTyping(false), delay);
       }
     },
-    [character, setQuestion, contextId, messages, handleError]
+    [
+      character,
+      setQuestion,
+      contextId,
+      messages,
+      handleError,
+      errorRate,
+      setErrorRate,
+    ]
   );
 
   // Handle preselected question
@@ -239,16 +251,23 @@ const MultiplayerChat = ({
                   character={character}
                   systemError={msg.systemError}
                 />
-                <div className="cs-message__content">
+                <div
+                  className={`cs-message__content ${
+                    msg.systemError ? "cs-system-error" : ""
+                  }`}
+                >
+                  {msg.systemError && (
+                    <div className="cs-system-error__placeholder">Error</div>
+                  )}
                   <Message.HtmlContent html={msg.message} />
-                  {msg.characterError && (
+                  {msg.systemError && (
                     <Message.CustomContent>
                       {recordingState !== SessionState.started ? (
                         <div
                           className="mtt-debugger-toggle"
                           onClick={onDebuggerOpen}
                         >
-                          Start Debugging
+                          Open the debugger to start debugging
                         </div>
                       ) : (
                         <div

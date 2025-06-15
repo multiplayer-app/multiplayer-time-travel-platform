@@ -28,6 +28,35 @@
   }
 }
 
+.mtt-sidepanel-footer {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 16px;
+  position: absolute;
+  bottom: 90px;
+  left: 32px;
+}
+
+.mtt-project-fork {
+  background: white;
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: inline-flex;
+  gap: 8px;
+  font-size: 14px;
+  color: #2D3748;
+  font-weight: 500;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 3px 3px -1.5px #0000000F, 0 1px 1px -0.5px #0000000F;
+  text-decoration: unset;
+  width: max-content;
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
 .mtt-bg-1 {
   background-image: url("../../assets/panel_imgs/Freddie_Mercury.jpg");
 }

@@ -95,7 +95,18 @@
   &.mtt-incoming {
     .cs-message__content {
       background: #f2f2f2;
+      &.cs-system-error {
+        background: #FFF5F5;
+      }
     }
+  }
+  .cs-system-error__placeholder {
+    color: #E53E3E;
+    font-family: 'JetBrains Mono', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-bottom: 12px;
   }
   .cs-message__content {
     border-radius: 16px;
@@ -137,7 +148,8 @@
 }
 
 .mtt-debugger-toggle {
-  background-color: #ed8936;
+  background: #F56565;
+  border: 1px solid #FEEBCB;
   font-size: 14px;
   font-weight: 500;
   border-radius: 7px;
