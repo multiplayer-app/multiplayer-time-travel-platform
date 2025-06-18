@@ -36,27 +36,54 @@ export const sendMessage = async (
 // Dummy requests to generate traces
 export const getEpoch = async () => {
   try {
-    await instance.get(`/v1/timegate/epoch-engine/epoch`);
+    await instance.get(`/v1/epoch-engine/epoch`);
     console.log("Epoch fetched successfully");
   } catch (error) {
     console.error("Error fetching epoch:", error);
   }
 };
 
+export const getProminentPersons = async () => {
+  try {
+    await instance.get(`/v1/minds-of-time/prominent-persons`);
+    console.log("Prominent persons fetched successfully");
+  } catch (error) {
+    console.error("Error fetching prominent persons:", error);
+  }
+};
+
+export const getTimegateEpoch = async () => {
+  try {
+    await instance.get(`/v1/timegate/epoch-engine/epoch`);
+    console.log("Timegate epoch fetched successfully");
+  } catch (error) {
+    console.error("Error fetching Timegate epoch:", error);
+  }
+};
+
 export const getHistoricalEvents = async () => {
   try {
-    await instance.get(`/v1/timegate/vault-of-time/historical-events`);
-  } catch (error) {
+    await instance.get(`/v1/vault-of-time/historical-events`);
     console.log("Historical events fetched successfully");
+  } catch (error) {
     console.error("Error fetching historical events:", error);
   }
 };
 
-export const getProminentPersons = async () => {
+export const getTimegateHistoricalEvents = async () => {
+  try {
+    await instance.get(`/v1/timegate/vault-of-time/historical-events`);
+    console.log("Timegate historical events fetched successfully");
+  } catch (error) {
+    console.error("Error fetching Timegate historical events:", error);
+  }
+};
+
+export const getTimegateProminentPersons = async () => {
   try {
     await instance.get(`/v1/timegate/minds-of-time/prominent-persons`);
-    console.log("Prominent persons fetched successfully");
+    console.log("Timegate Prominent persons fetched successfully");
   } catch (error) {
-    console.error("Error fetching prominent persons:", error);
+    console.error("Error fetching Timegate prominent persons:", error);
   }
 };

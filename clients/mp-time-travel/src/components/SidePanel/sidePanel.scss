@@ -106,10 +106,31 @@
     padding: 10px;
   }
   .mtt-logo-container {
-    padding: 6px 8px;
+    padding: 4px 6px;
     border-radius: 12px;
+    margin-left: 50px;
     a, .mtt-logo-main {
       height: 30px;
+    }
+  }
+  .mtt-sidepanel-footer {
+    top: 5px;
+    bottom: unset;
+    left: unset;
+    right: 50px;
+    .mtt-project-fork {
+      display: none;
+    }
+    .mtt-bugometer {
+      border: solid 1px #BEBFC1;
+      width: 160px;
+      padding: 6px 8px;
+      &__description {
+        display: none;
+      }
+      &__bar {
+        margin-bottom: 5px;
+      }
     }
   }
 }

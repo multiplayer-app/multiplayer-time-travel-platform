@@ -70,7 +70,7 @@ export const BugOMeter = () => {
     <div className="mtt-bugometer">
       <div className="mtt-bugometer__header">
         <span>Bug-O-Meter</span>
-        <span>{errorRate * 100}%</span>
+        <span>{Math.round(errorRate * 100)}%</span>
       </div>
       <p className="mtt-bugometer__description">
         Chance of a bug in the next message
@@ -85,7 +85,7 @@ export const BugOMeter = () => {
         <div
           className="mtt-bugometer__bar-gradient"
           style={{
-            width: `${errorRate * 100}%`,
+            width: `${Math.round(errorRate * 100)}%`,
             transition: isDraggingRef.current ? "none" : "width 0.2s ease",
           }}
         />

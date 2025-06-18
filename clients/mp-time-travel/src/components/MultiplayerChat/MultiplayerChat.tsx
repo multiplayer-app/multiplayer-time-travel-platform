@@ -9,7 +9,7 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import MessageAvatar from "components/MessageAvatar";
-import { sendMessage } from "services";
+import { getTimegateEpoch, sendMessage } from "services";
 import { checkmarkIcon, copyIcon, retryIcon } from "utils/constants";
 import { SessionState, ChatMessage, Character } from "utils/types";
 import {
@@ -122,7 +122,9 @@ const MultiplayerChat = ({
 
       try {
         const userMessage = createUserMessage(message, character);
-        const _errorRate = errorRate || (isRetry ? 0 : getErrorRate(messages));
+        const isManualRate = errorRate !== 0.5 && errorRate !== 1;
+        const _errorRate =
+          (isManualRate && errorRate) || (isRetry ? 0 : getErrorRate(messages));
 
         setQuestion(message);
         setMessages((prev) => [...prev, userMessage]);
@@ -136,9 +138,11 @@ const MultiplayerChat = ({
           _errorRate
         );
 
+        getTimegateEpoch();
         const data = response?.data;
         handleSuccess(data?.reply, data?.contextId, delay);
       } catch (err) {
+        getTimegateEpoch();
         await handleError(err, delay, isRetry);
       } finally {
         setTimeout(() => setIsTyping(false), delay);

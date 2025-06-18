@@ -1,9 +1,11 @@
 import React, { useCallback, memo } from "react";
 import QuestionSelector from "components/QuestionSelector";
+import { getTimegateProminentPersons } from "services";
 import "./welcomeScreen.scss";
 
 const WelcomeScreen = ({ onCharacterPick, pickedCharacter, setQuestion }) => {
   const handleCharacterPick = useCallback(() => {
+    getTimegateProminentPersons();
     onCharacterPick();
   }, [onCharacterPick]);
 
@@ -19,7 +21,7 @@ const WelcomeScreen = ({ onCharacterPick, pickedCharacter, setQuestion }) => {
             you to try Multiplayer.
           </>
         ) : (
-          "Pick a character to start chatting."
+          "Ever wanted to debug with Yoda? Now you can. Pick a character and see how Multiplayer debugging works."
         )}
       </p>
 

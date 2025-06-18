@@ -1,9 +1,11 @@
 import React, { memo, useCallback } from "react";
+import { getTimegateHistoricalEvents } from "services";
 import "./questionSelector.scss";
 
 const QuestionSelector = ({ setQuestion, character }) => {
   const handleQuestionSelect = useCallback(
     (question: string) => {
+      getTimegateHistoricalEvents();
       setQuestion(question);
     },
     [setQuestion]
