@@ -21,7 +21,7 @@ const WelcomeScreen = ({ onCharacterPick, pickedCharacter, setQuestion }) => {
             you to try Multiplayer.
           </>
         ) : (
-          "Ever wanted to debug with Yoda? Now you can. Pick a character and see how Multiplayer debugging works."
+          "Ever wanted to debug with Yoda? Now you can. <br /> Pick a character and see how Multiplayer debugging works."
         )}
       </p>
 
