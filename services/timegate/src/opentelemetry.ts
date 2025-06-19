@@ -54,13 +54,13 @@ const instrumentations = [
       requestHook: MultiplayerHttpInstrumentationHooks.requestHook({
         headersToMask: ["X-Api-Key"],
         maxPayloadSize: 5000,
-        schemifyDocSpanPayload: true,
+        schemifyDocSpanPayload: false,
         maskDebSpanPayload: false,
       }),
       responseHook: MultiplayerHttpInstrumentationHooks.responseHook({
         headersToMask: ["X-Api-Key"],
         maxPayloadSize: 5000,
-        schemifyDocSpanPayload: true,
+        schemifyDocSpanPayload: false,
         maskDebSpanPayload: false
       }),
     },

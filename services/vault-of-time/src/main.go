@@ -91,7 +91,7 @@ func newHTTPHandler() http.Handler {
 	handleFunc(config.API_PREFIX+"/docs/*", httpSwagger.WrapHandler)
 
 	handleFunc(config.API_PREFIX+"/healthz", health_api.HealthHandler)
-	handleFunc(config.API_PREFIX+"/historical-events/", vault_of_time_api.HistoricalEventsHandler)
+	handleFunc(config.API_PREFIX+"/historical-events", vault_of_time_api.HistoricalEventsHandler)
 
 	handler := otelhttp.NewHandler(
 		AttachTraceIDMiddleware(errorMiddleware(mux)),

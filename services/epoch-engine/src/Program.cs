@@ -38,7 +38,16 @@ var resourceBuilder =
             ["deployment.environment"] = Config.PLATFORM_ENV,
             ["service.instance.id"] = Environment.MachineName
         });
-
+builder.Services.AddCors(options =>
+   {
+    options.AddPolicy(name: "AllowAllOrigins",
+        configurePolicy: policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+   });
 builder.Services.AddOpenTelemetry()
     .WithTracing(tracing =>
     {
@@ -50,6 +59,7 @@ builder.Services.AddOpenTelemetry()
             .AddProcessor(new SimpleActivityExportProcessor(traceExporter));
     })
     .WithLogging(logs => logs.AddProcessor(new BatchLogRecordExportProcessor(logExporter)));
+
 
 builder.Services.AddControllers(options =>
 {
@@ -68,6 +78,8 @@ builder.Services.AddSecurityHeaderPolicies()
     });
 
 var app = builder.Build();
+
+app.UseCors("AllowAllOrigins");
 
 app.Use(async (context, next) =>
 {
