@@ -1,5 +1,9 @@
 package main
 
+import (
+	"net/http"
+)
+
 func corsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Set CORS headers
