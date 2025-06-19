@@ -98,5 +98,5 @@ func newHTTPHandler() http.Handler {
 		"/",
 	)
 
-	return handler
+	return corsMiddleware(handler)
 }
