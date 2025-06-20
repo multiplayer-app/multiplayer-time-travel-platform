@@ -23,6 +23,9 @@ EXCLUDED_PATHS = ["/docs", "/healthz"]
 def random_error_middleware(app):
     @app.before_request
     def maybe_throw_error():
+        if request.method == "OPTIONS":
+            return  # Don't inject errors into CORS preflight requests
+
         path = request.path.lower()
         if any(skip in path for skip in EXCLUDED_PATHS):
             return  # Skip excluded paths
