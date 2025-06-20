@@ -34,18 +34,21 @@ random_error_middleware(app)
 
 logger = logging.getLogger(__name__)
 
-
 @app.after_request
-def add_trace_id_header(response):
-    # Get current active span
+def add_trace_id_and_cors_headers(response):
+    # Add Trace ID header
     span = trace.get_current_span()
     if span is not None:
         trace_id = span.get_span_context().trace_id
         if trace_id != 0:
-            # Format trace ID as 32-char hex string
             trace_id_hex = format(trace_id, '032x')
-            # Add trace ID to response header
             response.headers['X-Trace-Id'] = trace_id_hex
+
+    # Add CORS headers
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = '*'
+
     return response
 
 app.register_blueprint(prominent_persons_bp, url_prefix = API_PREFIX)
