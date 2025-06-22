@@ -16,6 +16,7 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
   const [question, setQuestion] = useState(null);
   const [navigationUrl, setNavigationUrl] = useState({});
   const [errorRate, setErrorRate] = useState(0);
+  const [isManualRate, setIsManualRate] = useState(false);
 
   useEffect(() => {
     getEpoch();
@@ -43,10 +44,12 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
     question,
     navigationUrl,
     errorRate,
+    isManualRate,
     setSelectedCharacter,
     setQuestion,
     setNavigationUrl,
     setErrorRate,
+    setIsManualRate,
   };
 
   return (

@@ -28,7 +28,8 @@ const MultiplayerChat = ({
   setQuestion,
   onDebuggerOpen,
 }) => {
-  const { navigationUrl, errorRate, setErrorRate } = useTimeTravel();
+  const { navigationUrl, errorRate, setErrorRate, isManualRate } =
+    useTimeTravel();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [contextId, setContextId] = useState(null);
@@ -122,7 +123,6 @@ const MultiplayerChat = ({
 
       try {
         const userMessage = createUserMessage(message, character);
-        const isManualRate = errorRate !== 0.5 && errorRate !== 1;
         const _errorRate =
           (isManualRate && errorRate) || (isRetry ? 0 : getErrorRate(messages));
 
@@ -156,6 +156,7 @@ const MultiplayerChat = ({
       handleError,
       errorRate,
       setErrorRate,
+      isManualRate,
     ]
   );
 

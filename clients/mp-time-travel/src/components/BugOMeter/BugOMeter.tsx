@@ -3,7 +3,7 @@ import { useTimeTravel } from "hooks/useTimeTravel";
 import "./bugometer.scss";
 
 export const BugOMeter = () => {
-  const { errorRate, setErrorRate } = useTimeTravel();
+  const { errorRate, setErrorRate, setIsManualRate } = useTimeTravel();
   const barRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
 
@@ -15,8 +15,9 @@ export const BugOMeter = () => {
       const x = clientX - rect.left;
       const percent = Math.round((x / rect.width) * 100);
       setErrorRate(Math.max(0, Math.min(100, percent)) / 100);
+      setIsManualRate(true);
     },
-    [setErrorRate]
+    [setErrorRate, setIsManualRate]
   );
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {

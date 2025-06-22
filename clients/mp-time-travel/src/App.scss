@@ -178,6 +178,10 @@ body {
   }
 }
 
+.mp-session-debugger-popover {
+  bottom: 100px !important;
+}
+
 @media screen and (max-width: 768px) {
   .mtt-app {
     flex-direction: column;
@@ -195,5 +199,9 @@ body {
       transform: translateX(-8px) !important;
       top: 6px !important;
     }
+  }
+  .mp-session-debugger-popover {
+    bottom: unset !important;
+    top: 65px !important;
   }
 }
