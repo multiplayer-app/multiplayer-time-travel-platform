@@ -16,7 +16,7 @@ const WelcomeScreen = ({ onCharacterPick, pickedCharacter, setQuestion }) => {
       <p className="mtt-subtext medium-text">
         {pickedCharacter ? (
           <>
-            Enter your message to {pickedCharacter.name}.<br /> Beware..{" "}
+            Enter your message to {pickedCharacter.name}.<br /> Beware...{" "}
             {pickedCharacter.pronoun}’ll try to nudge <br />
             you to try Multiplayer.
           </>

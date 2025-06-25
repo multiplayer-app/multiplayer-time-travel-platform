@@ -1,0 +1,37 @@
+.mtt-suggestions-list-wrapper {
+  height: 70px;
+  .mtt-suggestions-list-header {
+    color: #888;
+    opacity: 0.5;
+    font-size: 11px;
+    line-height: normal;
+    letter-spacing: 0.88px;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+  }
+  .mtt-suggestions-list {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow-x: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.mtt-suggestion-item {
+  border-radius: 20px;
+  border: 1px solid #F0F0F0;
+  white-space: nowrap;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 15px;
+  user-select: none;
+}
+
+@media screen and (max-width: 768px) {
+  .mtt-suggestion-item {
+    font-size: 14px;
+  }
+}

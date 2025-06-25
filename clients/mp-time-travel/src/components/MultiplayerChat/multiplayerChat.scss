@@ -5,6 +5,7 @@
   display: flex;
   overflow: hidden;
   font-weight: 500;
+  position: relative;
   .cs-main-container {
     border: none;
     width: 100%;
@@ -66,6 +67,21 @@
 
   .cs-message-list__scroll-wrapper {
     padding: 0;
+  }
+
+  .mtt-suggestions-list-wrapper {
+    position: absolute;
+    z-index: 12;
+    bottom: 60px;
+    left: 0;
+    padding-left: 100px;
+    width: 100%;
+  }
+
+  &:has(.mtt-suggestions-list-wrapper) {
+    .cs-message-list {
+      padding-bottom: 90px;
+    }
   }
 }
 
@@ -165,11 +181,17 @@
 @media screen and (max-width: 1024px) {
   .mtt-chat-container {
     padding: 10px 20px 0;
+    .mtt-suggestions-list-wrapper {
+      padding-left: 20px;
+    }
   }
 }
 
 @media screen and (max-width: 768px) {
   .mtt-chat-container {
     padding: 10px 10px 0;
+    .mtt-suggestions-list-wrapper {
+      padding-left: 10px;
+    }
   }
 }

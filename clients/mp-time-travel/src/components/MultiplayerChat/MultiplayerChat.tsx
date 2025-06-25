@@ -9,6 +9,7 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import MessageAvatar from "components/MessageAvatar";
+import SuggestionsList from "components/SuggestionsList";
 import { getTimegateEpoch, sendMessage } from "services";
 import { checkmarkIcon, copyIcon, retryIcon } from "utils/constants";
 import { SessionState, ChatMessage, Character } from "utils/types";
@@ -319,6 +320,12 @@ const MultiplayerChat = ({
           />
         </ChatContainer>
       </MainContainer>
+      {preselectedQuestion && !isTyping && (
+        <SuggestionsList
+          character={character}
+          onSelect={(msg) => postMessage(msg)}
+        />
+      )}
     </div>
   );
 };
