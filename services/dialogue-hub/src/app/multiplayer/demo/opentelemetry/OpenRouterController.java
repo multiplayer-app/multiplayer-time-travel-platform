@@ -74,7 +74,7 @@ public class OpenRouterController {
 
     // Prepare payload for OpenRouter
     Map<String, Object> messagePayload = new HashMap<>();
-    messagePayload.put("model", "openai/gpt-3.5-turbo");
+    messagePayload.put("model", Config.OPENAI_MODEL);
     messagePayload.put("messages", context);
 
     HttpHeaders headers = new HttpHeaders();

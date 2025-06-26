@@ -10,6 +10,9 @@ public class Config {
     public static String OPENAI_API_URL = System.getenv("OPENAI_API_URL") != null && !System.getenv("OPENAI_API_URL").isEmpty()
         ? System.getenv("OPENAI_API_URL")
         : "https://openrouter.ai/api/v1/chat/completions";
+    public static String OPENAI_MODEL = System.getenv("OPENAI_MODEL") != null && !System.getenv("OPENAI_MODEL").isEmpty()
+        ? System.getenv("OPENAI_MODEL")
+        : "morph/morph-v2";
     
     public static String PORT = System.getenv("PORT") != null && !System.getenv("PORT").isEmpty()
         ? System.getenv("PORT")
