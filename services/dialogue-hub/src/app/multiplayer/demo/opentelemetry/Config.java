@@ -12,7 +12,7 @@ public class Config {
         : "https://openrouter.ai/api/v1/chat/completions";
     public static String OPENAI_MODEL = System.getenv("OPENAI_MODEL") != null && !System.getenv("OPENAI_MODEL").isEmpty()
         ? System.getenv("OPENAI_MODEL")
-        : "openai/gpt-4o-mini-search-preview";
+        : "openai/o3";
     
     public static String PORT = System.getenv("PORT") != null && !System.getenv("PORT").isEmpty()
         ? System.getenv("PORT")
