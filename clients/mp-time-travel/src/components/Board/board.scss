@@ -1,5 +1,6 @@
 .mtt-board {
   width: 70%;
+  min-width: calc(70% - 300px);
   height: 100dvh;
   padding: 24px 0 6px;
   display: flex;

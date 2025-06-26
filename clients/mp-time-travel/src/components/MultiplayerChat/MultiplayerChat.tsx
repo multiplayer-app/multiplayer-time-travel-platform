@@ -125,7 +125,7 @@ const MultiplayerChat = ({
       try {
         const userMessage = createUserMessage(message, character);
         const _errorRate =
-          (isManualRate && errorRate) || (isRetry ? 0 : getErrorRate(messages));
+          (isManualRate && errorRate) || getErrorRate(messages);
 
         setQuestion(message);
         setMessages((prev) => [...prev, userMessage]);
