@@ -2,11 +2,11 @@
   "openapi": "3.0.0",
   "info": {
     "version": "0.0.1",
-    "title": "Timegate API service"
+    "title": "Dialogue HUB API service"
   },
   "servers": [
     {
-      "url": "/v1/timegate"
+      "url": "/v1/dialogue-hub"
     }
   ],
   "tags": [
@@ -19,19 +19,7 @@
       "description": "Healthz"
     },
     {
-      "name": "Dialogue hub"
-    },
-    {
-      "name": "Epoch engine"
-    },
-    {
-      "name": "Minds of time"
-    },
-    {
-      "name": "Vault of time"
-    },
-    {
-      "name": "User"
+      "name": "Openrouter"
     }
   ],
   "paths": {
@@ -91,40 +79,11 @@
         }
       }
     },
-    "/user/info/email": {
-      "post": {
-        "summary": "Save user email.",
-        "tags": [
-          "User"
-        ],
-        "operationId": "saveUserEmail",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SaveUserEmailPayload"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "Email saved."
-          }
-        }
-      }
-    },
-    "/dialogue-hub/openrouter/messages": {
+    "/openrouter/message": {
       "post": {
         "summary": "Post message to openrouter.",
         "tags": [
-          "Dialogue hub"
+          "Openrouter"
         ],
         "operationId": "postMessage",
         "consumes": [
@@ -161,123 +120,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/OpenrouterReply"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/epoch-engine/epoch": {
-      "get": {
-        "summary": "List epochs.",
-        "tags": [
-          "Epoch engine"
-        ],
-        "operationId": "listEpochs",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "errorRate",
-            "in": "query",
-            "type": "number",
-            "format": "float",
-            "min": 0,
-            "max": 1,
-            "description": "Error injection rate between 0 and 1",
-            "required": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Epochs.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Epochs"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/minds-of-time/prominent-persons": {
-      "get": {
-        "summary": "List prominent persons.",
-        "tags": [
-          "Minds of time"
-        ],
-        "operationId": "listProminentPersons",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "errorRate",
-            "in": "query",
-            "type": "number",
-            "format": "float",
-            "min": 0,
-            "max": 1,
-            "description": "Error injection rate between 0 and 1",
-            "required": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Prominent persons.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProminentPersons"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/vault-of-time/historical-events": {
-      "get": {
-        "summary": "List historical events.",
-        "tags": [
-          "Vault of time"
-        ],
-        "operationId": "listHistoricalEvents",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "errorRate",
-            "in": "query",
-            "type": "number",
-            "format": "float",
-            "min": 0,
-            "max": 1,
-            "description": "Error injection rate between 0 and 1",
-            "required": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Historical events.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HistoricalEvents"
                 }
               }
             }

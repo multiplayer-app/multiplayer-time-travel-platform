@@ -1,21 +1,34 @@
-FROM gradle:8-jdk17 AS build
+FROM node:24-slim AS build
 
-WORKDIR /usr/app/
+ARG NODE_ENV=production
+
+WORKDIR /usr/src/app
 
 COPY . .
-COPY application.properties application.properties
+# COPY package-lock.json ./
+# COPY package.json ./
+# COPY tsconfig.json ./
+# COPY ./src/ ./
+# COPY ./doc/ ./
 
-RUN ./gradlew clean build
+RUN NODE_ENV=development npm ci
+RUN npm run build
 
-FROM openjdk:17-jdk-slim
+RUN find . -type d -name "node_modules" -exec rm -rf {} +
+RUN find . -type d -name "src" ! -path "*/dist/src" -exec rm -rf {} +
+RUN find . -type f -name "README.md" -exec rm -rf {} +
+RUN find . -type f -name "tsconfig.*" -exec rm -rf {} +
+
+RUN npm ci --omit=dev
+
+FROM node:24-slim
 
 ARG SERVICE_VERSION
 ENV SERVICE_VERSION=$SERVICE_VERSION
 
-WORKDIR /usr/app/
-
-COPY --from=build /usr/app/build/libs/app-0.0.1.jar app.jar
-COPY --from=build /usr/app/application.properties application.properties
+WORKDIR /usr/src/app
 
 EXPOSE 3000
-ENTRYPOINT ["java", "-jar", "app.jar"]
+COPY --from=build /usr/src/app /usr/src/app
+
+CMD ["npm", "start"]
