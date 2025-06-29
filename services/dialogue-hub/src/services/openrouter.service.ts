@@ -1,7 +1,7 @@
 import axios from 'axios'
 import restify from 'restify-errors'
 import { randomUUID } from 'crypto'
-import { redis } from '../libs'
+import { redis, logger } from '../libs'
 import {
     OPENROUTER_API_KEY,
     OPENROUTER_API_URL,
@@ -25,11 +25,21 @@ export const postOpenRouterMessage = async (
             contextId = randomUUID()
         }
 
+        // artificial bug for cypress tests
+        if (message.startsWith('CYPRESS_BUG')) {
+            const obj = {message}
+
+            logger.info({
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                message: obj.data.message
+            }, 'Should throw an error here')
+        }
+
         messages.push({
             role: 'user',
             content: message
         })
-
 
         await redis.set(
             `${REDIS_OPENROUTER_CTX_CACHE_PREFIX}${contextId}`,
