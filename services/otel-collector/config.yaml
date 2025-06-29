@@ -126,7 +126,7 @@ processors:
 
 exporters:
   otlphttp/multiplayer:
-    endpoint: https://api.multiplayer.app:443
+    endpoint: "${OTLP_COLLECTOR_ENDPOINT}"
     headers:
       Authorization: "${MULTIPLAYER_OTLP_KEY}"
     timeout: 10s
