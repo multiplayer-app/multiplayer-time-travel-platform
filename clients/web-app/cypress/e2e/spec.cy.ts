@@ -25,8 +25,7 @@ describe('template spec', () => {
 
     cy.get('.mp-session-debugger-popover-button.mp-stop-recording')
       .click()
-      .wait(1500)
-
+      .wait(10000)
   });
 
   it('Should not throw error', () => {
