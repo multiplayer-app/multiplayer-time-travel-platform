@@ -26,7 +26,7 @@ export const postOpenRouterMessage = async (
         }
 
         // artificial bug for cypress tests
-        if (message.startsWith('CYPRESS_BUG')) {
+        if (message.startsWith('BUG')) {
             const obj = {message}
 
             logger.info({

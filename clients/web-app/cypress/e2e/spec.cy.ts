@@ -71,7 +71,7 @@ describe('template spec', () => {
       .wait(100)
       .trigger('mouseup')
       .wait(100)
-      .type('CYPRESS_BUG');
+      .type('BUG');
 
     cy.get('.cs-button').click()
       .wait('@startRequest', { timeout: 80000 })
