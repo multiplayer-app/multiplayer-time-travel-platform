@@ -1,15 +1,16 @@
 x-common-variables: &common-variables
-   PLATFORM_ENV: demo-env
+  PLATFORM_ENV: demo-env
 
-   OTLP_TRACES_ENDPOINT: http://otel-collector:4318/v1/traces
-   OTLP_LOGS_ENDPOINT: http://otel-collector:4318/v1/logs
-   OTLP_MULTIPLAYER_DOC_SPAN_RATIO: 0.04
-   OTLP_MULTIPLAYER_SPAN_RATIO: 0.05
-   
-   REACT_APP_PLATFORM_ENV: demo-env
-   REACT_APP_BASE_API_URL: http://localhost:8080
-   REACT_APP_OTLP_MULTIPLAYER_DOC_SPAN_RATIO: 0.04
-   REACT_APP_OTLP_MULTIPLAYER_SPAN_RATIO: 0.05
+  OTLP_TRACES_ENDPOINT: http://otel-collector:4318/v1/traces # for backend services
+  OTLP_LOGS_ENDPOINT: http://otel-collector:4318/v1/logs # for backend services
+  OTLP_COLLECTOR_ENDPOINT: https://api.multiplayer.app:443 # for web-app and otel-collector
+  OTLP_MULTIPLAYER_DOC_SPAN_RATIO: 0.04
+  OTLP_MULTIPLAYER_SPAN_RATIO: 0.05
+
+  #  REACT_APP_PLATFORM_ENV: demo-env
+  REACT_APP_BASE_API_URL: http://localhost:8080 # for frontend service
+  #  REACT_APP_OTLP_MULTIPLAYER_DOC_SPAN_RATIO: 0.04
+  #  REACT_APP_OTLP_MULTIPLAYER_SPAN_RATIO: 0.05
 
 services:
   envoy:
@@ -28,7 +29,7 @@ services:
         condition: service_started
       minds-of-time:
         condition: service_started
-      frontend:
+      web-app:
         condition: service_healthy
     volumes:
       - ./services/envoy/envoy.yaml:/etc/envoy/envoy.yaml
@@ -43,7 +44,6 @@ services:
       <<: *common-variables
       ASPNETCORE_URLS: http://0.0.0.0:3000
       PORT: 3000
-      SERVICE_NAME: epoch-engine
       SERVICE_VERSION: 0.0.1
     env_file:
       - ./.env
@@ -59,7 +59,6 @@ services:
     environment:
       <<: *common-variables
       PORT: 3000
-      SERVICE_NAME: vault-of-time
       SERVICE_VERSION: 0.0.1
     env_file:
       - ./.env
@@ -77,7 +76,7 @@ services:
       SERVER_PORT: 3000
       REDIS_HOST: mp-time-travel-redis
       REDIS_PORT: 6379
-      SERVICE_NAME: dialogue-hub
+      REDIS_URI: redis://mp-time-travel-redis:6379
       SERVICE_VERSION: 0.0.1
     depends_on:
       redis:
@@ -96,7 +95,6 @@ services:
     environment:
       <<: *common-variables
       PORT: 3000
-      SERVICE_NAME: travel-timegate
       SERVICE_VERSION: 0.0.1
       DIALOGUE_HUB_SERVICE_URL: http://mp-time-travel-dialogue-hub:3000
       EPOCH_ENGINE_SERVICE_URL: http://mp-time-travel-epoch-engine:3000
@@ -117,23 +115,22 @@ services:
     environment:
       <<: *common-variables
       PORT: 3000
-      SERVICE_NAME: minds-of-time
       SERVICE_VERSION: 0.0.1
     env_file:
       - ./.env
     # volumes:
     #   - ./services/minds-of-time:/usr/src/app:cached
 
-  frontend:
+  web-app:
     build:
-      context: ./clients/mp-time-travel
-    container_name: mp-time-travel-frontend
-    hostname: mp-time-travel-frontend
+      context: ./clients/web-app
+      args:
+        <<: *common-variables
+        MULTIPLAYER_OTLP_KEY: ${MULTIPLAYER_OTLP_KEY}
+        VERSION: 0.0.1
+    container_name: mp-time-travel-web-app
+    hostname: mp-time-travel-web-app
     restart: on-failure
-    environment:
-      <<: *common-variables
-      REACT_APP_SERVICE_NAME: time-travel-frontend
-      REACT_APP_SERVICE_VERSION: 0.0.1
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 20s
@@ -163,6 +160,8 @@ services:
     command: ["--config=/etc/otel/config.yaml"]
     env_file:
       - ./.env
+    environment:
+      <<: *common-variables
     volumes:
       - ./services/otel-collector/config.yaml:/etc/otel/config.yaml
   

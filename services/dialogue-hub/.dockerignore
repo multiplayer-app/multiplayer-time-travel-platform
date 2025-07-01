@@ -1,3 +1,5 @@
-.gradle
-LICENSE
-README.md
+tsconfig.tsbuildinfo
+dist
+node_modules
+.eslintignore
+.eslintrc

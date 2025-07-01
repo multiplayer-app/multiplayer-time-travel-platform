@@ -150,7 +150,7 @@ static_resources:
           - lb_endpoints:
               - endpoint:
                   address:
-                    socket_address: { address: mp-time-travel-frontend, port_value: 3000 }
+                    socket_address: { address: mp-time-travel-web-app, port_value: 3000 }
 
 # admin:
 #   access_log_path: /tmp/admin_access.log

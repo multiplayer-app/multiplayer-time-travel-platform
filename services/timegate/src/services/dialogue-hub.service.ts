@@ -9,7 +9,7 @@ export const postOpenRouterMessage = async (
 ): Promise<{ reply: string, contextId: string }> => {
     try {
         const res = await axios.post(
-            `${DIALOGUE_HUB_SERVICE_URL}/v1/dialogue-hub/openrouter/messages`,
+            `${DIALOGUE_HUB_SERVICE_URL}/v1/dialogue-hub/openrouter/message`,
             {
                 message,
                 ...contextId ? { contextId } : {}
