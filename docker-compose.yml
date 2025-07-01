@@ -1,15 +1,16 @@
 x-common-variables: &common-variables
-   PLATFORM_ENV: demo-env
+  PLATFORM_ENV: demo-env
 
-   OTLP_TRACES_ENDPOINT: http://otel-collector:4318/v1/traces
-   OTLP_LOGS_ENDPOINT: http://otel-collector:4318/v1/logs
-   OTLP_MULTIPLAYER_DOC_SPAN_RATIO: 0.04
-   OTLP_MULTIPLAYER_SPAN_RATIO: 0.05
-   
-   REACT_APP_PLATFORM_ENV: demo-env
-   REACT_APP_BASE_API_URL: http://localhost:8080
-   REACT_APP_OTLP_MULTIPLAYER_DOC_SPAN_RATIO: 0.04
-   REACT_APP_OTLP_MULTIPLAYER_SPAN_RATIO: 0.05
+  OTLP_TRACES_ENDPOINT: http://otel-collector:4318/v1/traces # for backend services
+  OTLP_LOGS_ENDPOINT: http://otel-collector:4318/v1/logs # for backend services
+  OTLP_COLLECTOR_ENDPOINT: https://api.multiplayer.app:443 # for web-app and otel-collector
+  OTLP_MULTIPLAYER_DOC_SPAN_RATIO: 0.04
+  OTLP_MULTIPLAYER_SPAN_RATIO: 0.05
+
+  #  REACT_APP_PLATFORM_ENV: demo-env
+  REACT_APP_BASE_API_URL: http://localhost:8080 # for frontend service
+  #  REACT_APP_OTLP_MULTIPLAYER_DOC_SPAN_RATIO: 0.04
+  #  REACT_APP_OTLP_MULTIPLAYER_SPAN_RATIO: 0.05
 
 services:
   envoy:
@@ -123,12 +124,13 @@ services:
   web-app:
     build:
       context: ./clients/web-app
+      args:
+        <<: *common-variables
+        MULTIPLAYER_OTLP_KEY: ${MULTIPLAYER_OTLP_KEY}
+        VERSION: 0.0.1
     container_name: mp-time-travel-web-app
     hostname: mp-time-travel-web-app
     restart: on-failure
-    environment:
-      <<: *common-variables
-      REACT_APP_SERVICE_VERSION: 0.0.1
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 20s
@@ -158,6 +160,8 @@ services:
     command: ["--config=/etc/otel/config.yaml"]
     env_file:
       - ./.env
+    environment:
+      <<: *common-variables
     volumes:
       - ./services/otel-collector/config.yaml:/etc/otel/config.yaml
   

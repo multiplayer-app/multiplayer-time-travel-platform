@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 
 debuggerInstance.init({
   version: process.env.REACT_APP_SERVICE_VERSION,
-  application: process.env.REACT_APP_SERVICE_NAME,
+  application: process.env.REACT_APP_SERVICE_NAME || 'mp-time-travel-web-app',
   environment: process.env.REACT_APP_PLATFORM_ENV,
   apiKey: process.env.REACT_APP_SESSION_DEBUGGER_KEY,
   ...(process.env.REACT_APP_SESSION_DEBUGGER_API_BASE_URL

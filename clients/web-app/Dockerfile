@@ -1,20 +1,36 @@
-FROM node:22-alpine
+FROM node:22-alpine as builder
  
-# Set the working directory inside the container
+ARG MULTIPLAYER_OTLP_KEY
+ARG PLATFORM_ENV
+ARG VERSION
+ARG OTLP_MULTIPLAYER_DOC_SPAN_RATIO
+ARG OTLP_MULTIPLAYER_SPAN_RATIO
+ARG OTLP_COLLECTOR_ENDPOINT
+ARG REACT_APP_BASE_API_URL
+
+ENV REACT_APP_SESSION_DEBUGGER_KEY=$MULTIPLAYER_OTLP_KEY
+ENV REACT_APP_PLATFORM_ENV=$PLATFORM_ENV
+ENV REACT_APP_SERVICE_VERSION=$VERSION
+ENV REACT_APP_OTLP_MULTIPLAYER_DOC_SPAN_RATIO=$OTLP_MULTIPLAYER_DOC_SPAN_RATIO
+ENV REACT_APP_OTLP_MULTIPLAYER_SPAN_RATIO=$OTLP_MULTIPLAYER_SPAN_RATIO
+ENV REACT_APP_SESSION_DEBUGGER_API_BASE_URL=$OTLP_COLLECTOR_ENDPOINT
+ENV REACT_APP_BASE_API_URL=$REACT_APP_BASE_API_URL
+
 WORKDIR /app
-# Copy package.json and package-lock.json
+
 COPY package*.json ./
  
-# Install dependencies
-RUN npm install --legacy-peer-deps
+RUN npm install ci
 
-RUN apk add curl
- 
-# Copy the rest of your application files
 COPY . .
- 
-# Expose the port your app runs on
+
+RUN npm run build
+
+FROM nginx:alpine
+
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+
+COPY --from=builder /app/build /usr/share/nginx/html
+
 EXPOSE 3000
- 
-# Define the command to run your app
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]
