@@ -20,6 +20,7 @@
         border-radius: 20px;
         border: 1px solid #f0f0f0;
         background: #f2f2f2;
+        padding-right: 35px;
       }
       .cs-message-input__content-editor {
         background: #f2f2f2;
@@ -43,8 +44,8 @@
         background-image: url('../../assets/message-send-icon.svg');
         background-repeat: no-repeat;
         background-position: center;
-        height: 32px;
-        width: 32px;
+        height: 28px;
+        width: 28px;
         &:hover:not(:disabled) {
           opacity: 0.9;
         }
