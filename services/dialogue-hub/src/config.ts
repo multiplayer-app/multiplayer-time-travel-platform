@@ -32,8 +32,9 @@ export const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL
     ? process.env.OPENROUTER_MODEL
     : 'openai/gpt-3.5-turbo-instruct'
 
-
-export const REDIS_URI = process.env.REDIS_URI || 'redis://localhost:6379'
+export const REDIS_URI = process.env.REDIS_URI
+    || process.env.REDIS_HOST && process.env.REDIS_PORT ? `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}` : false
+    || 'redis://localhost:6379'
 
 export const REDIS_DB = process.env.REDIS_DB || 0
 
