@@ -38,9 +38,9 @@ jobs:
 
       - name: Make release for dialogue-hub
         env:
-          MULTIPLAYER_WORKSPACE_ID: ${{ env.MULTIPLAYER_WORKSPACE_ID }}
-          MULTIPLAYER_PROJECT_ID: ${{ env.MULTIPLAYER_PROJECT_ID }}
-          MULTIPLAYER_HOST: ${{ env.MULTIPLAYER_HOST }}
+          MULTIPLAYER_WORKSPACE_ID: ${{ vars.MULTIPLAYER_WORKSPACE_ID }}
+          MULTIPLAYER_PROJECT_ID: ${{ vars.MULTIPLAYER_PROJECT_ID }}
+          MULTIPLAYER_HOST: ${{ vars.MULTIPLAYER_HOST }}
           MULTIPLAYER_API_KEY: ${{ secrets.MULTIPLAYER_API_KEY }}
           COMMIT_SHORT: ${{ steps.commit.outputs.short }}
           COMMIT_SHA: ${{ github.sha }}
@@ -61,9 +61,9 @@ jobs:
 
       - name: Make release for epoch-engine
         env:
-          MULTIPLAYER_WORKSPACE_ID: ${{ env.MULTIPLAYER_WORKSPACE_ID }}
-          MULTIPLAYER_PROJECT_ID: ${{ env.MULTIPLAYER_PROJECT_ID }}
-          MULTIPLAYER_HOST: ${{ env.MULTIPLAYER_HOST }}
+          MULTIPLAYER_WORKSPACE_ID: ${{ vars.MULTIPLAYER_WORKSPACE_ID }}
+          MULTIPLAYER_PROJECT_ID: ${{ vars.MULTIPLAYER_PROJECT_ID }}
+          MULTIPLAYER_HOST: ${{ vars.MULTIPLAYER_HOST }}
           MULTIPLAYER_API_KEY: ${{ secrets.MULTIPLAYER_API_KEY }}
           COMMIT_SHORT: ${{ steps.commit.outputs.short }}
           COMMIT_SHA: ${{ github.sha }}
@@ -84,9 +84,9 @@ jobs:
 
       - name: Make release for minds-of-time
         env:
-          MULTIPLAYER_WORKSPACE_ID: ${{ env.MULTIPLAYER_WORKSPACE_ID }}
-          MULTIPLAYER_PROJECT_ID: ${{ env.MULTIPLAYER_PROJECT_ID }}
-          MULTIPLAYER_HOST: ${{ env.MULTIPLAYER_HOST }}
+          MULTIPLAYER_WORKSPACE_ID: ${{ vars.MULTIPLAYER_WORKSPACE_ID }}
+          MULTIPLAYER_PROJECT_ID: ${{ vars.MULTIPLAYER_PROJECT_ID }}
+          MULTIPLAYER_HOST: ${{ vars.MULTIPLAYER_HOST }}
           MULTIPLAYER_API_KEY: ${{ secrets.MULTIPLAYER_API_KEY }}
           COMMIT_SHORT: ${{ steps.commit.outputs.short }}
           COMMIT_SHA: ${{ github.sha }}
@@ -107,9 +107,9 @@ jobs:
 
       - name: Make release for timegate
         env:
-          MULTIPLAYER_WORKSPACE_ID: ${{ env.MULTIPLAYER_WORKSPACE_ID }}
-          MULTIPLAYER_PROJECT_ID: ${{ env.MULTIPLAYER_PROJECT_ID }}
-          MULTIPLAYER_HOST: ${{ env.MULTIPLAYER_HOST }}
+          MULTIPLAYER_WORKSPACE_ID: ${{ vars.MULTIPLAYER_WORKSPACE_ID }}
+          MULTIPLAYER_PROJECT_ID: ${{ vars.MULTIPLAYER_PROJECT_ID }}
+          MULTIPLAYER_HOST: ${{ vars.MULTIPLAYER_HOST }}
           MULTIPLAYER_API_KEY: ${{ secrets.MULTIPLAYER_API_KEY }}
           COMMIT_SHORT: ${{ steps.commit.outputs.short }}
           COMMIT_SHA: ${{ github.sha }}
@@ -130,9 +130,9 @@ jobs:
 
       - name: Make release for vault-of-time
         env:
-          MULTIPLAYER_WORKSPACE_ID: ${{ env.MULTIPLAYER_WORKSPACE_ID }}
-          MULTIPLAYER_PROJECT_ID: ${{ env.MULTIPLAYER_PROJECT_ID }}
-          MULTIPLAYER_HOST: ${{ env.MULTIPLAYER_HOST }}
+          MULTIPLAYER_WORKSPACE_ID: ${{ vars.MULTIPLAYER_WORKSPACE_ID }}
+          MULTIPLAYER_PROJECT_ID: ${{ vars.MULTIPLAYER_PROJECT_ID }}
+          MULTIPLAYER_HOST: ${{ vars.MULTIPLAYER_HOST }}
           MULTIPLAYER_API_KEY: ${{ secrets.MULTIPLAYER_API_KEY }}
           COMMIT_SHORT: ${{ steps.commit.outputs.short }}
           COMMIT_SHA: ${{ github.sha }}
