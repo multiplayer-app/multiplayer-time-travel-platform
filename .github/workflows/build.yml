@@ -10,6 +10,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Get short commit hash
+        id: commit
+        uses: pr-mpt/actions-commit-hash@v2
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -29,6 +33,22 @@ jobs:
           context: ./services/dialogue-hub
           push: true
           tags: multiplayerapp/dialogue-hub:${{ env.DOCKER_TAG }}
+          build-args: |
+            SERVICE_VERSION: ${{ env.DOCKER_TAG }}
+
+      - name: Make release for dialogue-hub
+        env:
+          MULTIPLAYER_WORKSPACE_ID: ${{ env.MULTIPLAYER_WORKSPACE_ID }}
+          MULTIPLAYER_PROJECT_ID: ${{ env.MULTIPLAYER_PROJECT_ID }}
+          MULTIPLAYER_HOST: ${{ env.MULTIPLAYER_HOST }}
+          MULTIPLAYER_API_KEY: ${{ secrets.MULTIPLAYER_API_KEY }}
+          COMMIT_SHORT: ${{ steps.commit.outputs.short }}
+          COMMIT_SHA: ${{ github.sha }}
+          PARENT_BRANCH: ${{ github.head_ref || github.ref_name }}
+          SERVICE_VERSION: ${{ env.DOCKER_TAG }}
+        run: |
+          cd ./services/dialogue-hub
+          bash ../../create-multiplayer-release.sh
 
       - name: Build and push epoch-engine
         uses: docker/build-push-action@v6
@@ -36,6 +56,22 @@ jobs:
           context: ./services/epoch-engine
           push: true
           tags: multiplayerapp/epoch-engine:${{ env.DOCKER_TAG }}
+          build-args: |
+            SERVICE_VERSION: ${{ env.DOCKER_TAG }}
+
+      - name: Make release for epoch-engine
+        env:
+          MULTIPLAYER_WORKSPACE_ID: ${{ env.MULTIPLAYER_WORKSPACE_ID }}
+          MULTIPLAYER_PROJECT_ID: ${{ env.MULTIPLAYER_PROJECT_ID }}
+          MULTIPLAYER_HOST: ${{ env.MULTIPLAYER_HOST }}
+          MULTIPLAYER_API_KEY: ${{ secrets.MULTIPLAYER_API_KEY }}
+          COMMIT_SHORT: ${{ steps.commit.outputs.short }}
+          COMMIT_SHA: ${{ github.sha }}
+          PARENT_BRANCH: ${{ github.head_ref || github.ref_name }}
+          SERVICE_VERSION: ${{ env.DOCKER_TAG }}
+        run: |
+          cd ./services/epoch-engine
+          bash ../../create-multiplayer-release.sh
 
       - name: Build and push minds-of-time
         uses: docker/build-push-action@v6
@@ -43,6 +79,22 @@ jobs:
           context: ./services/minds-of-time
           push: true
           tags: multiplayerapp/minds-of-time:${{ env.DOCKER_TAG }}
+          build-args: |
+            SERVICE_VERSION: ${{ env.DOCKER_TAG }}
+
+      - name: Make release for minds-of-time
+        env:
+          MULTIPLAYER_WORKSPACE_ID: ${{ env.MULTIPLAYER_WORKSPACE_ID }}
+          MULTIPLAYER_PROJECT_ID: ${{ env.MULTIPLAYER_PROJECT_ID }}
+          MULTIPLAYER_HOST: ${{ env.MULTIPLAYER_HOST }}
+          MULTIPLAYER_API_KEY: ${{ secrets.MULTIPLAYER_API_KEY }}
+          COMMIT_SHORT: ${{ steps.commit.outputs.short }}
+          COMMIT_SHA: ${{ github.sha }}
+          PARENT_BRANCH: ${{ github.head_ref || github.ref_name }}
+          SERVICE_VERSION: ${{ env.DOCKER_TAG }}
+        run: |
+          cd ./services/minds-of-time
+          bash ../../create-multiplayer-release.sh
 
       - name: Build and push timegate
         uses: docker/build-push-action@v6
@@ -50,6 +102,22 @@ jobs:
           context: ./services/timegate
           push: true
           tags: multiplayerapp/timegate:${{ env.DOCKER_TAG }}
+          build-args: |
+            SERVICE_VERSION: ${{ env.DOCKER_TAG }}
+
+      - name: Make release for timegate
+        env:
+          MULTIPLAYER_WORKSPACE_ID: ${{ env.MULTIPLAYER_WORKSPACE_ID }}
+          MULTIPLAYER_PROJECT_ID: ${{ env.MULTIPLAYER_PROJECT_ID }}
+          MULTIPLAYER_HOST: ${{ env.MULTIPLAYER_HOST }}
+          MULTIPLAYER_API_KEY: ${{ secrets.MULTIPLAYER_API_KEY }}
+          COMMIT_SHORT: ${{ steps.commit.outputs.short }}
+          COMMIT_SHA: ${{ github.sha }}
+          PARENT_BRANCH: ${{ github.head_ref || github.ref_name }}
+          SERVICE_VERSION: ${{ env.DOCKER_TAG }}
+        run: |
+          cd ./services/timegate
+          bash ../../create-multiplayer-release.sh
 
       - name: Build and push vault-of-time
         uses: docker/build-push-action@v6
@@ -57,3 +125,19 @@ jobs:
           context: ./services/vault-of-time
           push: true
           tags: multiplayerapp/vault-of-time:${{ env.DOCKER_TAG }}
+          build-args: |
+            SERVICE_VERSION: ${{ env.DOCKER_TAG }}
+
+      - name: Make release for vault-of-time
+        env:
+          MULTIPLAYER_WORKSPACE_ID: ${{ env.MULTIPLAYER_WORKSPACE_ID }}
+          MULTIPLAYER_PROJECT_ID: ${{ env.MULTIPLAYER_PROJECT_ID }}
+          MULTIPLAYER_HOST: ${{ env.MULTIPLAYER_HOST }}
+          MULTIPLAYER_API_KEY: ${{ secrets.MULTIPLAYER_API_KEY }}
+          COMMIT_SHORT: ${{ steps.commit.outputs.short }}
+          COMMIT_SHA: ${{ github.sha }}
+          PARENT_BRANCH: ${{ github.head_ref || github.ref_name }}
+          SERVICE_VERSION: ${{ env.DOCKER_TAG }}
+        run: |
+          cd ./services/vault-of-time
+          bash ../../create-multiplayer-release.sh
