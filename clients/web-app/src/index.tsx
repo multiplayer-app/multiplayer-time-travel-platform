@@ -22,7 +22,11 @@ debuggerInstance.init({
     /posthog\.com.*/,
     /https:\/\/pixel\.source\.app\/.*/,
   ],
-  propagateTraceHeaderCorsUrls: [process.env.REACT_APP_BASE_API_URL],
+  propagateTraceHeaderCorsUrls: new RegExp(
+  // eslint-disable-next-line
+    `${process.env.REACT_APP_API_BASE_URL}\.*`,
+    "i"
+  ),
   schemifyDocSpanPayload: true,
   maskDebSpanPayload: false,
   docTraceRatio:
