@@ -24,7 +24,7 @@ debuggerInstance.init({
   ],
   propagateTraceHeaderCorsUrls: new RegExp(
   // eslint-disable-next-line
-    `${process.env.REACT_APP_API_BASE_URL}\.*`,
+    `${process.env.REACT_APP_BASE_API_URL}\.*`,
     "i"
   ),
   schemifyDocSpanPayload: true,
