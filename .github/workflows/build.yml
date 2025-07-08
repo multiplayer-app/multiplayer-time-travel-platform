@@ -45,6 +45,7 @@ jobs:
           COMMIT_SHORT: ${{ steps.commit.outputs.short }}
           COMMIT_SHA: ${{ github.sha }}
           PARENT_BRANCH: ${{ github.head_ref || github.ref_name }}
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
           SERVICE_VERSION: ${{ env.DOCKER_TAG }}
         run: |
           cd ./services/dialogue-hub
@@ -68,6 +69,7 @@ jobs:
           COMMIT_SHORT: ${{ steps.commit.outputs.short }}
           COMMIT_SHA: ${{ github.sha }}
           PARENT_BRANCH: ${{ github.head_ref || github.ref_name }}
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
           SERVICE_VERSION: ${{ env.DOCKER_TAG }}
         run: |
           cd ./services/epoch-engine
@@ -91,6 +93,7 @@ jobs:
           COMMIT_SHORT: ${{ steps.commit.outputs.short }}
           COMMIT_SHA: ${{ github.sha }}
           PARENT_BRANCH: ${{ github.head_ref || github.ref_name }}
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
           SERVICE_VERSION: ${{ env.DOCKER_TAG }}
         run: |
           cd ./services/minds-of-time
@@ -114,6 +117,7 @@ jobs:
           COMMIT_SHORT: ${{ steps.commit.outputs.short }}
           COMMIT_SHA: ${{ github.sha }}
           PARENT_BRANCH: ${{ github.head_ref || github.ref_name }}
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
           SERVICE_VERSION: ${{ env.DOCKER_TAG }}
         run: |
           cd ./services/timegate
@@ -137,6 +141,7 @@ jobs:
           COMMIT_SHORT: ${{ steps.commit.outputs.short }}
           COMMIT_SHA: ${{ github.sha }}
           PARENT_BRANCH: ${{ github.head_ref || github.ref_name }}
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
           SERVICE_VERSION: ${{ env.DOCKER_TAG }}
         run: |
           cd ./services/vault-of-time
