@@ -15,17 +15,21 @@ MultiplayerTraceIdConfiguration.ConfigureMultiplayerTraceIdGenerator(Config.OTLP
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls($"http://0.0.0.0:{Config.PORT}");
 
+var otlpExporterHeaders = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("MULTIPLAYER_OTLP_KEY"))
+    ? null
+    : $"Authorization={Config.MULTIPLAYER_OTLP_KEY}";
+
 var logExporter = new OtlpLogExporter(new OtlpExporterOptions
 {
     Endpoint = new Uri(Config.OTLP_LOGS_ENDPOINT),
-    Headers = "Authorization=" + Config.MULTIPLAYER_OTLP_KEY,
+    Headers = otlpExporterHeaders,
     Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf,
 });
 
 var traceExporter = new OtlpTraceExporter(new OtlpExporterOptions
 {
     Endpoint = new Uri(Config.OTLP_TRACES_ENDPOINT),
-    Headers = "Authorization=" + Config.MULTIPLAYER_OTLP_KEY,
+    Headers = otlpExporterHeaders,
     Protocol = OtlpExportProtocol.HttpProtobuf,
 });
 
@@ -55,11 +59,10 @@ builder.Services.AddOpenTelemetry()
             .SetResourceBuilder(resourceBuilder)
             .AddHttpClientInstrumentation()
             .AddAspNetCoreInstrumentation()
-            .SetSampler(new MultiplayerTraceIdRatioBasedSampler(1)) // Config.OTLP_MULTIPLAYER_SPAN_RATIO
+            .SetSampler(new MultiplayerTraceIdRatioBasedSampler(Config.OTLP_MULTIPLAYER_SPAN_RATIO))
             .AddProcessor(new SimpleActivityExportProcessor(traceExporter));
     })
     .WithLogging(logs => logs.AddProcessor(new BatchLogRecordExportProcessor(logExporter)));
-
 
 builder.Services.AddControllers(options =>
 {
