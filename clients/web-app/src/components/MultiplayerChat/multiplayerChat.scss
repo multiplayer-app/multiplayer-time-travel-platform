@@ -32,6 +32,9 @@
         line-height: 20px;
         letter-spacing: 0.15px;
       }
+      .cs-message-input__content-editor-container {
+        max-height: 40px;
+      }
     }
     .cs-message-input__tools {
       position: absolute;
