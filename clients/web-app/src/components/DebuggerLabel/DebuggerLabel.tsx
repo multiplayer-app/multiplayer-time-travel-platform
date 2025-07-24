@@ -33,7 +33,7 @@ const DebuggerLabel = () => {
       onMouseUp={onTriggerMouseUp}
       onClick={(e) => e.stopPropagation()}
     >
-      Report a bug
+      Record your session
     </div>
   );
 };
