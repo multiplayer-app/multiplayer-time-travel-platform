@@ -122,16 +122,5 @@
     .mtt-project-fork {
       display: none;
     }
-    .mtt-bugometer {
-      border: solid 1px #BEBFC1;
-      width: 160px;
-      padding: 6px 8px;
-      &__description {
-        display: none;
-      }
-      &__bar {
-        margin-bottom: 5px;
-      }
-    }
   }
 }

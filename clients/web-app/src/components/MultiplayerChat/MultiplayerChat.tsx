@@ -29,13 +29,17 @@ const MultiplayerChat = ({
   setQuestion,
   onDebuggerOpen,
 }) => {
-  const { navigationUrl, errorRate, setErrorRate, isManualRate } =
-    useTimeTravel();
+  const {
+    navigationUrl,
+    errorRate,
+    setErrorRate,
+    isManualRate,
+    recordingState,
+  } = useTimeTravel();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [contextId, setContextId] = useState(null);
   const [copiedIndex, setCopiedIndex] = useState(null);
-  const [recordingState, setRecordingState] = useState(null);
   const messageInputRef = useRef<HTMLInputElement>(null);
   const bottomRef = useRef(null);
 
@@ -216,23 +220,6 @@ const MultiplayerChat = ({
     };
   }, []);
 
-  useEffect(() => {
-    const handleMessage = (event) => {
-      if (event.data?.type === "MULTIPLAYER_SESSION_DEBUGGER_LIB") {
-        const { action, payload } = event.data;
-        if (action === "state-change") {
-          setRecordingState(payload);
-        }
-      }
-    };
-
-    window.addEventListener("message", handleMessage);
-
-    return () => {
-      window.removeEventListener("message", handleMessage);
-    };
-  }, []);
-
   const onSessionOpen = () => {
     if (navigationUrl) {
       window.open(navigationUrl, "_blank");
@@ -268,19 +255,20 @@ const MultiplayerChat = ({
                   <Message.HtmlContent html={msg.message} />
                   {msg.systemError && (
                     <Message.CustomContent>
-                      {recordingState !== SessionState.started ? (
+                      {recordingState !== SessionState.started &&
+                      recordingState !== SessionState.paused ? (
                         <div
                           className="mtt-debugger-toggle"
                           onClick={onDebuggerOpen}
                         >
-                          Open the debugger to start debugging
+                          Open the session recorder to start recording
                         </div>
                       ) : (
                         <div
                           className="mtt-debugger-toggle"
                           onClick={onSessionOpen}
                         >
-                          Open Debugger Session
+                          Open the session recorder
                         </div>
                       )}
                     </Message.CustomContent>

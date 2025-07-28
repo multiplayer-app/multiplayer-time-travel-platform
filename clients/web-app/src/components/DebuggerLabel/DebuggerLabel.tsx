@@ -5,8 +5,12 @@ import {
   triggerMouseUpEvent,
 } from "utils/triggerMouseEvent";
 import "./debuggerLabel.scss";
+import { SessionState } from "utils/types";
+import { useTimeTravel } from "hooks/useTimeTravel";
 
 const DebuggerLabel = () => {
+  const { recordingState } = useTimeTravel();
+
   const onTriggerMouseDown = (e) => {
     e.preventDefault();
     triggerMouseDownEvent(debuggerInstance?.sessionWidgetButtonElement);
@@ -33,7 +37,9 @@ const DebuggerLabel = () => {
       onMouseUp={onTriggerMouseUp}
       onClick={(e) => e.stopPropagation()}
     >
-      Record your session
+      {recordingState !== SessionState.started
+        ? "Record your session"
+        : "Recording your session"}
     </div>
   );
 };

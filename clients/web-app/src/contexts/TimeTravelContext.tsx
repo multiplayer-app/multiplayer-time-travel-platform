@@ -16,6 +16,7 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
   const [question, setQuestion] = useState(null);
   const [navigationUrl, setNavigationUrl] = useState({});
   const [errorRate, setErrorRate] = useState(0);
+  const [recordingState, setRecordingState] = useState(null);
   const [isManualRate, setIsManualRate] = useState(false);
 
   useEffect(() => {
@@ -39,12 +40,30 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
     };
   }, []);
 
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.data?.type === "MULTIPLAYER_SESSION_DEBUGGER_LIB") {
+        const { action, payload } = event.data;
+        if (action === "state-change") {
+          setRecordingState(payload);
+        }
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
+
   const value = {
     selectedCharacter,
     question,
     navigationUrl,
     errorRate,
     isManualRate,
+    recordingState,
     setSelectedCharacter,
     setQuestion,
     setNavigationUrl,

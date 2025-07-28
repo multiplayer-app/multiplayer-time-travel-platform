@@ -2,7 +2,6 @@ import { memo, useEffect, useState } from "react";
 import { ReactComponent as LogoFull } from "assets/logo-full.svg";
 import { ReactComponent as LogoMobile } from "assets/logo.svg";
 
-import BugOMeter from "components/BugOMeter";
 import HamburgerMenu from "components/HamburgerMenu";
 import { characters } from "mock/characters";
 import { useTimeTravel } from "hooks/useTimeTravel";
@@ -47,7 +46,6 @@ const SidePanel = () => {
         </a>
       </div>
       <div className="mtt-sidepanel-footer">
-        <BugOMeter />
         <a
           className="mtt-project-fork"
           rel="noreferrer"

@@ -9,6 +9,7 @@ import { characters } from "mock/characters";
 import "./board.scss";
 import { triggerMouseEvent } from "utils/triggerMouseEvent";
 import { useTimeTravel } from "hooks/useTimeTravel";
+import { SessionState } from "utils/types";
 
 const TERMS_URL = "https://www.multiplayer.app/terms-of-service/";
 const PRIVACY_URL = "https://www.multiplayer.app/privacy/";
@@ -24,6 +25,12 @@ const Board = () => {
 
   useEffect(() => {
     setQuestion(null);
+    if (
+      selectedCharacter &&
+      debuggerInstance?.sessionState !== SessionState.started
+    ) {
+      debuggerInstance.start?.();
+    }
   }, [selectedCharacter, setQuestion]);
 
   const handleCharacterPick = useCallback(() => {
