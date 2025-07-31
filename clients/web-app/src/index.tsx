@@ -30,11 +30,16 @@ debuggerInstance.init({
   schemifyDocSpanPayload: true,
   maskDebSpanPayload: false,
   docTraceRatio:
-    Number(process.env.REACT_APP_OTLP_MULTIPLAYER_DOC_SPAN_RATIO) || 0.05,
+    Number(process.env.REACT_APP_MULTIPLAYER_OTLP_DOC_SPAN_RATIO) || 0.05,
   sampleTraceRatio:
-    Number(process.env.REACT_APP_OTLP_MULTIPLAYER_SPAN_RATIO) || 0.04,
+    Number(process.env.REACT_APP_MULTIPLAYER_OTLP_SPAN_RATIO) || 0.04,
   maxCapturingHttpPayloadSize: 100000,
   disableCapturingHttpPayload: false,
+
+
+
+
+  
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

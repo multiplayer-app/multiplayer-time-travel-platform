@@ -42,8 +42,8 @@ import {
   MULTIPLAYER_OTLP_KEY,
   OTLP_TRACES_ENDPOINT,
   OTLP_LOGS_ENDPOINT,
-  OTLP_MULTIPLAYER_DOC_SPAN_RATIO,
-  OTLP_MULTIPLAYER_SPAN_RATIO
+  MULTIPLAYER_OTLP_DOC_SPAN_RATIO,
+  MULTIPLAYER_OTLP_SPAN_RATIO
 } from './config'
 
 // NOTE: Update instrumentation configuration as needed
@@ -105,9 +105,9 @@ const opentelemetry = () => {
       new BatchSpanProcessor(traceExporter),
     ],
     sampler: new ParentBasedSampler({
-      root: new MultiplayerTraceIdRatioBasedSampler(OTLP_MULTIPLAYER_SPAN_RATIO),
+      root: new MultiplayerTraceIdRatioBasedSampler(MULTIPLAYER_OTLP_SPAN_RATIO),
     }),
-    idGenerator: new MultiplayerIdGenerator({ autoDocTracesRatio: OTLP_MULTIPLAYER_DOC_SPAN_RATIO }),
+    idGenerator: new MultiplayerIdGenerator({ autoDocTracesRatio: MULTIPLAYER_OTLP_DOC_SPAN_RATIO }),
   })
 
   const loggerProvider = new LoggerProvider({

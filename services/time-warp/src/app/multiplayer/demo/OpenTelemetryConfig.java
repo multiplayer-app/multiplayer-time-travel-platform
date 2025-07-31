@@ -33,8 +33,8 @@ public class OpenTelemetryConfig {
     public static void initialize() {
         SpanExporter spanExporter = new MultiplayerOtlpHttpSpanExporter(Config.MULTIPLAYER_OTLP_KEY, Config.OTLP_TRACES_ENDPOINT);
         LogRecordExporter logsExporter = new MultiplayerOtlpHttpLogExporter(Config.MULTIPLAYER_OTLP_KEY, Config.OTLP_LOGS_ENDPOINT);
-        Sampler sampler = MultiplayerTraceIdRatioBasedSampler.create(Config.OTLP_MULTIPLAYER_SPAN_RATIO);
-        MultiplayerRandomIdGenerator idGenerator = new MultiplayerRandomIdGenerator(Config.OTLP_MULTIPLAYER_DOC_SPAN_RATIO);
+        Sampler sampler = MultiplayerTraceIdRatioBasedSampler.create(Config.MULTIPLAYER_OTLP_SPAN_RATIO);
+        MultiplayerRandomIdGenerator idGenerator = new MultiplayerRandomIdGenerator(Config.MULTIPLAYER_OTLP_DOC_SPAN_RATIO);
 
         // SpanExporter spanExporter = OtlpHttpSpanExporter.builder()
         //     .setEndpoint(Config.OTLP_TRACES_ENDPOINT)
@@ -44,7 +44,7 @@ public class OpenTelemetryConfig {
         //     .setEndpoint(Config.OTLP_LOGS_ENDPOINT)
         //     .addHeader("Authorization", Config.MULTIPLAYER_OTLP_KEY)
         //     .build();
-        // Sampler sampler = Sampler.traceIdRatioBased(Config.OTLP_MULTIPLAYER_SPAN_RATIO);
+        // Sampler sampler = Sampler.traceIdRatioBased(Config.MULTIPLAYER_OTLP_SPAN_RATIO);
 
         Resource resource = Resource.getDefault().merge(
                 Resource.create(Attributes.of(

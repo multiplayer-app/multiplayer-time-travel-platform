@@ -9,7 +9,6 @@ import {
   getResourceDetectors,
 } from "@opentelemetry/auto-instrumentations-node"
 import {
-  detectResources,
   detectResourcesSync,
   Resource
 } from "@opentelemetry/resources"
@@ -22,23 +21,20 @@ import {
   SEMRESATTRS_PROCESS_PID,
 } from "@opentelemetry/semantic-conventions"
 import api from "@opentelemetry/api"
-// import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http"
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http"
 import { W3CTraceContextPropagator } from "@opentelemetry/core"
 import {
-  MultiplayerHttpTraceExporterNode,
   MultiplayerTraceIdRatioBasedSampler,
   MultiplayerIdGenerator,
-  // MultiplayerFilterTraceExporter,
   MultiplayerHttpInstrumentationHooks,
-  MultiplayerHttpLogExporterNode,
-} from "@multiplayer-app/otlp-core"
+} from "@multiplayer-app/opentelemetry"
 import { LoggerProvider, BatchLogRecordProcessor } from "@opentelemetry/sdk-logs"
 import * as apiLogs from "@opentelemetry/api-logs"
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http'
 import {
-  SERVICE_NAME,
-  SERVICE_VERSION,
-  PLATFORM_ENV,
+  COMPONENT_NAME,
+  COMPONENT_VERSION,
+  ENVIRONMENT,
   MULTIPLAYER_OTLP_KEY,
   OTLP_TRACES_ENDPOINT,
   OTLP_LOGS_ENDPOINT,
@@ -46,22 +42,20 @@ import {
   MULTIPLAYER_OTLP_SPAN_RATIO
 } from './config'
 
-// NOTE: Update instrumentation configuration as needed
-// For more see: https://www.npmjs.com/package/@opentelemetry/auto-instrumentations-node
 const instrumentations = [
   getNodeAutoInstrumentations({
     "@opentelemetry/instrumentation-http": {
       requestHook: MultiplayerHttpInstrumentationHooks.requestHook({
         headersToMask: ["X-Api-Key"],
-        maxPayloadSize: 5000,
-        schemifyDocSpanPayload: false,
-        maskDebSpanPayload: false,
+        maxPayloadSizeBytes: 5000,
+        // schemifyDocSpanPayload: false, // remove
+        maskDebugSpanPayload: false,
       }),
       responseHook: MultiplayerHttpInstrumentationHooks.responseHook({
         headersToMask: ["X-Api-Key"],
-        maxPayloadSize: 5000,
-        schemifyDocSpanPayload: false,
-        maskDebSpanPayload: false
+        maxPayloadSizeBytes: 5000,
+        // schemifyDocSpanPayload: false, // remove
+        maskDebugSpanPayload: false
       }),
     },
   }),
@@ -72,10 +66,10 @@ const getResource = () => {
     detectors: getResourceDetectors(),
   })
   const resourceWithAttributes = new Resource({
-    [ATTR_SERVICE_NAME]: SERVICE_NAME,
-    [ATTR_SERVICE_VERSION]: SERVICE_VERSION,
+    [ATTR_SERVICE_NAME]: COMPONENT_NAME,
+    [ATTR_SERVICE_VERSION]: COMPONENT_VERSION,
     [SEMRESATTRS_HOST_NAME]: hostname(),
-    [SEMRESATTRS_DEPLOYMENT_ENVIRONMENT]: PLATFORM_ENV,
+    [SEMRESATTRS_DEPLOYMENT_ENVIRONMENT]: ENVIRONMENT,
     [SEMRESATTRS_PROCESS_RUNTIME_VERSION]: process.version,
     [SEMRESATTRS_PROCESS_PID]: process.pid,
   })
@@ -84,18 +78,15 @@ const getResource = () => {
   return resource
 }
 
-const opentelemetry = () => {
-  const traceExporter = new MultiplayerHttpTraceExporterNode({
-    apiKey: MULTIPLAYER_OTLP_KEY,
-    url: OTLP_TRACES_ENDPOINT
-  })
-  // const traceExporter = new OTLPTraceExporter({
-  //   url: OTLP_TRACES_ENDPOINT,
-  //   headers: {
-  //     Authorization: MULTIPLAYER_OTLP_KEY
-  //   },
-  // })
+export const idGenerator = new MultiplayerIdGenerator()
 
+const opentelemetry = () => {
+  const traceExporter = new OTLPTraceExporter({
+    url: OTLP_TRACES_ENDPOINT,
+    headers: {
+      Authorization: MULTIPLAYER_OTLP_KEY,
+    },
+  })
 
   const resource = getResource()
 
@@ -107,17 +98,13 @@ const opentelemetry = () => {
     sampler: new ParentBasedSampler({
       root: new MultiplayerTraceIdRatioBasedSampler(MULTIPLAYER_OTLP_SPAN_RATIO),
     }),
-    idGenerator: new MultiplayerIdGenerator({ autoDocTracesRatio: MULTIPLAYER_OTLP_DOC_SPAN_RATIO }),
+    idGenerator,
   })
 
   const loggerProvider = new LoggerProvider({
     resource,
   })
 
-  // const logExporter = new MultiplayerHttpLogExporterNode({
-  //   apiKey: MULTIPLAYER_OTLP_KEY,
-  //   url: OTLP_LOGS_ENDPOINT
-  // })
   const logExporter = new OTLPLogExporter({
     url: OTLP_LOGS_ENDPOINT,
     headers: {

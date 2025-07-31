@@ -103,6 +103,17 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     status = err.code
   }
 
+    multiplayerOpentelemetry.captureEvent(
+      {
+      name: string,
+      attributes: object
+    } | Error) 
+
+
+        multiplayerOpentelemetry.captureError(Error) 
+
+    debugger
+
   return res.status(statusCode).json({
     statusCode,
     message,

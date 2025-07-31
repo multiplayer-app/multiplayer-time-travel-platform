@@ -15,12 +15,12 @@ from multiplayer.opentelemetry.exporter.http.log_exporter import MultiplayerOTLP
 from multiplayer.opentelemetry.trace.sampler import MultiplayerTraceIdRatioBasedSampler
 from multiplayer.opentelemetry.trace.id_generator import MultiplayerRandomIdGenerator
 
-from config import OTLP_TRACES_ENDPOINT, OTLP_LOGS_ENDPOINT, MULTIPLAYER_OTLP_KEY, OTLP_MULTIPLAYER_DOC_SPAN_RATIO, OTLP_MULTIPLAYER_SPAN_RATIO, SERVICE_NAME, SERVICE_VERSION, PLATFORM_ENV
+from config import OTLP_TRACES_ENDPOINT, OTLP_LOGS_ENDPOINT, MULTIPLAYER_OTLP_KEY, MULTIPLAYER_OTLP_DOC_SPAN_RATIO, MULTIPLAYER_OTLP_SPAN_RATIO, SERVICE_NAME, SERVICE_VERSION, PLATFORM_ENV
 
 
 def init_tracing(app):
-    id_generator = MultiplayerRandomIdGenerator(autoDocTracesRatio = OTLP_MULTIPLAYER_DOC_SPAN_RATIO)
-    sampler = MultiplayerTraceIdRatioBasedSampler(rate = 1) # OTLP_MULTIPLAYER_SPAN_RATIO
+    id_generator = MultiplayerRandomIdGenerator(autoDocTracesRatio = MULTIPLAYER_OTLP_DOC_SPAN_RATIO)
+    sampler = MultiplayerTraceIdRatioBasedSampler(rate = 1) # MULTIPLAYER_OTLP_SPAN_RATIO
 
     # Service name is required for most backends
     resource = Resource(attributes = {

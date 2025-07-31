@@ -10,7 +10,7 @@ using WebApiOpenApi;
 using Multiplayer.OpenTelemetry.Trace;
 using Multiplayer.OpenTelemetry.Constants;
 
-MultiplayerTraceIdConfiguration.ConfigureMultiplayerTraceIdGenerator(Config.OTLP_MULTIPLAYER_DOC_SPAN_RATIO);
+MultiplayerTraceIdConfiguration.ConfigureMultiplayerTraceIdGenerator(Config.MULTIPLAYER_OTLP_DOC_SPAN_RATIO);
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls($"http://0.0.0.0:{Config.PORT}");
@@ -59,7 +59,7 @@ builder.Services.AddOpenTelemetry()
             .SetResourceBuilder(resourceBuilder)
             .AddHttpClientInstrumentation()
             .AddAspNetCoreInstrumentation()
-            .SetSampler(new MultiplayerTraceIdRatioBasedSampler(Config.OTLP_MULTIPLAYER_SPAN_RATIO))
+            .SetSampler(new MultiplayerTraceIdRatioBasedSampler(Config.MULTIPLAYER_OTLP_SPAN_RATIO))
             .AddProcessor(new SimpleActivityExportProcessor(traceExporter));
     })
     .WithLogging(logs => logs.AddProcessor(new BatchLogRecordExportProcessor(logExporter)));

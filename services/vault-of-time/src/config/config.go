@@ -14,8 +14,8 @@ var (
 	MULTIPLAYER_OTLP_KEY            string
 	OTLP_TRACES_ENDPOINT            string
 	OTLP_LOGS_ENDPOINT              string
-	OTLP_MULTIPLAYER_DOC_SPAN_RATIO float64
-	OTLP_MULTIPLAYER_SPAN_RATIO     float64
+	MULTIPLAYER_OTLP_DOC_SPAN_RATIO float64
+	MULTIPLAYER_OTLP_SPAN_RATIO     float64
 	SERVICE_NAME                    string
 	SERVICE_VERSION                 string
 	PLATFORM_ENV                    string
@@ -35,15 +35,15 @@ func LoadConfig() {
 	OTLP_LOGS_ENDPOINT = getEnv("OTLP_LOGS_ENDPOINT", "https://api.multiplayer.app/v1/logs")
 
 	var parseDocSpanRatioErr error
-	OTLP_MULTIPLAYER_DOC_SPAN_RATIO, parseDocSpanRatioErr = strconv.ParseFloat(getEnv("OTLP_MULTIPLAYER_DOC_SPAN_RATIO", "0.02"), 64)
+	MULTIPLAYER_OTLP_DOC_SPAN_RATIO, parseDocSpanRatioErr = strconv.ParseFloat(getEnv("MULTIPLAYER_OTLP_DOC_SPAN_RATIO", "0.02"), 64)
 	if parseDocSpanRatioErr != nil {
-		OTLP_MULTIPLAYER_DOC_SPAN_RATIO = 0.02
+		MULTIPLAYER_OTLP_DOC_SPAN_RATIO = 0.02
 	}
 
 	var parseSpanRatioErr error
-	OTLP_MULTIPLAYER_SPAN_RATIO, parseSpanRatioErr = strconv.ParseFloat(getEnv("OTLP_MULTIPLAYER_SPAN_RATIO", "0.01"), 64)
+	MULTIPLAYER_OTLP_SPAN_RATIO, parseSpanRatioErr = strconv.ParseFloat(getEnv("MULTIPLAYER_OTLP_SPAN_RATIO", "0.01"), 64)
 	if parseSpanRatioErr != nil {
-		OTLP_MULTIPLAYER_DOC_SPAN_RATIO = 0.02
+		MULTIPLAYER_OTLP_DOC_SPAN_RATIO = 0.02
 	}
 
 	var parseRandomErrRateErr error

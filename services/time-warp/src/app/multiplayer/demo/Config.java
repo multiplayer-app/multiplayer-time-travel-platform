@@ -40,11 +40,11 @@ public class Config {
     public static String API_PREFIX = System.getenv("API_PREFIX") != null && !System.getenv("API_PREFIX").isEmpty()
         ? System.getenv("API_PREFIX")
         : "/v1/dialogue-hub";
-    public static double OTLP_MULTIPLAYER_DOC_SPAN_RATIO = System.getenv("OTLP_MULTIPLAYER_DOC_SPAN_RATIO") != null && !System.getenv("OTLP_MULTIPLAYER_DOC_SPAN_RATIO").isEmpty()
-        ? Double.parseDouble(System.getenv("OTLP_MULTIPLAYER_DOC_SPAN_RATIO"))
+    public static double MULTIPLAYER_OTLP_DOC_SPAN_RATIO = System.getenv("MULTIPLAYER_OTLP_DOC_SPAN_RATIO") != null && !System.getenv("MULTIPLAYER_OTLP_DOC_SPAN_RATIO").isEmpty()
+        ? Double.parseDouble(System.getenv("MULTIPLAYER_OTLP_DOC_SPAN_RATIO"))
         : 0.02;
-    public static double OTLP_MULTIPLAYER_SPAN_RATIO = System.getenv("OTLP_MULTIPLAYER_SPAN_RATIO") != null && !System.getenv("OTLP_MULTIPLAYER_SPAN_RATIO").isEmpty()
-        ? Double.parseDouble(System.getenv("OTLP_MULTIPLAYER_SPAN_RATIO"))
+    public static double MULTIPLAYER_OTLP_SPAN_RATIO = System.getenv("MULTIPLAYER_OTLP_SPAN_RATIO") != null && !System.getenv("MULTIPLAYER_OTLP_SPAN_RATIO").isEmpty()
+        ? Double.parseDouble(System.getenv("MULTIPLAYER_OTLP_SPAN_RATIO"))
         : 0.01;
 
     public static String REDIS_HOST = System.getenv("REDIS_HOST") != null && !System.getenv("REDIS_HOST").isEmpty() 

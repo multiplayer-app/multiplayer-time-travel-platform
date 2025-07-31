@@ -1,5 +1,5 @@
 {
-    "name": "timegate",
+    "name": "nodejs-cli-app",
     "version": "0.0.1",
     "description": "",
     "main": "./src/index.ts",
@@ -17,7 +17,8 @@
     },
     "author": "Multiplayer",
     "dependencies": {
-        "@multiplayer-app/session-recorder-node": "0.0.11",
+        "@multiplayer-app/opentelemetry": "0.0.1",
+        "@multiplayer-app/debugger-node": "0.0.1",
         "@opentelemetry/api": "1.9.0",
         "@opentelemetry/api-logs": "0.57.2",
         "@opentelemetry/auto-instrumentations-node": "0.56.1",
@@ -29,19 +30,9 @@
         "@opentelemetry/sdk-trace-node": "1.30.1",
         "@opentelemetry/semantic-conventions": "1.30.0",
         "axios": "1.9.0",
-        "body-parser": "1.20.2",
         "bunyan": "1.8.15",
-        "cookie-parser": "1.4.6",
-        "cors": "2.8.5",
         "dotenv": "16.3.1",
-        "express": "4.18.2",
-        "express-jsdoc-swagger": "1.8.0",
-        "express-session": "1.17.3",
-        "joi": "17.10.0",
-        "mongoose": "8.15.0",
-        "openai": "4.24.0",
-        "restify-errors": "8.0.2",
-        "socket.io": "4.8.1"
+        "restify-errors": "8.0.2"
     },
     "devDependencies": {
         "@types/body-parser": "1.19.2",

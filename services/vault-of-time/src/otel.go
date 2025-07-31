@@ -85,10 +85,12 @@ func newTraceProvider() (*trace.TracerProvider, error) {
 		return nil, err
 	}
 
+	idGenerator = multiplayer.NewRatioDependentIdGenerator()
+
 	traceProvider := trace.NewTracerProvider(
 		trace.WithResource(res),
-		trace.WithIDGenerator(multiplayer.NewRatioDependentIdGenerator(config.OTLP_MULTIPLAYER_DOC_SPAN_RATIO)),
-		trace.WithSampler(multiplayer.NewSampler(trace.TraceIDRatioBased(config.OTLP_MULTIPLAYER_SPAN_RATIO))),
+		trace.WithIDGenerator(idGenerator),
+		trace.WithSampler(multiplayer.NewSampler(trace.TraceIDRatioBased(config.MULTIPLAYER_OTLP_SPAN_RATIO))),
 		trace.WithBatcher(traceExporter,
 			trace.WithBatchTimeout(time.Second)),
 	)

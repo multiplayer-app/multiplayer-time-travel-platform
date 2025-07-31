@@ -21,11 +21,11 @@ export const MINDS_OF_TIME_SERVICE_URL = process.env.MINDS_OF_TIME_SERVICE_URL |
 
 export const VAULT_OF_TIME_SERVICE_URL = process.env.VAULT_OF_TIME_SERVICE_URL || 'http://localhost:3000/v1/vault-of-time'
 
-export const OTLP_MULTIPLAYER_DOC_SPAN_RATIO = process.env.OTLP_MULTIPLAYER_DOC_SPAN_RATIO
-    ? Number(process.env.OTLP_MULTIPLAYER_DOC_SPAN_RATIO)
+export const MULTIPLAYER_OTLP_DOC_SPAN_RATIO = process.env.MULTIPLAYER_OTLP_DOC_SPAN_RATIO
+    ? Number(process.env.MULTIPLAYER_OTLP_DOC_SPAN_RATIO)
     : 0.02
-export const OTLP_MULTIPLAYER_SPAN_RATIO = process.env.OTLP_MULTIPLAYER_SPAN_RATIO
-    ? Number(process.env.OTLP_MULTIPLAYER_SPAN_RATIO)
+export const MULTIPLAYER_OTLP_SPAN_RATIO = process.env.MULTIPLAYER_OTLP_SPAN_RATIO
+    ? Number(process.env.MULTIPLAYER_OTLP_SPAN_RATIO)
     : 0.01
 
 export const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/time-travel-demo'
