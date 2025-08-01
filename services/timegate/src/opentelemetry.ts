@@ -9,7 +9,7 @@ import {
   getResourceDetectors,
 } from "@opentelemetry/auto-instrumentations-node"
 import {
-  detectResources,
+  // detectResources,
   detectResourcesSync,
   Resource
 } from "@opentelemetry/resources"
@@ -22,16 +22,13 @@ import {
   SEMRESATTRS_PROCESS_PID,
 } from "@opentelemetry/semantic-conventions"
 import api from "@opentelemetry/api"
-// import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http"
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http"
 import { W3CTraceContextPropagator } from "@opentelemetry/core"
 import {
-  MultiplayerHttpTraceExporterNode,
-  MultiplayerTraceIdRatioBasedSampler,
-  MultiplayerIdGenerator,
-  // MultiplayerFilterTraceExporter,
-  MultiplayerHttpInstrumentationHooks,
-  MultiplayerHttpLogExporterNode,
-} from "@multiplayer-app/otlp-core"
+  SessionRecorderHttpInstrumentationHooksNode,
+  SessionRecorderTraceIdRatioBasedSampler,
+  SessionRecorderIdGenerator,
+} from "@multiplayer-app/session-recorder-node"
 import { LoggerProvider, BatchLogRecordProcessor } from "@opentelemetry/sdk-logs"
 import * as apiLogs from "@opentelemetry/api-logs"
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http'
@@ -51,17 +48,17 @@ import {
 const instrumentations = [
   getNodeAutoInstrumentations({
     "@opentelemetry/instrumentation-http": {
-      requestHook: MultiplayerHttpInstrumentationHooks.requestHook({
-        headersToMask: ["X-Api-Key"],
-        maxPayloadSize: 5000,
+      requestHook: SessionRecorderHttpInstrumentationHooksNode.requestHook({
+        maskHeadersList: ["X-Api-Key"],
+        maxPayloadSizeBytes: 5000,
         schemifyDocSpanPayload: false,
-        maskDebSpanPayload: false,
+        isMaskBodyEnabled: false,
       }),
-      responseHook: MultiplayerHttpInstrumentationHooks.responseHook({
-        headersToMask: ["X-Api-Key"],
-        maxPayloadSize: 5000,
+      responseHook: SessionRecorderHttpInstrumentationHooksNode.responseHook({
+        maskHeadersList: ["X-Api-Key"],
+        maxPayloadSizeBytes: 5000,
         schemifyDocSpanPayload: false,
-        maskDebSpanPayload: false
+        isMaskBodyEnabled: false
       }),
     },
   }),
@@ -85,17 +82,12 @@ const getResource = () => {
 }
 
 const opentelemetry = () => {
-  const traceExporter = new MultiplayerHttpTraceExporterNode({
-    apiKey: MULTIPLAYER_OTLP_KEY,
-    url: OTLP_TRACES_ENDPOINT
+  const traceExporter = new OTLPTraceExporter({
+    url: OTLP_TRACES_ENDPOINT,
+    headers: {
+      Authorization: MULTIPLAYER_OTLP_KEY
+    },
   })
-  // const traceExporter = new OTLPTraceExporter({
-  //   url: OTLP_TRACES_ENDPOINT,
-  //   headers: {
-  //     Authorization: MULTIPLAYER_OTLP_KEY
-  //   },
-  // })
-
 
   const resource = getResource()
 
@@ -105,19 +97,17 @@ const opentelemetry = () => {
       new BatchSpanProcessor(traceExporter),
     ],
     sampler: new ParentBasedSampler({
-      root: new MultiplayerTraceIdRatioBasedSampler(MULTIPLAYER_OTLP_SPAN_RATIO),
+      root: new SessionRecorderTraceIdRatioBasedSampler(MULTIPLAYER_OTLP_SPAN_RATIO),
     }),
-    idGenerator: new MultiplayerIdGenerator({ autoDocTracesRatio: MULTIPLAYER_OTLP_DOC_SPAN_RATIO }),
+    idGenerator: new SessionRecorderIdGenerator({
+      autoDocTracesRatio: MULTIPLAYER_OTLP_DOC_SPAN_RATIO
+    }),
   })
 
   const loggerProvider = new LoggerProvider({
     resource,
   })
 
-  // const logExporter = new MultiplayerHttpLogExporterNode({
-  //   apiKey: MULTIPLAYER_OTLP_KEY,
-  //   url: OTLP_LOGS_ENDPOINT
-  // })
   const logExporter = new OTLPLogExporter({
     url: OTLP_LOGS_ENDPOINT,
     headers: {

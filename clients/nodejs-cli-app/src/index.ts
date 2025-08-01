@@ -1,12 +1,14 @@
 import { idGenerator } from './opentelemetry'
-import { debugger } from '@multiplayer-app/debugger-node'
-import { DebugSessionType } from '@multiplayer-app/opentelemetry'
+import {
+    sessionRecorder,
+    SessionType
+} from '@multiplayer-app/session-recorder-node'
 import {
     MULTIPLAYER_OTLP_KEY,
-    SERVICE_NAME,
-    SERVICE_VERSION,
-    PLATFORM_ENV
- } from './config'
+    ENVIRONMENT,
+    COMPONENT_VERSION,
+    COMPONENT_NAME
+} from './config'
 import {
     VaultOfTimeService,
     EpochEngineService,
@@ -14,20 +16,18 @@ import {
 } from './services'
 
 const main = async () => {
-    debugger.init(
-        MULTIPLAYER_OTLP_KEY,
-        idGenerator,
-        {
-            resourceAttributes: {
-                serviceName: SERVICE_NAME
-                componentName: SERVICE_VERSION
-                PLATFORM_ENV
-            }
+    sessionRecorder.init({
+        apiKey: MULTIPLAYER_OTLP_KEY,
+        traceIdGenerator: idGenerator,
+        resourceAttributes: {
+            componentName: COMPONENT_NAME,
+            componentVersion: COMPONENT_VERSION,
+            environment: ENVIRONMENT
         }
-    )
+    })
 
-    await debugger.start(
-        DebugSessionType.PLAIN,
+    await sessionRecorder.start(
+        SessionType.PLAIN,
         {
             name: 'Test nodejs cli app debug session',
             resourceAttributes: {
@@ -42,7 +42,7 @@ const main = async () => {
 
     await MindsOfTimeService.fetchProminentPersons()
 
-    await debugger.stop()
+    await sessionRecorder.stop()
 
     setTimeout(() => {
         process.exit(0)

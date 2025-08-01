@@ -9,6 +9,7 @@ import {
   getResourceDetectors,
 } from "@opentelemetry/auto-instrumentations-node"
 import {
+  // detectResources,
   detectResourcesSync,
   Resource
 } from "@opentelemetry/resources"
@@ -24,10 +25,10 @@ import api from "@opentelemetry/api"
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http"
 import { W3CTraceContextPropagator } from "@opentelemetry/core"
 import {
-  MultiplayerTraceIdRatioBasedSampler,
-  MultiplayerIdGenerator,
-  MultiplayerHttpInstrumentationHooks,
-} from "@multiplayer-app/opentelemetry"
+  SessionRecorderHttpInstrumentationHooksNode,
+  SessionRecorderTraceIdRatioBasedSampler,
+  SessionRecorderIdGenerator,
+} from "@multiplayer-app/session-recorder-node"
 import { LoggerProvider, BatchLogRecordProcessor } from "@opentelemetry/sdk-logs"
 import * as apiLogs from "@opentelemetry/api-logs"
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http'
@@ -42,20 +43,22 @@ import {
   MULTIPLAYER_OTLP_SPAN_RATIO
 } from './config'
 
+// NOTE: Update instrumentation configuration as needed
+// For more see: https://www.npmjs.com/package/@opentelemetry/auto-instrumentations-node
 const instrumentations = [
   getNodeAutoInstrumentations({
     "@opentelemetry/instrumentation-http": {
-      requestHook: MultiplayerHttpInstrumentationHooks.requestHook({
-        headersToMask: ["X-Api-Key"],
+      requestHook: SessionRecorderHttpInstrumentationHooksNode.requestHook({
+        maskHeadersList: ["X-Api-Key"],
         maxPayloadSizeBytes: 5000,
-        // schemifyDocSpanPayload: false, // remove
-        maskDebugSpanPayload: false,
+        schemifyDocSpanPayload: false,
+        isMaskBodyEnabled: false,
       }),
-      responseHook: MultiplayerHttpInstrumentationHooks.responseHook({
-        headersToMask: ["X-Api-Key"],
+      responseHook: SessionRecorderHttpInstrumentationHooksNode.responseHook({
+        maskHeadersList: ["X-Api-Key"],
         maxPayloadSizeBytes: 5000,
-        // schemifyDocSpanPayload: false, // remove
-        maskDebugSpanPayload: false
+        schemifyDocSpanPayload: false,
+        isMaskBodyEnabled: false
       }),
     },
   }),
@@ -78,13 +81,15 @@ const getResource = () => {
   return resource
 }
 
-export const idGenerator = new MultiplayerIdGenerator()
+export const idGenerator = new SessionRecorderIdGenerator({
+  autoDocTracesRatio: MULTIPLAYER_OTLP_DOC_SPAN_RATIO
+})
 
 const opentelemetry = () => {
   const traceExporter = new OTLPTraceExporter({
     url: OTLP_TRACES_ENDPOINT,
     headers: {
-      Authorization: MULTIPLAYER_OTLP_KEY,
+      Authorization: MULTIPLAYER_OTLP_KEY
     },
   })
 
@@ -96,7 +101,7 @@ const opentelemetry = () => {
       new BatchSpanProcessor(traceExporter),
     ],
     sampler: new ParentBasedSampler({
-      root: new MultiplayerTraceIdRatioBasedSampler(MULTIPLAYER_OTLP_SPAN_RATIO),
+      root: new SessionRecorderTraceIdRatioBasedSampler(MULTIPLAYER_OTLP_SPAN_RATIO),
     }),
     idGenerator,
   })
