@@ -15,7 +15,7 @@ services:
     restart: on-failure
     command: ["--config=/etc/otel/config.yaml"]
     environment:
-      OTLP_COLLECTOR_ENDPOINT: https://api.multiplayer.app:443
+      MULTIPLAYER_OTLP_COLLECTOR_ENDPOINT: https://api.multiplayer.app:443
       MULTIPLAYER_OTLP_KEY: "{{MULTIPLAYER_OTLP_KEY}}"
     volumes:
       - ./config.yaml:/etc/otel/config.yaml
@@ -154,27 +154,15 @@ processors:
 
 exporters:
   otlphttp/multiplayer:
-    endpoint: "${OTLP_COLLECTOR_ENDPOINT}"
+    endpoint: "${MULTIPLAYER_OTLP_COLLECTOR_ENDPOINT}"
     headers:
       Authorization: "${MULTIPLAYER_OTLP_KEY}"
     timeout: 10s
     encoding: json
 
 service:
-  telemetry:
-    logs:
-        level: "debug"
-
-    metrics:
-      level: detailed
-      readers:
-        - pull:
-            exporter:
-              prometheus:
-                host: '0.0.0.0'
-                port: 8888
-
   extensions: [ healthcheckv2 ]
+
   pipelines:
     traces/deb:
       receivers: [ otlp ]
@@ -324,20 +312,8 @@ Collector, including data pipelines.
 
 ```yaml
 service:
-  telemetry:
-    logs:
-        level: "debug"
-
-    metrics:
-      level: detailed
-      readers:
-        - pull:
-            exporter:
-              prometheus:
-                host: '0.0.0.0'
-                port: 8888
-
   extensions: [ healthcheckv2 ]
+
   pipelines:
     traces/deb:
       receivers: [ otlp ]
