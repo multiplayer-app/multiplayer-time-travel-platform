@@ -75,7 +75,6 @@ func newTraceProvider() (*trace.TracerProvider, error) {
 		log.Fatalf("failed to create resource: %v", err)
 	}
 
-	// traceExporter := multiplayer.NewExporter(config.MULTIPLAYER_OTLP_KEY)
 	traceExporter, err := otlptracehttp.New(ctx,
 		otlptracehttp.WithEndpointURL(config.OTLP_TRACES_ENDPOINT),
 		otlptracehttp.WithInsecure(), // If not using HTTPS
@@ -85,7 +84,7 @@ func newTraceProvider() (*trace.TracerProvider, error) {
 		return nil, err
 	}
 
-	idGenerator = multiplayer.NewRatioDependentIdGenerator()
+	idGenerator := multiplayer.NewRatioDependentIdGenerator(config.MULTIPLAYER_OTLP_DOC_SPAN_RATIO)
 
 	traceProvider := trace.NewTracerProvider(
 		trace.WithResource(res),
