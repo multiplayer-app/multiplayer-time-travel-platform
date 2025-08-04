@@ -26,12 +26,11 @@ Learn more at: [multiplayer.app](https://multiplayer.app)
 This demo requires Docker and Docker Compose to run locally.
 
 1. Configure environment variables:
-   bash
-   cp .env.example .env
-   Update the .env file with your configuration preferences.
+   `$ cp .env.example .env`.
+   Then, edit the `.env` file to set your desired configuration options (e.g., API keys, service URLs).
+
 2. Start the demo:
-   bash
-   docker-compose up -d
+   `$ docker-compose up -d`
 
 3. Access the application:
    Navigate to http://localhost:8080 to start exploring the time travel chat experience.
