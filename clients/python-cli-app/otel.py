@@ -17,9 +17,9 @@ from multiplayer.opentelemetry.trace.id_generator import MultiplayerRandomIdGene
 
 from config import OTLP_TRACES_ENDPOINT, OTLP_LOGS_ENDPOINT, MULTIPLAYER_OTLP_KEY, MULTIPLAYER_OTLP_DOC_SPAN_RATIO, MULTIPLAYER_OTLP_SPAN_RATIO, SERVICE_NAME, SERVICE_VERSION, PLATFORM_ENV
 
+id_generator = MultiplayerRandomIdGenerator(autoDocTracesRatio = MULTIPLAYER_OTLP_DOC_SPAN_RATIO)
 
-def init_tracing(app):
-    id_generator = MultiplayerRandomIdGenerator(autoDocTracesRatio = MULTIPLAYER_OTLP_DOC_SPAN_RATIO)
+def init_tracing():
     sampler = MultiplayerTraceIdRatioBasedSampler(rate = 1) # MULTIPLAYER_OTLP_SPAN_RATIO
 
     # Service name is required for most backends
@@ -65,5 +65,5 @@ def init_tracing(app):
 
     logger_provider.add_log_record_processor(BatchLogRecordProcessor(logExporter))
 
-    FlaskInstrumentor().instrument_app(app)
+    # FlaskInstrumentor().instrument_app(app)
     # handler = LoggingHandler(level=logging.NOTSET, logger_provider=logger_provider)

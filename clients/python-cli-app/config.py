@@ -8,7 +8,4 @@ MULTIPLAYER_OTLP_KEY = os.getenv("MULTIPLAYER_OTLP_KEY")
 OTLP_TRACES_ENDPOINT = os.getenv("OTLP_TRACES_ENDPOINT", "https://api.multiplayer.app/v1/traces")
 OTLP_LOGS_ENDPOINT = os.getenv("OTLP_LOGS_ENDPOINT", "https://api.multiplayer.app/v1/logs")
 API_PREFIX = os.getenv("API_PREFIX", "/v1/minds-of-time")
-MULTIPLAYER_OTLP_DOC_SPAN_RATIO = float(os.getenv("MULTIPLAYER_OTLP_DOC_SPAN_RATIO", "0.04"))
 MULTIPLAYER_OTLP_SPAN_RATIO = float(os.getenv("MULTIPLAYER_OTLP_SPAN_RATIO", "0.05"))
-
-RANDOM_ERROR_RATE = float(os.getenv("RANDOM_ERROR_RATE", "0.1"))
