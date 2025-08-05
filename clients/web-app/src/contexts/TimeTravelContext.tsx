@@ -1,5 +1,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
-import { recorderEventBus } from "@multiplayer-app/session-debugger";
+import SessionRecorder, {
+  recorderEventBus,
+} from "@multiplayer-app/session-debugger";
 import { getEpoch, getProminentPersons } from "services";
 import { Character } from "utils/types";
 
@@ -14,9 +16,14 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
 }) => {
   const [selectedCharacter, setSelectedCharacter] = useState<Character>(null);
   const [question, setQuestion] = useState(null);
-  const [navigationUrl, setNavigationUrl] = useState({});
+  const [navigationUrl, setNavigationUrl] = useState(() => {
+    const storedUrl = localStorage.getItem("mp-navigation-url");
+    return storedUrl ? JSON.parse(storedUrl) : {};
+  });
   const [errorRate, setErrorRate] = useState(0);
-  const [recordingState, setRecordingState] = useState(null);
+  const [recordingState, setRecordingState] = useState(
+    SessionRecorder?.sessionState
+  );
   const [isManualRate, setIsManualRate] = useState(false);
 
   useEffect(() => {
@@ -33,6 +40,7 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
   useEffect(() => {
     const handleSetUrl = (res) => {
       setNavigationUrl(res?.url);
+      localStorage.setItem("mp-navigation-url", JSON.stringify(res?.url));
     };
     recorderEventBus?.on("debug-session:started", handleSetUrl);
     return () => {

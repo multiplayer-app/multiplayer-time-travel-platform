@@ -223,6 +223,7 @@ const MultiplayerChat = ({
   const onSessionOpen = () => {
     if (navigationUrl) {
       window.open(navigationUrl, "_blank");
+      localStorage.removeItem("mp-navigation-url");
     }
   };
 

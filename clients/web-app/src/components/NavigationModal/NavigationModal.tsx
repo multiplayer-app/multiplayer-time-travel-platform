@@ -8,10 +8,12 @@ Modal.setAppElement("#root");
 
 const NavigationModal = ({ isOpen, onClose }) => {
   const { navigationUrl } = useTimeTravel();
+
   const handleNavigate = () => {
     if (navigationUrl) {
       onClose();
       window.open(navigationUrl, "_blank");
+      localStorage.removeItem("mp-navigation-url");
     }
   };
 
@@ -26,7 +28,7 @@ const NavigationModal = ({ isOpen, onClose }) => {
       overlayClassName="mtt-modal-overlay"
     >
       <h2 className="mtt-navigation-modal-header">
-        You've just recorded a debugging session!
+        You've just recorded a session!
       </h2>
       <p className="mtt-navigation-modal-description">
         To view the session recording, which includes all traces, metrics and
