@@ -13,7 +13,8 @@ export const sendMessage = async (
   message: string,
   contextId: string,
   character: Character,
-  errorRate: number
+  errorRate: number,
+  signal: AbortSignal
 ) => {
   return instance.post(
     `/v1/timegate/dialogue-hub/openrouter/message`,
@@ -29,6 +30,7 @@ export const sendMessage = async (
       params: {
         errorRate,
       },
+      signal,
     }
   );
 };

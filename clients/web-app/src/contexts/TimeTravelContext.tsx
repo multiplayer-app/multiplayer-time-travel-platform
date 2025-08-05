@@ -11,15 +11,23 @@ interface TimeTravelProviderProps {
   children: ReactNode;
 }
 
+const getNavigationStoredUrl = () => {
+  const storedUrl = localStorage.getItem("mp-navigation-url");
+  if (!storedUrl || storedUrl === "undefined") return null;
+  try {
+    return JSON.parse(storedUrl);
+  } catch (e) {
+    console.error("Failed to parse stored navigation URL:", e);
+    return null;
+  }
+};
+
 export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
   children,
 }) => {
   const [selectedCharacter, setSelectedCharacter] = useState<Character>(null);
   const [question, setQuestion] = useState(null);
-  const [navigationUrl, setNavigationUrl] = useState(() => {
-    const storedUrl = localStorage.getItem("mp-navigation-url");
-    return storedUrl ? JSON.parse(storedUrl) : {};
-  });
+  const [navigationUrl, setNavigationUrl] = useState(getNavigationStoredUrl());
   const [errorRate, setErrorRate] = useState(0);
   const [recordingState, setRecordingState] = useState(
     SessionRecorder?.sessionState

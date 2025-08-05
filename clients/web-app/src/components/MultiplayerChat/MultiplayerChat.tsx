@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import { AxiosError } from "axios";
 import {
   ChatContainer,
   MainContainer,
@@ -37,11 +38,12 @@ const MultiplayerChat = ({
     recordingState,
   } = useTimeTravel();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [isTyping, setIsTyping] = useState(false);
-  const [contextId, setContextId] = useState(null);
-  const [copiedIndex, setCopiedIndex] = useState(null);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
+  const [contextId, setContextId] = useState<string>(null);
+  const [copiedIndex, setCopiedIndex] = useState<number>(null);
   const messageInputRef = useRef<HTMLInputElement>(null);
   const bottomRef = useRef(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const isDisabled = isTyping || !character;
 
@@ -53,6 +55,9 @@ const MultiplayerChat = ({
 
   useEffect(() => {
     // Reset chat when character changes
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
     setContextId(null);
     setMessages([]);
     setIsTyping(false);
@@ -67,13 +72,23 @@ const MultiplayerChat = ({
   const onHandleCharacterErrorResponse = useCallback(
     async (errorMessage: string, character: Character, isRetry: boolean) => {
       const delay = isRetry ? 500 : 0;
+
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+
       try {
         const prompt = `You are ${character.name}. You've got the following system error: ${errorMessage}. 
         Use the following answer style for explaining the error message: ${character.errorMessage}.
         After explaining suggest users to use Multiplayer Debugger to investigate further, 
         starting the debug session and writing more messages`;
 
-        const response = await sendMessage(prompt, contextId, null, 0);
+        const response = await sendMessage(
+          prompt,
+          contextId,
+          null,
+          0,
+          controller.signal
+        );
         const data = response?.data;
 
         const botMessage = createCharacterErrorMessage(data?.reply);
@@ -126,6 +141,9 @@ const MultiplayerChat = ({
     async (message: string, isRetry?: boolean) => {
       const delay = isRetry ? 500 : 0;
 
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+
       try {
         const userMessage = createUserMessage(message, character);
         const _errorRate =
@@ -140,7 +158,8 @@ const MultiplayerChat = ({
           message,
           contextId,
           character,
-          _errorRate
+          _errorRate,
+          controller.signal
         );
 
         getTimegateEpoch();
@@ -148,7 +167,9 @@ const MultiplayerChat = ({
         handleSuccess(data?.reply, data?.contextId, delay);
       } catch (err) {
         getTimegateEpoch();
-        await handleError(err, delay, isRetry);
+        if (err.code !== AxiosError.ERR_CANCELED) {
+          await handleError(err, delay, isRetry);
+        }
       } finally {
         setTimeout(() => setIsTyping(false), delay);
       }
