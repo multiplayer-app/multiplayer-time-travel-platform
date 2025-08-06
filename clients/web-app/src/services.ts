@@ -5,10 +5,6 @@ const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_API_URL,
 });
 
-export const submitEmail = async (email) => {
-  return instance.post(`/v1/timegate/user/info/email`, { email });
-};
-
 export const sendMessage = async (
   message: string,
   contextId: string,
