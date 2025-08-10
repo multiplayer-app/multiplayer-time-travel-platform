@@ -26,6 +26,10 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
     let errorRate = parseFloat((req.query?.errorRate as string))
 
+    if (errorRate === 0) {
+        return next();
+    }
+
     if (isNaN(errorRate) || errorRate < 0 || errorRate > 1) {
         errorRate = RANDOM_ERROR_RATE;
     }

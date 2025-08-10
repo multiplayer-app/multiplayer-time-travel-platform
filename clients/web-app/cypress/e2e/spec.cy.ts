@@ -4,15 +4,18 @@ describe('template spec', () => {
 
     // Start session after the page loads
     cy.window().then((win) => {
-      cy.get('.mtt-debugger-label')
-        .trigger('mousedown')
-        .wait(100)
-        .trigger('mouseup')
-        .wait(100);
+      // cy.get('.mtt-debugger-label')
+      //   .trigger('mousedown')
+      //   .wait(100)
+      //   .trigger('mouseup')
+      //   .wait(100);
 
-      cy.get('.mp-session-debugger-popover-button.mp-start-recording')
-        .click()
-        .wait(1500)
+      // cy.get('.mp-session-debugger-popover-button.mp-start-recording')
+      //   .click()
+      //   .wait(1500)
+      cy.intercept('POST', '/v0/radar/debug-sessions/start*').as('startRequest');
+
+      cy.get('.mtt-button.medium-text').click().wait('@startRequest');
     });
   });
 
@@ -39,7 +42,7 @@ describe('template spec', () => {
       });
     }).as('startRequest');
 
-    cy.get('.mtt-button.medium-text').click();
+    // cy.get('.mtt-button.medium-text').click();
 
     cy.get('.mtt-question-button.medium-text').first().click()
 
@@ -64,7 +67,7 @@ describe('template spec', () => {
       });
     }).as('startRequest');
 
-    cy.get('.mtt-button.medium-text').click().wait(100);
+    // cy.get('.mtt-button.medium-text').click().wait(100);
 
     cy.get('.cs-message-input__content-editor-wrapper').click()
       .trigger('mousedown')
@@ -84,7 +87,7 @@ describe('template spec', () => {
 
 
   it('Should fail eventually', () => {
-    cy.get('.mtt-button.medium-text').click().wait(500);
+    // cy.get('.mtt-button.medium-text').click().wait(500);
 
     cy.get('.mtt-question-button.medium-text').first().click()
 
