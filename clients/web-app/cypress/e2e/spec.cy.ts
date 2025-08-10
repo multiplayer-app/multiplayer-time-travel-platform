@@ -28,75 +28,75 @@ describe('template spec', () => {
 
     cy.get('.mp-session-debugger-popover-button.mp-stop-recording')
       .click()
-      .wait(10000)
+      .wait(5000)
   });
 
-  // it('Should not throw error', () => {
-  //   cy.visit('http://localhost:8080')
+  it('Should not throw error', () => {
+    cy.visit('http://localhost:8080')
 
-  //   cy.intercept('POST', '/v0/radar/debug-sessions/start*').as('startRequest');
+    cy.intercept('POST', '/v0/radar/debug-sessions/start*').as('startRequest');
 
-  //   cy.get('.mtt-button.medium-text').click().wait('@startRequest');
+    cy.get('.mtt-button.medium-text').click().wait('@startRequest');
 
 
-  //   let aiRequestSucceeded = true;
+    let aiRequestSucceeded = true;
 
-  //   cy.intercept('POST', '/v1/timegate/dialogue-hub/openrouter/message*', (req) => {
-  //     req.continue((res) => {
-  //       if (res.statusCode >= 400) {
-  //         aiRequestSucceeded = false; // Stop when error occurs
-  //       }
-  //     });
-  //   }).as('startRequest');
+    cy.intercept('POST', '/v1/timegate/dialogue-hub/openrouter/message*', (req) => {
+      req.continue((res) => {
+        if (res.statusCode >= 400) {
+          aiRequestSucceeded = false; // Stop when error occurs
+        }
+      });
+    }).as('startRequest');
 
-  //   // cy.get('.mtt-button.medium-text').click();
+    // cy.get('.mtt-button.medium-text').click();
 
-  //   cy.get('.mtt-question-button.medium-text').first().click()
+    cy.get('.mtt-question-button.medium-text').first().click()
 
-  //   cy.get('.mtt-suggestions-list-header', { timeout: 10000 }).should('be.visible')
+    cy.get('.mtt-suggestions-list-header', { timeout: 10000 }).should('be.visible')
 
-  //   cy.wait('@startRequest', { timeout: 80000 })
-  //     .then(() => {
-  //       if (!aiRequestSucceeded) {
-  //         throw Error('Test failed')
-  //       }
-  //     })
-  // });
+    cy.wait('@startRequest', { timeout: 80000 })
+      .then(() => {
+        if (!aiRequestSucceeded) {
+          throw Error('Test failed')
+        }
+      })
+  });
 
-  // it('Should throw error', () => {
-  //   cy.visit('http://localhost:8080')
+  it('Should throw error', () => {
+    cy.visit('http://localhost:8080')
 
-  //   cy.intercept('POST', '/v0/radar/debug-sessions/start*').as('startRequest');
+    cy.intercept('POST', '/v0/radar/debug-sessions/start*').as('startRequest');
 
-  //   // cy.get('.mtt-button.medium-text').click().wait('@startRequest');
+    cy.get('.mtt-button.medium-text').click().wait('@startRequest');
 
-  //   let aiRequestSucceeded = true;
+    let aiRequestSucceeded = true;
 
-  //   cy.intercept('POST', '/v1/timegate/dialogue-hub/openrouter/message*', (req) => {
-  //     req.continue((res) => {
-  //       if (res.statusCode >= 400) {
-  //         aiRequestSucceeded = false; // Stop when error occurs
-  //       }
-  //     });
-  //   }).as('startRequest');
+    cy.intercept('POST', '/v1/timegate/dialogue-hub/openrouter/message*', (req) => {
+      req.continue((res) => {
+        if (res.statusCode >= 400) {
+          aiRequestSucceeded = false; // Stop when error occurs
+        }
+      });
+    }).as('startRequest');
 
-  //   // cy.get('.mtt-button.medium-text').click().wait(100);
+    // cy.get('.mtt-button.medium-text').click().wait(100);
 
-  //   cy.get('.cs-message-input__content-editor-wrapper').click()
-  //     .trigger('mousedown')
-  //     .wait(100)
-  //     .trigger('mouseup')
-  //     .wait(100)
-  //     .type('BUG');
+    cy.get('.cs-message-input__content-editor-wrapper').click()
+      .trigger('mousedown')
+      .wait(100)
+      .trigger('mouseup')
+      .wait(100)
+      .type('BUG');
 
-  //   cy.get('.cs-button').click()
-  //     .wait('@startRequest', { timeout: 80000 })
-  //       .then(() => {
-  //         if (aiRequestSucceeded) {
-  //           throw Error('Test failed')
-  //         }
-  //       })
-  // });
+    cy.get('.cs-button').click()
+      .wait('@startRequest', { timeout: 80000 })
+        .then(() => {
+          if (aiRequestSucceeded) {
+            throw Error('Test failed')
+          }
+        })
+  });
 
 
   it('Should not fail', () => {
@@ -113,7 +113,7 @@ describe('template spec', () => {
 
     cy.get('.mtt-question-button.medium-text').first().click()
 
-    cy.get('.mtt-suggestions-list-header', { timeout: 5000 }).should('be.visible')
+    cy.get('.mtt-suggestions-list-header', { timeout: 10000 }).should('be.visible')
 
     let keepClicking = true;
 
@@ -127,7 +127,9 @@ describe('template spec', () => {
     }).as('startRequest');
 
     function clickUntilFail() {
-      if (!keepClicking) return;
+      if (!keepClicking) {
+        throw new Error()
+      }
 
       cy.get('.mtt-suggestions-list-header', { timeout: 10000 })
         .should('be.visible')
