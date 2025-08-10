@@ -1,23 +1,23 @@
 describe('template spec', () => {
-  beforeEach(() => {
-    cy.visit('http://localhost:8080') // Replace with your actual URL
+  // beforeEach(() => {
+  //   cy.visit('http://localhost:8080') // Replace with your actual URL
 
-    // Start session after the page loads
-    cy.window().then((win) => {
-      // cy.get('.mtt-debugger-label')
-      //   .trigger('mousedown')
-      //   .wait(100)
-      //   .trigger('mouseup')
-      //   .wait(100);
+  //   // Start session after the page loads
+  //   cy.window().then((win) => {
+  //     // cy.get('.mtt-debugger-label')
+  //     //   .trigger('mousedown')
+  //     //   .wait(100)
+  //     //   .trigger('mouseup')
+  //     //   .wait(100);
 
-      // cy.get('.mp-session-debugger-popover-button.mp-start-recording')
-      //   .click()
-      //   .wait(1500)
-      cy.intercept('POST', '/v0/radar/debug-sessions/start*').as('startRequest');
+  //     // cy.get('.mp-session-debugger-popover-button.mp-start-recording')
+  //     //   .click()
+  //     //   .wait(1500)
+  //     cy.intercept('POST', '/v0/radar/debug-sessions/start*').as('startRequest');
 
-      cy.get('.mtt-button.medium-text').click().wait('@startRequest');
-    });
-  });
+  //     cy.get('.mtt-button.medium-text').click().wait('@startRequest');
+  //   });
+  // });
 
   afterEach(() => {
     cy.get('.mtt-debugger-label')
@@ -32,6 +32,13 @@ describe('template spec', () => {
   });
 
   it('Should not throw error', () => {
+    cy.visit('http://localhost:8080')
+
+    cy.intercept('POST', '/v0/radar/debug-sessions/start*').as('startRequest');
+
+    cy.get('.mtt-button.medium-text').click().wait('@startRequest');
+
+
     let aiRequestSucceeded = true;
 
     cy.intercept('POST', '/v1/timegate/dialogue-hub/openrouter/message*', (req) => {
@@ -57,6 +64,12 @@ describe('template spec', () => {
   });
 
   it('Should throw error', () => {
+    cy.visit('http://localhost:8080')
+
+    cy.intercept('POST', '/v0/radar/debug-sessions/start*').as('startRequest');
+
+    cy.get('.mtt-button.medium-text').click().wait('@startRequest');
+
     let aiRequestSucceeded = true;
 
     cy.intercept('POST', '/v1/timegate/dialogue-hub/openrouter/message*', (req) => {
@@ -87,6 +100,15 @@ describe('template spec', () => {
 
 
   it('Should fail eventually', () => {
+    cy.visit('http://localhost:8080')
+
+    cy.intercept('POST', '/v0/radar/debug-sessions/start*').as('startRequest');
+
+    // cy.get('.mtt-button.medium-text').click().wait('@startRequest');
+
+
+    cy.get(':nth-child(3) > .mtt-character-card').click().wait('@startRequest');
+
     // cy.get('.mtt-button.medium-text').click().wait(500);
 
     cy.get('.mtt-question-button.medium-text').first().click()
