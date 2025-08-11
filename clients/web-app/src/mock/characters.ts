@@ -53,7 +53,7 @@ export const characters = [
     pronoun: "He",
     description: "Iconic rock vocalist and Queen frontman",
     errorMessage:
-      "Another one bites the dust! We hit an error—but the show must go on. Open the Multiplayer Debugger to see what went wrong.",
+      "Another one bites the dust! We hit an error—but the show must go on. Open the Multiplayer full-stack session recordings to see what went wrong.",
     answerStyle:
       "Would demand that error messages be sung. Would also insist that your broken app is still beautiful, and that all software bugs should be performed live on stage.",
   },
@@ -89,7 +89,7 @@ export const characters = [
     pronoun: "He",
     description: "Electric-type Pokémon and loyal companion",
     errorMessage:
-      "Pika... CHU!! ⚡That wasn’t supposed to happen. Don’t worry: Multiplayer Debugger will help you catch it.",
+      "Pika... CHU!! ⚡That wasn’t supposed to happen. Don’t worry: Multiplayer full-stack session recordings will help you catch it.",
     answerStyle:
       "imagine Pikachu's response in English first, then translate it into Pika's language, but put Pika's language first, without parenthesis and the English response in parenthesis after it, for example: \"Pika Pika Pika (There seems to be an error in the system).",
   },
@@ -125,7 +125,7 @@ export const characters = [
     pronoun: "He",
     description: "Jedi Master and wise mentor from Star Wars",
     errorMessage:
-      "Broke, it has. Debug you must. In the Multiplayer Debugger, answers lie.",
+      "Broke, it has. Debug you must. In the Multiplayer full-stack session recordings, answers lie.",
     answerStyle:
       "Would critique your entire codebase in cryptic syntax. Might insist on pair programming via telepathy.",
   },
@@ -161,7 +161,7 @@ export const characters = [
     pronoun: "She",
     description: "Mathematician and early computer programmer",
     errorMessage:
-      "A computational error, it seems. But every anomaly tells a story. Let us decipher it with the aid of the Multiplayer Debugger.",
+      "A computational error, it seems. But every anomaly tells a story. Let us decipher it with the aid of the Multiplayer full-stack session recordings.",
     answerStyle:
       "The first programmer. Would love to see her reaction to modern computing and hear her ideas on what she could have done with today’s tools.",
   },
@@ -197,7 +197,7 @@ export const characters = [
     pronoun: "She",
     description: "Chef and television personality",
     errorMessage:
-      "Ah, a delightful little failure! Perfect opportunity to debug. Into the Multiplayer Debugger we go!",
+      "Ah, a delightful little failure! Perfect opportunity to debug. Into the Multiplayer full-stack session recordings we go!",
     answerStyle:
       "Would explain APIs like recipes, compare microservices to a well-planned kitchen, and immediately break something just to show you how to fix it.",
   },
@@ -233,7 +233,7 @@ export const characters = [
     pronoun: "She",
     description: "Fearless space officer and alien fighter",
     errorMessage:
-      "Something just failed. You’ve got one shot to trace this before it propagates. Time to suit up and debug: open the Multiplayer Debugger.",
+      "Something just failed. You’ve got one shot to trace this before it propagates. Time to suit up and debug: open the Multiplayer full-stack session recordings.",
     answerStyle:
       "One of the most competent problem-solvers in sci-fi. Would 100% call out bad system design and tell you exactly where the failure points are before things go horribly wrong.",
   },
@@ -269,7 +269,7 @@ export const characters = [
     pronoun: "He",
     description: "Inventor and time travel enthusiast",
     errorMessage:
-      "Great Scott! Something’s gone terribly wrong. This could alter the entire future of the app! Use the Multiplayer Debugger to fix it.",
+      "Great Scott! Something’s gone terribly wrong. This could alter the entire future of the app! Use the Multiplayer full-stack session recordings to fix it.",
     answerStyle:
       "Would insist that every system failure could be solved with a flux capacitor and a little plutonium.",
   },
@@ -305,7 +305,7 @@ export const characters = [
     pronoun: "He",
     description: "Mathematician and pioneer of computing",
     errorMessage:
-      "A fault has occurred. This behavior is anomalous but not without explanation. The Multiplayer Debugger will offer clarity.",
+      "A fault has occurred. This behavior is anomalous but not without explanation. The Multiplayer full-stack session recordings will offer clarity.",
     answerStyle:
       "The father of modern computing, AI pioneer, and codebreaker. He’d have incredible insights into algorithms, machine learning, and cryptography.",
   },
@@ -337,7 +337,7 @@ export const characters = [
     pronoun: "She",
     description: "Software engineer and Apollo mission leader",
     errorMessage:
-      "We’ve encountered a fault, but it’s recoverable. Recommend immediate inspection via Multiplayer Debugger.",
+      "We’ve encountered a fault, but it’s recoverable. Recommend immediate inspection via Multiplayer full-stack session recordings.",
     answerStyle:
       "The software engineer who wrote the Apollo mission code. Would probably have incredible debugging stories from spaceflight programming.",
   },
@@ -373,7 +373,7 @@ export const characters = [
     pronoun: "She",
     description: "Iconic Mexican painter known for her vivid self-portraits",
     errorMessage:
-      "Something failed… and yet, it is strangely beautiful. Find its meaning with the Multiplayer Debugger.",
+      "Something failed… and yet, it is strangely beautiful. Find its meaning with the Multiplayer full-stack session recordings.",
     answerStyle:
       "Would insist that your CI/CD pipeline needs to express raw emotion. Would also refuse to fix bugs because `imperfection is beauty.`",
   },

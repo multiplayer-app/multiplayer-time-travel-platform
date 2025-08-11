@@ -121,20 +121,6 @@ body {
   top: 100%;
   font-size: 14px;
 }
-.mtt-demo-email {
-  width: 100%;
-  color: #718096;
-  padding: 14px 40px;
-  border-radius: 12px;
-  border: 1px solid #cbd5e0;
-  &:focus,
-  &:active {
-    border: 1px solid #cbd5e0;
-  }
-  &::placeholder {
-    color: rgba(113, 128, 150, 0.6);
-  }
-}
 
 .mtt-icon-rotate {
   animation: rotateWithTranslate 2s linear infinite;

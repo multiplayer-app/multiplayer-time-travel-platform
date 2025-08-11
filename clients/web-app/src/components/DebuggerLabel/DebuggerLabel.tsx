@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from "react";
-import debuggerInstance from "@multiplayer-app/session-debugger";
+import debuggerInstance from "@multiplayer-app/session-recorder-browser";
 import {
   triggerMouseDownEvent,
   triggerMouseUpEvent,
@@ -38,8 +38,8 @@ const DebuggerLabel = () => {
       onClick={(e) => e.stopPropagation()}
     >
       {recordingState !== SessionState.started
-        ? "Record your session"
-        : "Recording your session"}
+        ? "Record a new session"
+        : "Stop recording"}
     </div>
   );
 };

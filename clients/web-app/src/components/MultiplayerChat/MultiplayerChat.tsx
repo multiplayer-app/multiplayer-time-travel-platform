@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { AxiosError } from "axios";
+import debuggerInstance from "@multiplayer-app/session-recorder-browser";
 import {
   ChatContainer,
   MainContainer,
@@ -78,8 +79,8 @@ const MultiplayerChat = ({
 
       try {
         const prompt = `You are ${character.name}. You've got the following system error: ${errorMessage}. 
-        Use the following answer style for explaining the error message: ${character.errorMessage}.
-        After explaining suggest users to use Multiplayer Debugger to investigate further, 
+        Answer short, respond in first person as if you are that character, using the following answer style for explaining the error message: ${character.errorMessage}.
+        After explaining suggest users to use Multiplayer full-stack session recordings to investigate further, 
         starting the debug session and writing more messages`;
 
         const response = await sendMessage(
@@ -241,7 +242,8 @@ const MultiplayerChat = ({
     };
   }, []);
 
-  const onSessionOpen = () => {
+  const onSessionStopAndOpen = () => {
+    debuggerInstance?.stop();
     if (navigationUrl) {
       window.open(navigationUrl, "_blank");
       localStorage.removeItem("mp-navigation-url");
@@ -283,14 +285,15 @@ const MultiplayerChat = ({
                           className="mtt-debugger-toggle"
                           onClick={onDebuggerOpen}
                         >
-                          Open the session recorder to start recording
+                          👀 👈 Click “Record a new session” and let’s hunt
+                          another bug
                         </div>
                       ) : (
                         <div
                           className="mtt-debugger-toggle"
-                          onClick={onSessionOpen}
+                          onClick={onSessionStopAndOpen}
                         >
-                          Open the session recorder
+                          Stop recording and view your session
                         </div>
                       )}
                     </Message.CustomContent>

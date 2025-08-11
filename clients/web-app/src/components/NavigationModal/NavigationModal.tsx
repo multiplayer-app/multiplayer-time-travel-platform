@@ -31,8 +31,8 @@ const NavigationModal = ({ isOpen, onClose }) => {
         You've just recorded a session!
       </h2>
       <p className="mtt-navigation-modal-description">
-        To view the session recording, which includes all traces, metrics and
-        logs, click "Open."
+        We’ve captured everything from frontend screens to deep backend traces,
+        logs, request/response payloads and headers - all correlated by session.
       </p>
       <div className="mtt-modal-buttons">
         <button className="mtt-modal-button" onClick={onClose}>
@@ -42,7 +42,7 @@ const NavigationModal = ({ isOpen, onClose }) => {
           className="mtt-modal-button button-open"
           onClick={handleNavigate}
         >
-          Open
+          View the recording
         </button>
       </div>
     </Modal>

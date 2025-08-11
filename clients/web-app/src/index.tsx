@@ -1,4 +1,4 @@
-import debuggerInstance from "@multiplayer-app/session-debugger";
+import debuggerInstance from "@multiplayer-app/session-recorder-browser";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
@@ -23,7 +23,7 @@ debuggerInstance.init({
     /https:\/\/pixel\.source\.app\/.*/,
   ],
   propagateTraceHeaderCorsUrls: new RegExp(
-  // eslint-disable-next-line
+    // eslint-disable-next-line
     `${process.env.REACT_APP_BASE_API_URL}\.*`,
     "i"
   ),
@@ -35,11 +35,7 @@ debuggerInstance.init({
     Number(process.env.REACT_APP_MULTIPLAYER_OTLP_SPAN_RATIO) || 0.04,
   maxCapturingHttpPayloadSize: 100000,
   disableCapturingHttpPayload: false,
-
-
-
-
-  
+  enableContinuousDebugging: false,
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

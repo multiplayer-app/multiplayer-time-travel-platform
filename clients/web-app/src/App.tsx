@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { recorderEventBus } from "@multiplayer-app/session-debugger";
+import { recorderEventBus } from "@multiplayer-app/session-recorder-browser";
 import SidePanel from "components/SidePanel";
 import Board from "components/Board";
 import NavigationModal from "components/NavigationModal";

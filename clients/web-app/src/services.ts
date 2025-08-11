@@ -18,7 +18,7 @@ export const sendMessage = async (
       message: `${message} ${
         !character
           ? ""
-          : `. Answer like you are the ${character.name}, using this answer style: ${character.answerStyle}`
+          : `. Answer short, assume you are the ${character.name}, respond in first person as if you are that character, using this answer style: ${character.answerStyle}`
       }`,
       ...(contextId ? { contextId } : {}),
     },

@@ -11,20 +11,25 @@ const WelcomeScreen = ({ onCharacterPick, pickedCharacter, setQuestion }) => {
 
   return (
     <div className="mtt-welcome-container">
-      <h1 className="mtt-welcome-title semibold-text">Hello there! 👋</h1>
+      <h1 className="mtt-welcome-title semibold-text">
+        {pickedCharacter
+          ? "📹 Your session is now recording"
+          : "👋 Pick your time travel buddy"}
+      </h1>
 
       <p className="mtt-subtext medium-text">
         {pickedCharacter ? (
           <>
-            Enter your message to {pickedCharacter.name}.<br /> Beware...{" "}
-            {pickedCharacter.pronoun}’ll try to nudge <br />
-            you to try Multiplayer.
+            Start chatting and see where the conversation takes you. <br />
+            When something breaks (on purpose 😉), you’ll be able to debug it in
+            the Multiplayer sandbox.
           </>
         ) : (
           <>
-            Ever wanted to chat with Yoda? Now you can. <br />
-            Pick a character and we'll record your session so you can see how
-            Multiplayer works.
+            We’ll start recording your session as soon as you start chatting.{" "}
+            <br />
+            Just wait until something breaks (on purpose 😉) and you’ll be able
+            to debug it in the Multiplayer sandbox.
           </>
         )}
       </p>
