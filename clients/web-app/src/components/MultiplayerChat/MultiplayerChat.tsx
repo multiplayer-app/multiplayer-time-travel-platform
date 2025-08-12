@@ -37,6 +37,7 @@ const MultiplayerChat = ({
     setErrorRate,
     isManualRate,
     recordingState,
+    setIsManuallyStopped,
   } = useTimeTravel();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState<boolean>(false);
@@ -243,6 +244,7 @@ const MultiplayerChat = ({
   }, []);
 
   const onSessionStopAndOpen = () => {
+    setIsManuallyStopped(true);
     debuggerInstance?.stop();
     if (navigationUrl) {
       window.open(navigationUrl, "_blank");

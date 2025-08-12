@@ -33,6 +33,7 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
     SessionRecorder?.sessionState
   );
   const [isManualRate, setIsManualRate] = useState(false);
+  const [isManuallyStopped, setIsManuallyStopped] = useState(false);
 
   useEffect(() => {
     getEpoch();
@@ -80,6 +81,8 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
     errorRate,
     isManualRate,
     recordingState,
+    isManuallyStopped,
+    setIsManuallyStopped,
     setSelectedCharacter,
     setQuestion,
     setNavigationUrl,

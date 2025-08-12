@@ -4,9 +4,9 @@ import {
   triggerMouseDownEvent,
   triggerMouseUpEvent,
 } from "utils/triggerMouseEvent";
-import "./debuggerLabel.scss";
-import { SessionState } from "utils/types";
 import { useTimeTravel } from "hooks/useTimeTravel";
+import { SessionState } from "utils/types";
+import "./debuggerLabel.scss";
 
 const DebuggerLabel = () => {
   const { recordingState } = useTimeTravel();

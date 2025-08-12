@@ -9,6 +9,7 @@ import Sandbox from "components/Sandbox";
 import { TimeTravelProvider } from "contexts/TimeTravelContext";
 import { useAnonymousTimeTravelerName } from "hooks/useAnonymousTimeTravelerName";
 import { isSandboxClosed } from "utils/sandboxHelper";
+import { useTimeTravel } from "hooks/useTimeTravel";
 import "./App.scss";
 
 // Required for accessibility
@@ -18,9 +19,14 @@ function App() {
   const [isNavigationModalOpen, setIsNavigationModalOpen] = useState(false);
   const [isSandboxOpen, setIsSandboxOpen] = useState(!isSandboxClosed());
   const userName = useAnonymousTimeTravelerName();
+  const { isManuallyStopped, setIsManuallyStopped } = useTimeTravel();
 
   useEffect(() => {
     const handleNavigationModal = () => {
+      if (isManuallyStopped) {
+        setIsManuallyStopped(false);
+        return;
+      }
       setIsNavigationModalOpen(true);
     };
     recorderEventBus?.on(
@@ -34,7 +40,7 @@ function App() {
         handleNavigationModal
       );
     };
-  }, []);
+  }, [isManuallyStopped, setIsManuallyStopped]);
 
   useEffect(() => {
     window["mpSessionDebuggerMetadata"] = {
@@ -43,22 +49,25 @@ function App() {
   }, [userName]);
 
   return (
-    <TimeTravelProvider>
-      <div className="mtt-app">
-        <SidePanel />
-        <Board />
-        <NavigationModal
-          isOpen={isNavigationModalOpen}
-          onClose={() => setIsNavigationModalOpen(false)}
-        />
-        <Sandbox
-          isOpen={isSandboxOpen}
-          onClose={() => setIsSandboxOpen(false)}
-        />
-        <DebuggerLabel />
-      </div>
-    </TimeTravelProvider>
+    <div className="mtt-app">
+      <SidePanel />
+      <Board />
+      <NavigationModal
+        isOpen={isNavigationModalOpen}
+        onClose={() => setIsNavigationModalOpen(false)}
+      />
+      <Sandbox isOpen={isSandboxOpen} onClose={() => setIsSandboxOpen(false)} />
+      <DebuggerLabel />
+    </div>
   );
 }
 
-export default App;
+const AppLayout = () => {
+  return (
+    <TimeTravelProvider>
+      <App />
+    </TimeTravelProvider>
+  );
+};
+
+export default AppLayout;
