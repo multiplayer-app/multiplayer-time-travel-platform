@@ -1,0 +1,165 @@
+.mtt-sandbox-modal {
+  width: 750px !important;
+}
+
+.mtt-sandbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.mtt-sandbox-modal {
+  position: relative;
+  background-color: white;
+  border-radius: 24px;
+  max-width: 90%;
+  width: 800px;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.mtt-sandbox-close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  font-size: 24px;
+  color: #6b7280;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+.mtt-sandbox-content {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  min-height: 400px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 32px;
+    padding: 24px;
+  }
+}
+
+.mtt-sandbox-background-gradient {
+  position: absolute;
+  left: -32px;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(180deg, #5047E5 0%, #1AE6F3 100%);
+  opacity: 0.1;
+  filter: blur(250px);
+  clip-path: inset(0);
+  z-index: 0;
+}
+
+.mtt-sandbox-text-section {
+  flex: 1;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mtt-sandbox-badge {
+  color: #493bff;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.mtt-sandbox-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 16px;
+  line-height: 1.4;
+}
+
+.mtt-sandbox-description {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 44px;
+}
+
+.mtt-sandbox-explore-button {
+  border-radius: 12px;
+  margin-bottom: 12px;
+  padding: 12px 24px;
+  background: #493bff;
+  color: white;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: #3b2bdb;
+  }
+}
+
+.mtt-sandbox-legal {
+  color: #9ca3af;
+  font-size: 12px;
+  text-align: center;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.mtt-sandbox-link {
+  color: #9ca3af;
+  text-decoration: underline;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #6b7280;
+  }
+}
+
+.mtt-sandbox-image-section {
+  width: 100%;
+  max-width: 50%;
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
+}
+
+.mtt-sandbox-image {
+  width: 100%;
+  height: auto;
+  border: 2px solid #f3f4f6;
+  border-radius: 8px;
+  display: block;
+} 

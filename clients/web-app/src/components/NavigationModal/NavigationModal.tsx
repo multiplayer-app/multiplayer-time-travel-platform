@@ -3,9 +3,6 @@ import Modal from "react-modal";
 import { useTimeTravel } from "hooks/useTimeTravel";
 import "./navigationModal.scss";
 
-// Required for accessibility
-Modal.setAppElement("#root");
-
 const NavigationModal = ({ isOpen, onClose }) => {
   const { navigationUrl } = useTimeTravel();
 
