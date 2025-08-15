@@ -9,3 +9,5 @@ __pycache__
 services/epoch-engine/src/obj
 .vscode
 tsconfig.tsbuildinfo
+clients/dotnet-cli-app/obj
+services/envoy/extensions/payload-otlp/target
