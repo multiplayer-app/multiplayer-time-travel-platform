@@ -59,6 +59,8 @@ impl RootContext for OtlpRoot {
             max_body_size_bytes: self.max_body_size_bytes,
             headers_to_include: self.headers_to_include.clone(),
             headers_to_exclude: self.headers_to_exclude.clone(),
+            stored_trace_id: None,
+            stored_span_id: None,
         }))
     }
 
@@ -145,6 +147,9 @@ struct OtlpHttpContext {
     max_body_size_bytes: usize,
     headers_to_include: Vec<String>,
     headers_to_exclude: Vec<String>,
+    // Store trace context for reuse throughout request lifecycle
+    stored_trace_id: Option<String>,
+    stored_span_id: Option<String>,
 }
 
 impl Context for OtlpHttpContext {}
@@ -157,6 +162,9 @@ impl HttpContext for OtlpHttpContext {
                 return Action::Continue;
             }
 
+            self.stored_trace_id = Some(trace_id.clone());
+            self.stored_span_id = Some(span_id.clone());
+
             if self.should_capture_data() {                    
                 if self.capture_request_headers {
                     self.send_request_headers_span();
@@ -164,10 +172,13 @@ impl HttpContext for OtlpHttpContext {
             }
         }
 
-        return Action::Continue;
+        Action::Continue
     }
 
     fn on_http_request_body(&mut self, body_size: usize, end_of_stream: bool) -> Action {
+        log(LogLevel::Info, &format!("REQUEST_BODY: size={}, end_of_stream={}, stored_trace_id={:?}", 
+            body_size, end_of_stream, self.stored_trace_id));
+        
         if !end_of_stream {
             return Action::Pause;
         }
@@ -177,15 +188,23 @@ impl HttpContext for OtlpHttpContext {
         }
 
         if body_size > self.max_body_size_bytes {
-            log(LogLevel::Warn, &format!("Request body size {} exceeds limit {}, skipping capture", body_size, self.max_body_size_bytes));
             return Action::Continue;
         }
 
         if self.capture_request_body {
-            if let Some(body_bytes) = self.get_http_request_body(0, body_size) {
-                if let Ok(body_str) = String::from_utf8(body_bytes) {
-                    self.send_request_body_span(&body_str);
+            if body_size == 0 {
+                log(LogLevel::Info, &format!("REQUEST_BODY: empty body, skipping, stored_trace_id={:?}", self.stored_trace_id));
+            } else if let Some(body_bytes) = self.get_http_request_body(0, body_size) {
+                match String::from_utf8(body_bytes) {
+                    Ok(body_str) => {
+                        self.send_request_body_span(&body_str);
+                    }
+                    Err(_) => {
+                        log(LogLevel::Warn, &format!("REQUEST_BODY: non-UTF8 body, skipping, stored_trace_id={:?}", self.stored_trace_id));
+                    }
                 }
+            } else {
+                log(LogLevel::Warn, &format!("REQUEST_BODY: get_http_request_body returned None, stored_trace_id={:?}", self.stored_trace_id));
             }
         }
 
@@ -193,8 +212,11 @@ impl HttpContext for OtlpHttpContext {
     }
 
     fn on_http_response_headers(&mut self, _: usize, _: bool) -> Action {
+        log(LogLevel::Info, "RESPONSE_HEADERS: received");
+        
         // If we shouldn't capture data, just continue
         if !self.should_capture_data() {
+            log(LogLevel::Info, "RESPONSE_HEADERS: should_capture_data=false, skipping");
             return Action::Continue;
         }
 
@@ -202,16 +224,18 @@ impl HttpContext for OtlpHttpContext {
             self.send_response_headers_span();
         }
 
-        return Action::Continue
+        Action::Continue
     }
 
-    fn on_http_response_body(&mut self, body_size: usize, end_of_stream: bool) -> Action {        
-        if !end_of_stream {
-            // return Action::Pause;
+    fn on_http_response_body(&mut self, body_size: usize, end_of_stream: bool) -> Action {
+        if !self.capture_response_body {
             return Action::Continue;
         }
+        
+        if !end_of_stream {
+            return Action::Pause;
+        }
 
-        // If we shouldn't capture data, just continue
         if !self.should_capture_data() {
             return Action::Continue;
         }
@@ -220,12 +244,21 @@ impl HttpContext for OtlpHttpContext {
             return Action::Continue;
         }
 
-        if self.capture_response_body {
-            if let Some(body_bytes) = self.get_http_response_body(0, body_size) {
-                if let Ok(body_str) = String::from_utf8(body_bytes) {
+        if body_size == 0 {
+            return Action::Continue;
+        } 
+        
+        if let Some(body_bytes) = self.get_http_response_body(0, body_size) {
+            match String::from_utf8(body_bytes) {
+                Ok(body_str) => {
                     self.send_response_body_span(&body_str);
                 }
+                Err(_) => {
+                    log(LogLevel::Warn, "RESPONSE_BODY: non-UTF8 body, skipping");
+                }
             }
+        } else {
+            log(LogLevel::Warn, "RESPONSE_BODY: get_http_response_body returned None");
         }
 
         return Action::Continue
@@ -265,25 +298,27 @@ impl OtlpHttpContext {
     }
 
     fn should_capture_data(&self) -> bool {
-        if let Some((trace_id, _)) = self.extract_trace_context() {
-            let should_capture = trace_id.starts_with("debdeb") || trace_id.starts_with("cdbcdb");
-            
-            return should_capture
+        // Use stored trace context if available, otherwise try to extract from headers
+        let trace_id = if let Some(ref stored_trace_id) = self.stored_trace_id {
+            stored_trace_id.clone()
+        } else if let Some((trace_id, _)) = self.extract_trace_context() {
+            trace_id
         } else {
-            false
-        }
+            return false;
+        };
+        
+        let should_capture = trace_id.starts_with("debdeb") || trace_id.starts_with("cdbcdb");
+        should_capture
     }
 
     fn is_valid_trace_id(&self, trace_id: &str) -> bool {
         // OTLP trace ID should be 32 characters (16 bytes) in hex format
         let is_valid = trace_id.len() == 32 && trace_id.chars().all(|c| c.is_ascii_hexdigit());
-        log(LogLevel::Info, &format!("TRACE_ID_VALIDATION: trace_id='{}', length={}, is_hex={}, is_valid={}", 
+        log(LogLevel::Debug, &format!("TRACE_ID_VALIDATION: trace_id='{}', length={}, is_hex={}, is_valid={}", 
             trace_id, trace_id.len(), trace_id.chars().all(|c| c.is_ascii_hexdigit()), is_valid));
         is_valid
     }
 
-    // Note: This extension only captures data for OTLP spans, it does NOT modify
-    // the actual request/response data. All data flows through unchanged.
     fn create_span_data(
         &self,
         trace_id: &str,
@@ -368,15 +403,15 @@ impl OtlpHttpContext {
             return;
         }
         
-        if let Some((trace_id, span_id)) = self.extract_trace_context() {
+        if let (Some(trace_id), Some(span_id)) = (&self.stored_trace_id, &self.stored_span_id) {
             // Generate unique span ID for this specific span
             let uuid = Uuid::new_v4();
             let span_id_for_this_span = uuid.to_string().replace("-", "").chars().take(16).collect::<String>();
             
             let now = self.get_current_time();
             let end_time = now.duration_since(std::time::UNIX_EPOCH).unwrap().as_nanos() as u64;
-            let start_time = end_time; // Use current time as start time for headers span
-            let duration = 0; // Headers span has no duration
+            let start_time = end_time;
+            let duration = 0;
 
             let request_headers: HashMap<String, String> = self
                 .get_http_request_headers()
@@ -393,7 +428,7 @@ impl OtlpHttpContext {
                 &span_id_for_this_span,
                 start_time,
                 end_time,
-                "envoy_proxy_request_headers",
+                "envoy-proxy request-headers",
                 attributes,
             );
 
@@ -406,7 +441,7 @@ impl OtlpHttpContext {
             return;
         }
         
-        if let Some((trace_id, span_id)) = self.extract_trace_context() {
+        if let (Some(trace_id), Some(span_id)) = (&self.stored_trace_id, &self.stored_span_id) {
             let uuid = Uuid::new_v4();
             let span_id_for_this_span = uuid.to_string().replace("-", "").chars().take(16).collect::<String>();
             
@@ -424,7 +459,7 @@ impl OtlpHttpContext {
                 &span_id_for_this_span,
                 start_time,
                 end_time,
-                "envoy_proxy_request_body",
+                "envoy-proxy request-body",
                 attributes,
             );
 
@@ -437,7 +472,7 @@ impl OtlpHttpContext {
             return;
         }
         
-        if let Some((trace_id, span_id)) = self.extract_trace_context() {
+        if let (Some(trace_id), Some(span_id)) = (&self.stored_trace_id, &self.stored_span_id) {
             let uuid = Uuid::new_v4();
             let span_id_for_this_span = uuid.to_string().replace("-", "").chars().take(16).collect::<String>();
             
@@ -464,7 +499,7 @@ impl OtlpHttpContext {
                 &span_id_for_this_span,
                 start_time,
                 end_time,
-                "envoy_proxy_response_headers",
+                "envoy-proxy response-headers",
                 attributes,
             );
 
@@ -477,7 +512,7 @@ impl OtlpHttpContext {
             return;
         }
         
-        if let Some((trace_id, span_id)) = self.extract_trace_context() {
+        if let (Some(trace_id), Some(span_id)) = (&self.stored_trace_id, &self.stored_span_id) {
             let uuid = Uuid::new_v4();
             let span_id_for_this_span = uuid.to_string().replace("-", "").chars().take(16).collect::<String>();
             
@@ -495,7 +530,7 @@ impl OtlpHttpContext {
                 &span_id_for_this_span,
                 start_time,
                 end_time,
-                "envoy_proxy_response_body",
+                "envoy-proxy response-body",
                 attributes,
             );
 
@@ -539,18 +574,6 @@ impl OtlpHttpContext {
         }
 
         let cluster_name = self.otlp_collector_cluster_name.as_ref().unwrap();
-        log(
-            LogLevel::Info,
-            &format!(
-                "DISPATCH_OTLP: cluster={}, path={}, authority={}, span_name={}, headers={:?}, payload={}",
-                cluster_name,
-                path,
-                authority,
-                span_name,
-                headers,
-                span_json
-            ),
-        );
 
         match self.dispatch_http_call(
             cluster_name,
