@@ -1,14 +1,10 @@
 import React, { memo } from "react";
 import Modal from "react-modal";
 import SessionExample from "assets/mkt-sessions.png";
-import { getSandboxLink, markSandboxClosed } from "utils/sandboxHelper";
+import { markSandboxClosed } from "utils/sandboxHelper";
 import "./sandbox.scss";
 
 const Sandbox = ({ isOpen, onClose }) => {
-  const handleExploreSandbox = () => {
-    window.open(getSandboxLink(), "_blank");
-  };
-
   const onSandboxClose = () => {
     markSandboxClosed();
     onClose();
