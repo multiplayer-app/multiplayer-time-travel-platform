@@ -33,8 +33,7 @@ services:
         condition: service_healthy
     volumes:
       - ./services/envoy/envoy.yaml:/etc/envoy/envoy.yaml
-      # - ./services/envoy/extensions/payload-otlp/main.wasm:/etc/envoy/main.wasm
-      - ./services/envoy/extensions/payload-otlp/target/wasm32-wasip1/release/otlp_capture_payload.wasm:/etc/envoy/otlp_capture_payload.wasm
+      - ./services/envoy/extensions/payload-otlp/target/wasm32-wasip1/release/otlp_capture_payload.wasm:/etc/istio/extensions/otlp_capture_payload.wasm
 
   epoch-engine: # dotnet
     build:

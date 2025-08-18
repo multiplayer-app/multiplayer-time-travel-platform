@@ -1,4 +1,4 @@
-# Envoy configuration with OTLP extension
+# Envoy configuration with OTLP extension (v1.33 compatible)
 static_resources:
   listeners:
   - name: listener_0
@@ -26,15 +26,13 @@ static_resources:
           http_filters:
           - name: envoy.filters.http.wasm
             typed_config:
-              "@type": type.googleapis.com/udpa.type.v1.TypedStruct
-              type_url: type.googleapis.com/envoy.extensions.filters.http.wasm.v3.Wasm
-              value:
-                config:
-                  vm_config:
-                    runtime: "envoy.wasm.runtime.v8"
-                    code:
-                      local:
-                        filename: "/etc/istio/extensions/otlp_capture_payload.wasm"
+              "@type": type.googleapis.com/envoy.extensions.filters.http.wasm.v3.Wasm
+              config:
+                vm_config:
+                  runtime: "envoy.wasm.runtime.v8"
+                  code:
+                    local:
+                      filename: "/etc/istio/extensions/otlp_capture_payload.wasm"
                   configuration:
                     "@type": type.googleapis.com/google.protobuf.StringValue
                     value: |
