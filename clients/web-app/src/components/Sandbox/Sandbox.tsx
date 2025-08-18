@@ -43,9 +43,9 @@ const Sandbox = ({ isOpen, onClose }) => {
 
           <button
             className="mtt-sandbox-explore-button"
-            onClick={handleExploreSandbox}
+            onClick={onSandboxClose}
           >
-            Explore the sandbox
+            Explore the Demo
           </button>
 
           <p className="mtt-sandbox-legal">
