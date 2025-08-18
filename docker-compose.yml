@@ -16,6 +16,7 @@ services:
   envoy:
     image: envoyproxy/envoy:v1.33-latest
     container_name: mp-time-travel-envoy
+    command: ["/usr/local/bin/envoy", "-c", "/etc/envoy/envoy.yaml", "--log-level", "debug"]
     ports:
       - "8080:8080"
     depends_on:

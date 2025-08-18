@@ -5,11 +5,11 @@ ARG NODE_ENV=production
 WORKDIR /usr/src/app
 
 COPY . .
-# COPY package-lock.json ./
-# COPY package.json ./
-# COPY tsconfig.json ./
-# COPY ./src/ ./
-# COPY ./doc/ ./
+COPY package-lock.json ./
+COPY package.json ./
+COPY tsconfig.json ./
+COPY ./src/ ./src
+COPY ./doc/ ./doc
 
 RUN NODE_ENV=development npm ci
 RUN npm run build
