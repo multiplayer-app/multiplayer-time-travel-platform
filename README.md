@@ -35,6 +35,15 @@ This demo requires Docker and Docker Compose to run locally.
 3. Access the application:
    Navigate to http://localhost:8080 to start exploring the time travel chat experience.
 
+## 🧰 CLI Apps
+
+This repo includes two CLI clients you can run locally to generate sample traffic and full-stack session recordings without the web UI:
+
+- **Node.js CLI**: `clients/nodejs-cli-app` — hits the platform services and records a Multiplayer session.
+  - See `clients/nodejs-cli-app/README.md` for setup and usage.
+- **Python CLI**: `clients/python-cli-app` — similar flow implemented in Python.
+  - See `clients/python-cli-app/README.md` for setup and usage (uses `uv` for install/run).
+
 ## 📚 API Endpoints
 
 The demo includes several microservices, each accessible through documentation:
@@ -45,6 +54,19 @@ The demo includes several microservices, each accessible through documentation:
 | Minds of Time | /v1/minds-of-time/docs | Database of prominent historical figures |
 | Vault of Time | /v1/vault-of-time/docs | Historical events and timeline data |
 | TimeGate | /v1/timegate/docs | API gateway and service orchestration |
+
+## 🧱 Services Overview
+
+Quick overview of the services in `services/` and what they do:
+
+- **Envoy** (`services/envoy`) — Front proxy routing external traffic to internal services (web app, TimeGate, Dialogue Hub, Epoch Engine, Minds of Time, Vault of Time). Listens on port 8080 by default.
+- **TimeGate** (`services/timegate`) — Node.js/TypeScript API gateway and orchestrator. Proxies requests to downstream services, exposes REST and WebSocket endpoints, and serves OpenAPI docs at `/v1/timegate/docs`.
+- **Dialogue Hub** (`services/dialogue-hub`) — Node.js/TypeScript service handling AI chat flows. Integrates with OpenRouter-like LLM APIs; exposes docs at `/v1/dialogue-hub/docs`.
+- **Epoch Engine** (`services/epoch-engine`) — .NET 8 Web API providing epoch data (historical date ranges, birth/death metadata). Docs at `/v1/epoch-engine/docs`.
+- **Minds of Time** (`services/minds-of-time`) — Python/Flask API serving data about prominent historical figures. Docs at `/v1/minds-of-time/docs`.
+- **Vault of Time** (`services/vault-of-time`) — Go HTTP service exposing historical events and timeline data. Docs at `/v1/vault-of-time/docs`.
+- **Time Warp** (`services/time-warp`) — Java Spring Boot demo app that showcases OpenTelemetry and AI message routing (e.g., to OpenRouter) with context persistence (Redis). Useful for JVM examples.
+- **OTel Collector** (`services/otel-collector`) — OpenTelemetry Collector configuration for receiving, processing, and exporting telemetry to Multiplayer.
 
 ## 🪲 Demo Usage
 
