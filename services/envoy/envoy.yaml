@@ -69,15 +69,18 @@ static_resources:
                               "otlp_collector_cluster_name": "otel-collector",
                               "otlp_collector_authority": "api.multiplayer.app",
                               "otlp_collector_path": "/v1/traces",
-                              "otlp_collector_api_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnRlZ3JhdGlvbiI6IjY4OWI0ODE3ZjI3NWFjZTA5ZDM1YTE1MSIsIndvcmtzcGFjZSI6IjY1ODQxY2ZkZjkxNmJiYTBkMGJhYmFmZCIsInByb2plY3QiOiI2N2ViMmQ3NGJhODJhYmU5NDIxNGIzOTgiLCJ0eXBlIjoiT1RFTCIsImlhdCI6MTc1NTAwNjk5OX0.aIJpgdhfIPJEc0u85KYPNJ4hnOOYvZT4HTYVUvvUtjI",
-                              "otlp_collector_api_key_stage": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnRlZ3JhdGlvbiI6IjY4Mzc3NTFlMGE2ZDJlNGUwOWY2ZjlmZSIsIndvcmtzcGFjZSI6IjY4Mzc3NGZlZDFkYWVjNjJiNjliNmEyYiIsInByb2plY3QiOiI2ODM3NzUxMzI4ZjhjNTY5N2M3MGVlZjAiLCJ0eXBlIjoiT1RFTCIsImlhdCI6MTc0ODQ2NDkyNn0.ixKs75OoWXBJBxkM-RFGJ1Mkrv6R7--qdq2GBSobSFY",
+                              "otlp_collector_api_key": "${MULTIPLAYER_OTLP_KEY:-}",
                               "capture_request_headers": true,
                               "capture_request_body": true,
                               "capture_response_headers": true,
                               "capture_response_body": true,
                               "max_body_size_bytes": 1048576,
                               "headers_to_include": ["content-type", "user-agent", "x-request-id"],
-                              "headers_to_exclude": ["authorization", "cookie", "x-api-key"]
+                              "headers_to_exclude": ["authorization", "x-api-key"],
+                              "is_mask_body_enabled": true,
+                              "is_mask_headers_enabled": true,
+                              "mask_body_fields_list": ["password", "token", "secret", "api_key", "message"],
+                              "mask_headers_list": ["authorization", "cookie", "set-cookie"]
                             }
                   - name: envoy.filters.http.router
                     typed_config:
