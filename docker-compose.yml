@@ -14,8 +14,13 @@ x-common-variables: &common-variables
 
 services:
   envoy:
-    image: envoyproxy/envoy-alpine:v1.18-latest
+    image: envoyproxy/envoy:v1.33-latest
     container_name: mp-time-travel-envoy
+    command: ["/etc/envoy/start-envoy.sh"]
+    env_file:
+      - ./.env
+    environment:
+      <<: *common-variables
     ports:
       - "8080:8080"
     depends_on:
@@ -33,6 +38,8 @@ services:
         condition: service_healthy
     volumes:
       - ./services/envoy/envoy.yaml:/etc/envoy/envoy.yaml
+      - ./services/envoy/start-envoy.sh:/etc/envoy/start-envoy.sh
+      - ./services/envoy/otlp_capture_payload.wasm:/etc/istio/extensions/otlp_capture_payload.wasm
 
   epoch-engine: # dotnet
     build:

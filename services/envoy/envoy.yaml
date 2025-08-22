@@ -53,7 +53,38 @@ static_resources:
                         - match: { prefix: "/" }
                           route: { prefix_rewrite: "/", cluster: frontend_service }
                 http_filters:
+                  - name: envoy.filters.http.wasm
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.wasm.v3.Wasm
+                      config:
+                        vm_config:
+                          runtime: "envoy.wasm.runtime.v8"
+                          code:
+                            local:
+                              filename: "/etc/istio/extensions/otlp_capture_payload.wasm"
+                        configuration:
+                          "@type": type.googleapis.com/google.protobuf.StringValue
+                          value: |
+                            {
+                              "otlp_collector_cluster_name": "otel-collector",
+                              "otlp_collector_authority": "api.multiplayer.app",
+                              "otlp_collector_path": "/v1/traces",
+                              "otlp_collector_api_key": "${MULTIPLAYER_OTLP_KEY:-}",
+                              "capture_request_headers": true,
+                              "capture_request_body": true,
+                              "capture_response_headers": true,
+                              "capture_response_body": true,
+                              "max_body_size_bytes": 1048576,
+                              "headers_to_include": ["content-type", "user-agent", "x-request-id"],
+                              "headers_to_exclude": ["authorization", "x-api-key"],
+                              "is_mask_body_enabled": true,
+                              "is_mask_headers_enabled": true,
+                              "mask_body_fields_list": ["password", "token", "secret", "api_key", "message"],
+                              "mask_headers_list": ["authorization", "cookie", "set-cookie"]
+                            }
                   - name: envoy.filters.http.router
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
 
   clusters:
     - name: timegate_service
@@ -158,3 +189,41 @@ static_resources:
 #     socket_address:
 #       address: 127.0.0.1
 #       port_value: 9901
+
+    # - name: otel-collector
+    #   connect_timeout: 0.25s
+    #   type: STRICT_DNS
+    #   lb_policy: ROUND_ROBIN
+    #   load_assignment:
+    #     cluster_name: otel-collector
+    #     endpoints:
+    #     - lb_endpoints:
+    #       - endpoint:
+    #           address:
+    #             socket_address:
+    #               address: api.staging-multiplayer.com
+    #               port_value: 443
+    #               # address: api.multiplayer.app
+    #               # port_value: 443
+    #             tls_context:
+    #               sni: "api.multiplayer.app"
+
+
+    - name: otel-collector
+      connect_timeout: 5s
+      type: STRICT_DNS
+      lb_policy: ROUND_ROBIN
+      transport_socket:
+        name: envoy.transport_sockets.tls
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+          sni: api.multiplayer.app
+      load_assignment:
+        cluster_name: otel-collector
+        endpoints:
+        - lb_endpoints:
+          - endpoint:
+              address:
+                socket_address:
+                  address: api.multiplayer.app
+                  port_value: 443
