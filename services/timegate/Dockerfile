@@ -32,3 +32,4 @@ EXPOSE 3000
 COPY --from=build /usr/src/app /usr/src/app
 
 CMD ["npm", "start"]
+# CMD ["npm", "run", "dev"]

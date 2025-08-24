@@ -11,7 +11,12 @@ debuggerInstance.init({
   apiKey: process.env.REACT_APP_SESSION_DEBUGGER_KEY,
   ...(process.env.REACT_APP_SESSION_DEBUGGER_API_BASE_URL
     ? {
-        exporterApiBaseUrl: process.env.REACT_APP_SESSION_DEBUGGER_API_BASE_URL,
+      apiBaseUrl: process.env.REACT_APP_SESSION_DEBUGGER_API_BASE_URL,
+      }
+    : {}),
+  ...(process.env.REACT_APP_SESSION_DEBUGGER_EXPORTER_ENDPOINT
+    ? {
+      exporterEndpoint: process.env.REACT_APP_SESSION_DEBUGGER_EXPORTER_ENDPOINT,
       }
     : {}),
   canvasEnabled: false,
@@ -27,10 +32,7 @@ debuggerInstance.init({
     `${process.env.REACT_APP_BASE_API_URL}\.*`,
     "i"
   ),
-  schemifyDocSpanPayload: true,
   maskDebSpanPayload: false,
-  docTraceRatio:
-    Number(process.env.REACT_APP_MULTIPLAYER_OTLP_DOC_SPAN_RATIO) || 0.05,
   sampleTraceRatio:
     Number(process.env.REACT_APP_MULTIPLAYER_OTLP_SPAN_RATIO) || 0.04,
   maxCapturingHttpPayloadSize: 100000,

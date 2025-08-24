@@ -13,9 +13,6 @@ export const MULTIPLAYER_OTLP_KEY = process.env.MULTIPLAYER_OTLP_KEY || "<multip
 export const OTLP_TRACES_ENDPOINT = process.env.OTLP_TRACES_ENDPOINT || "https://api.multiplayer.app/v1/traces"
 export const OTLP_LOGS_ENDPOINT = process.env.OTLP_LOGS_ENDPOINT || "https://api.multiplayer.app/v1/logs"
 
-export const MULTIPLAYER_OTLP_DOC_SPAN_RATIO = process.env.MULTIPLAYER_OTLP_DOC_SPAN_RATIO
-    ? Number(process.env.MULTIPLAYER_OTLP_DOC_SPAN_RATIO)
-    : 0.02
 export const MULTIPLAYER_OTLP_SPAN_RATIO = process.env.MULTIPLAYER_OTLP_SPAN_RATIO
     ? Number(process.env.MULTIPLAYER_OTLP_SPAN_RATIO)
     : 0.01

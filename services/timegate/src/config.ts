@@ -21,9 +21,6 @@ export const MINDS_OF_TIME_SERVICE_URL = process.env.MINDS_OF_TIME_SERVICE_URL |
 
 export const VAULT_OF_TIME_SERVICE_URL = process.env.VAULT_OF_TIME_SERVICE_URL || 'http://localhost:3000/v1/vault-of-time'
 
-export const MULTIPLAYER_OTLP_DOC_SPAN_RATIO = process.env.MULTIPLAYER_OTLP_DOC_SPAN_RATIO
-    ? Number(process.env.MULTIPLAYER_OTLP_DOC_SPAN_RATIO)
-    : 0.02
 export const MULTIPLAYER_OTLP_SPAN_RATIO = process.env.MULTIPLAYER_OTLP_SPAN_RATIO
     ? Number(process.env.MULTIPLAYER_OTLP_SPAN_RATIO)
     : 0.01

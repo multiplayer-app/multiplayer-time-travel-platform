@@ -1,5 +1,5 @@
-import './opentelemetry'
 import 'dotenv/config'
+import './opentelemetry'
 import http from 'http'
 import { logger } from './libs'
 import { app } from './app'

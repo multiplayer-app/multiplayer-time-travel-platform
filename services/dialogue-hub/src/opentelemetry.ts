@@ -9,9 +9,8 @@ import {
   getResourceDetectors,
 } from "@opentelemetry/auto-instrumentations-node"
 import {
-  // detectResources,
-  detectResourcesSync,
-  Resource
+  resourceFromAttributes,
+  detectResources
 } from "@opentelemetry/resources"
 import {
   ATTR_SERVICE_NAME,
@@ -22,24 +21,25 @@ import {
   SEMRESATTRS_PROCESS_PID,
 } from "@opentelemetry/semantic-conventions"
 import api from "@opentelemetry/api"
-import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http"
+// import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http"
 import { W3CTraceContextPropagator } from "@opentelemetry/core"
 import {
   SessionRecorderHttpInstrumentationHooksNode,
   SessionRecorderTraceIdRatioBasedSampler,
   SessionRecorderIdGenerator,
+  SessionRecorderHttpTraceExporter,
+  SessionRecorderHttpLogsExporter,
 } from "@multiplayer-app/session-recorder-node"
 import { LoggerProvider, BatchLogRecordProcessor } from "@opentelemetry/sdk-logs"
 import * as apiLogs from "@opentelemetry/api-logs"
-import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http'
+// import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http'
 import {
   SERVICE_NAME,
   SERVICE_VERSION,
   PLATFORM_ENV,
   MULTIPLAYER_OTLP_KEY,
-  OTLP_TRACES_ENDPOINT,
-  OTLP_LOGS_ENDPOINT,
-  MULTIPLAYER_OTLP_DOC_SPAN_RATIO,
+  // OTLP_TRACES_ENDPOINT,
+  // OTLP_LOGS_ENDPOINT,
   MULTIPLAYER_OTLP_SPAN_RATIO
 } from './config'
 
@@ -65,10 +65,7 @@ const instrumentations = [
 ]
 
 const getResource = () => {
-  const resourcesWithDetectors = detectResourcesSync({
-    detectors: getResourceDetectors(),
-  })
-  const resourceWithAttributes = new Resource({
+  const resourceWithAttributes = resourceFromAttributes({
     [ATTR_SERVICE_NAME]: SERVICE_NAME,
     [ATTR_SERVICE_VERSION]: SERVICE_VERSION,
     [SEMRESATTRS_HOST_NAME]: hostname(),
@@ -76,17 +73,21 @@ const getResource = () => {
     [SEMRESATTRS_PROCESS_RUNTIME_VERSION]: process.version,
     [SEMRESATTRS_PROCESS_PID]: process.pid,
   })
-  const resource = resourceWithAttributes.merge(resourcesWithDetectors)
+  const detectedResources = detectResources({ detectors: getResourceDetectors() })
+  const resource = resourceWithAttributes.merge(detectedResources)
 
   return resource
 }
 
 const opentelemetry = () => {
-  const traceExporter = new OTLPTraceExporter({
-    url: OTLP_TRACES_ENDPOINT,
-    headers: {
-      Authorization: MULTIPLAYER_OTLP_KEY
-    },
+  // const traceExporter = new OTLPTraceExporter({
+  //   url: OTLP_TRACES_ENDPOINT,
+  //   headers: {
+  //     Authorization: MULTIPLAYER_OTLP_KEY
+  //   },
+  // })
+  const traceExporter = new SessionRecorderHttpTraceExporter({
+    apiKey: MULTIPLAYER_OTLP_KEY
   })
 
   const resource = getResource()
@@ -99,24 +100,26 @@ const opentelemetry = () => {
     sampler: new ParentBasedSampler({
       root: new SessionRecorderTraceIdRatioBasedSampler(MULTIPLAYER_OTLP_SPAN_RATIO),
     }),
-    idGenerator: new SessionRecorderIdGenerator({
-      autoDocTracesRatio: MULTIPLAYER_OTLP_DOC_SPAN_RATIO
-    }),
+    idGenerator: new SessionRecorderIdGenerator(),
   })
+
+
+
+  // const logExporter = new OTLPLogExporter({
+  //   url: OTLP_LOGS_ENDPOINT,
+  //   headers: {
+  //     Authorization: MULTIPLAYER_OTLP_KEY
+  //   },
+  // })
+  const logExporter = new SessionRecorderHttpLogsExporter({
+    apiKey: MULTIPLAYER_OTLP_KEY
+  })
+  const logRecordProcessor = new BatchLogRecordProcessor(logExporter)
 
   const loggerProvider = new LoggerProvider({
     resource,
+    processors: [logRecordProcessor]
   })
-
-  const logExporter = new OTLPLogExporter({
-    url: OTLP_LOGS_ENDPOINT,
-    headers: {
-      Authorization: MULTIPLAYER_OTLP_KEY
-    },
-  })
-
-  const logRecordProcessor = new BatchLogRecordProcessor(logExporter)
-  loggerProvider.addLogRecordProcessor(logRecordProcessor)
 
   apiLogs.logs.setGlobalLoggerProvider(loggerProvider)
 
