@@ -38,8 +38,8 @@ import {
   SERVICE_VERSION,
   PLATFORM_ENV,
   MULTIPLAYER_OTLP_KEY,
-  // OTLP_TRACES_ENDPOINT,
-  // OTLP_LOGS_ENDPOINT,
+  OTLP_TRACES_ENDPOINT,
+  OTLP_LOGS_ENDPOINT,
   MULTIPLAYER_OTLP_SPAN_RATIO
 } from './config'
 
@@ -87,7 +87,8 @@ const opentelemetry = () => {
   //   },
   // })
   const traceExporter = new SessionRecorderHttpTraceExporter({
-    apiKey: MULTIPLAYER_OTLP_KEY
+    apiKey: MULTIPLAYER_OTLP_KEY,
+    url: OTLP_TRACES_ENDPOINT
   })
 
   const resource = getResource()
@@ -103,8 +104,6 @@ const opentelemetry = () => {
     idGenerator: new SessionRecorderIdGenerator(),
   })
 
-
-
   // const logExporter = new OTLPLogExporter({
   //   url: OTLP_LOGS_ENDPOINT,
   //   headers: {
@@ -112,7 +111,8 @@ const opentelemetry = () => {
   //   },
   // })
   const logExporter = new SessionRecorderHttpLogsExporter({
-    apiKey: MULTIPLAYER_OTLP_KEY
+    apiKey: MULTIPLAYER_OTLP_KEY,
+    url: OTLP_LOGS_ENDPOINT
   })
   const logRecordProcessor = new BatchLogRecordProcessor(logExporter)
 
