@@ -1,4 +1,4 @@
-multiplayer-session-recorder==1.0.5
+multiplayer-session-recorder==1.0.6
 flask==3.1.0
 opentelemetry-instrumentation-flask==0.57b0
 flasgger==0.9.7.1
