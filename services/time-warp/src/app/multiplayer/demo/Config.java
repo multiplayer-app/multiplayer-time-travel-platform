@@ -19,7 +19,7 @@ public class Config {
         : "8080";
     public static String SERVICE_NAME = System.getenv("SERVICE_NAME") != null && !System.getenv("SERVICE_NAME").isEmpty() 
         ? System.getenv("SERVICE_NAME")
-        : "dialogue-hub"; 
+        : "time-warp"; 
     public static String SERVICE_VERSION = System.getenv("SERVICE_VERSION") != null && !System.getenv("SERVICE_VERSION").isEmpty() 
         ? System.getenv("SERVICE_VERSION")
         : "0.0.1";
@@ -39,10 +39,7 @@ public class Config {
         : "https://api.multiplayer.app/v1/logs";
     public static String API_PREFIX = System.getenv("API_PREFIX") != null && !System.getenv("API_PREFIX").isEmpty()
         ? System.getenv("API_PREFIX")
-        : "/v1/dialogue-hub";
-    public static double MULTIPLAYER_OTLP_DOC_SPAN_RATIO = System.getenv("MULTIPLAYER_OTLP_DOC_SPAN_RATIO") != null && !System.getenv("MULTIPLAYER_OTLP_DOC_SPAN_RATIO").isEmpty()
-        ? Double.parseDouble(System.getenv("MULTIPLAYER_OTLP_DOC_SPAN_RATIO"))
-        : 0.02;
+        : "/v1/time-warp";
     public static double MULTIPLAYER_OTLP_SPAN_RATIO = System.getenv("MULTIPLAYER_OTLP_SPAN_RATIO") != null && !System.getenv("MULTIPLAYER_OTLP_SPAN_RATIO").isEmpty()
         ? Double.parseDouble(System.getenv("MULTIPLAYER_OTLP_SPAN_RATIO"))
         : 0.01;

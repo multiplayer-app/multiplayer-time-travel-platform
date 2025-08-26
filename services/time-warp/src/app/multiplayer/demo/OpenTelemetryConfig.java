@@ -23,18 +23,23 @@ import io.opentelemetry.sdk.resources.Resource;
 // import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter;
 // import io.opentelemetry.exporter.otlp.http.logs.OtlpHttpLogRecordExporter;
 
-// mp exporters
-import app.multiplayer.opentelemetry.trace.MultiplayerRandomIdGenerator;
-import app.multiplayer.opentelemetry.exporter.MultiplayerOtlpHttpLogExporter;
-import app.multiplayer.opentelemetry.exporter.MultiplayerOtlpHttpSpanExporter;
-import app.multiplayer.opentelemetry.trace.samplers.MultiplayerTraceIdRatioBasedSampler;
+import app.multiplayer.session_recorder.trace.SessionRecorderRandomIdGenerator;
+import app.multiplayer.session_recorder.trace.samplers.SessionRecorderTraceIdRatioBasedSampler;
+import app.multiplayer.session_recorder.exporter.SessionRecorderOtlpHttpLogExporter;
+import app.multiplayer.session_recorder.exporter.SessionRecorderOtlpHttpSpanExporter;
 
 public class OpenTelemetryConfig {
     public static void initialize() {
-        SpanExporter spanExporter = new MultiplayerOtlpHttpSpanExporter(Config.MULTIPLAYER_OTLP_KEY, Config.OTLP_TRACES_ENDPOINT);
-        LogRecordExporter logsExporter = new MultiplayerOtlpHttpLogExporter(Config.MULTIPLAYER_OTLP_KEY, Config.OTLP_LOGS_ENDPOINT);
-        Sampler sampler = MultiplayerTraceIdRatioBasedSampler.create(Config.MULTIPLAYER_OTLP_SPAN_RATIO);
-        MultiplayerRandomIdGenerator idGenerator = new MultiplayerRandomIdGenerator(Config.MULTIPLAYER_OTLP_DOC_SPAN_RATIO);
+        SpanExporter spanExporter = new SessionRecorderOtlpHttpSpanExporter(
+                Config.MULTIPLAYER_OTLP_KEY,
+                Config.OTLP_TRACES_ENDPOINT
+        );
+        LogRecordExporter logsExporter = new SessionRecorderOtlpHttpLogExporter(
+                Config.MULTIPLAYER_OTLP_KEY,
+                Config.OTLP_LOGS_ENDPOINT
+        );
+        Sampler sampler = SessionRecorderTraceIdRatioBasedSampler.create(Config.MULTIPLAYER_OTLP_SPAN_RATIO);
+        SessionRecorderRandomIdGenerator idGenerator = new SessionRecorderRandomIdGenerator();
 
         // SpanExporter spanExporter = OtlpHttpSpanExporter.builder()
         //     .setEndpoint(Config.OTLP_TRACES_ENDPOINT)

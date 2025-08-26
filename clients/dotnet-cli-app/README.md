@@ -1,4 +1,4 @@
-# .NET CLI App
+## .Net cli example app
 
 A .NET console application that demonstrates the Multiplayer Time Travel platform integration with SessionRecorder.
 

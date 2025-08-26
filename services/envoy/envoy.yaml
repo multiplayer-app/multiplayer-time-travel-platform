@@ -41,6 +41,9 @@ static_resources:
                         - match: { prefix: "/v1/dialogue-hub" }
                           route: { prefix_rewrite: "/v1/dialogue-hub", cluster: dialogue_hub_service }
 
+                        - match: { prefix: "/v1/time-warp" }
+                          route: { prefix_rewrite: "/v1/time-warp", cluster: time_warp_service }
+
                         # - match: { prefix: "/v1/traces" }
                         #   route: { prefix_rewrite: "/v1/traces", cluster: otel_collector_service }
 
@@ -146,6 +149,18 @@ static_resources:
               - endpoint:
                   address:
                     socket_address: { address: mp-time-travel-dialogue-hub, port_value: 3000 }
+
+    - name: time_warp_service
+      connect_timeout: 0.25s
+      type: logical_dns
+      lb_policy: LEAST_REQUEST
+      load_assignment:
+        cluster_name: time_warp_service
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address: { address: mp-time-travel-time-warp, port_value: 8080 }
 
     # - name: otel_collector_service
     #   connect_timeout: 0.25s

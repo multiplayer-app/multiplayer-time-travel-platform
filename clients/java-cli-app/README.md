@@ -1,3 +1,5 @@
+## Java cli example app
+
 ```bash
 ./gradlew build --refresh-dependencies
 ./gradlew clean shadowJar

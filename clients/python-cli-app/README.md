@@ -1,3 +1,7 @@
+## Python cli example app
+
+### How to run
+
 ```bash
 pip install -r requirements.txt 
 

@@ -12,8 +12,8 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
             .info(new Info()
-                .title("Dialogue Hub API")
+                .title("Time-Warp API")
                 .version("1.0")
-                .description("This is the API documentation for dialogue hub service."));
+                .description("This is the API documentation for time-warp service."));
     }
 }

@@ -13,6 +13,27 @@ x-common-variables: &common-variables
   #  REACT_APP_MULTIPLAYER_OTLP_SPAN_RATIO: 0.05
 
 services:
+  dialogue-hub: # java
+    build:
+      context: ./services/dialogue-hub
+    container_name: mp-time-travel-dialogue-hub
+    hostname: mp-time-travel-dialogue-hub
+    restart: on-failure
+    environment:
+      <<: *common-variables
+      SERVER_PORT: 3000
+      REDIS_HOST: mp-time-travel-redis
+      REDIS_PORT: 6379
+      REDIS_URI: redis://mp-time-travel-redis:6379
+      SERVICE_VERSION: 0.0.1
+    depends_on:
+      redis:
+        condition: service_started
+    env_file:
+      - ./.env
+    # volumes:
+    #   - ./services/dialogue-hub:/usr/app:cached
+
   envoy:
     image: envoyproxy/envoy:v1.33-latest
     container_name: mp-time-travel-envoy
@@ -56,12 +77,12 @@ services:
       - ./.env
     # volumes:
     #   - ./services/epoch-engine:/source:cached
-
-  vault-of-time: # go
+  
+  minds-of-time: # python
     build:
-      context: ./services/vault-of-time
-    container_name: mp-time-travel-vault-of-time
-    hostname: mp-time-travel-vault-of-time
+      context: ./services/minds-of-time
+    container_name: mp-time-travel-minds-of-time
+    hostname: mp-time-travel-minds-of-time
     restart: on-failure
     environment:
       <<: *common-variables
@@ -70,28 +91,35 @@ services:
     env_file:
       - ./.env
     # volumes:
-    #   - ./services/vault-of-time:/app:cached
+    #   - ./services/minds-of-time:/usr/src/app:cached
 
-  dialogue-hub: # java
-    build:
-      context: ./services/dialogue-hub
-    container_name: mp-time-travel-dialogue-hub
-    hostname: mp-time-travel-dialogue-hub
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib-dev:e9276a78341765d080347ee23f274f01e562fe5a
+    container_name: otel-collector
+    hostname: otel-collector
     restart: on-failure
-    environment:
-      <<: *common-variables
-      SERVER_PORT: 3000
-      REDIS_HOST: mp-time-travel-redis
-      REDIS_PORT: 6379
-      REDIS_URI: redis://mp-time-travel-redis:6379
-      SERVICE_VERSION: 0.0.1
-    depends_on:
-      redis:
-        condition: service_started
+    command: ["--config=/etc/otel/config.yaml"]
     env_file:
       - ./.env
-    # volumes:
-    #   - ./services/dialogue-hub:/usr/app:cached
+    environment:
+      <<: *common-variables
+    volumes:
+      - ./services/otel-collector/config.yaml:/etc/otel/config.yaml
+
+  # time-warp: # java
+  #   build:
+  #     context: ./services/time-warp
+  #   container_name: mp-time-travel-time-warp
+  #   hostname: mp-time-travel-time-warp
+  #   restart: on-failure
+  #   environment:
+  #     <<: *common-variables
+  #     PORT: 3000
+  #     SERVICE_VERSION: 0.0.1
+  #   env_file:
+  #     - ./.env
+  #   # volumes:
+  #   #   - ./services/time-warp:/usr/src/app:cached
 
   timegate: # nodejs
     build:
@@ -113,11 +141,11 @@ services:
     # volumes:
     #   - ./services/timegate:/usr/src/app:cached
 
-  minds-of-time: # python
+  vault-of-time: # go
     build:
-      context: ./services/minds-of-time
-    container_name: mp-time-travel-minds-of-time
-    hostname: mp-time-travel-minds-of-time
+      context: ./services/vault-of-time
+    container_name: mp-time-travel-vault-of-time
+    hostname: mp-time-travel-vault-of-time
     restart: on-failure
     environment:
       <<: *common-variables
@@ -126,7 +154,8 @@ services:
     env_file:
       - ./.env
     # volumes:
-    #   - ./services/minds-of-time:/usr/src/app:cached
+    #   - ./services/vault-of-time:/app:cached
+
 
   web-app:
     build:
@@ -159,19 +188,7 @@ services:
     # ports:
     #   - "6379:6379"
 
-  otel-collector:
-    image: otel/opentelemetry-collector-contrib-dev:e9276a78341765d080347ee23f274f01e562fe5a
-    container_name: otel-collector
-    hostname: otel-collector
-    restart: on-failure
-    command: ["--config=/etc/otel/config.yaml"]
-    env_file:
-      - ./.env
-    environment:
-      <<: *common-variables
-    volumes:
-      - ./services/otel-collector/config.yaml:/etc/otel/config.yaml
-  
+
   mongo:
     image: mongo:8.0.0
     container_name: mongo

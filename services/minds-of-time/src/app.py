@@ -1,5 +1,5 @@
 from flask import Flask
-from otel import init_tracing
+from otel import init_opentelemetry, instrument_flask
 from config import PORT, API_PREFIX
 from flasgger import Swagger
 from opentelemetry import trace
@@ -8,9 +8,13 @@ from random_error_middleware import random_error_middleware
 from healthz import bp as healthz_bp
 import logging
 
+init_opentelemetry()
+
 logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
+
+instrument_flask(app)
 
 swagger_config = {
     "headers": [],
@@ -27,8 +31,6 @@ swagger_config = {
     "specs_route": f"{API_PREFIX}/docs"
 }
 swagger = Swagger(app, config=swagger_config)
-
-init_tracing(app)
 
 random_error_middleware(app)
 

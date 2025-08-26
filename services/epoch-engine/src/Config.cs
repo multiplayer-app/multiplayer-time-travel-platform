@@ -13,9 +13,6 @@ public static class Config
     public static string OTLP_TRACES_ENDPOINT = Environment.GetEnvironmentVariable("OTLP_TRACES_ENDPOINT") ?? $"http://localhost/v1/traces";
     public static string OTLP_LOGS_ENDPOINT = Environment.GetEnvironmentVariable("OTLP_LOGS_ENDPOINT") ?? $"http://localhost/v1/logs";
 
-    public static double MULTIPLAYER_OTLP_DOC_SPAN_RATIO = double.TryParse(Environment.GetEnvironmentVariable("MULTIPLAYER_OTLP_DOC_SPAN_RATIO"), out var value)
-        ? value
-        : 0.05;
     public static double MULTIPLAYER_OTLP_SPAN_RATIO = double.TryParse(Environment.GetEnvironmentVariable("MULTIPLAYER_OTLP_SPAN_RATIO"), out var value)
         ? value
         : 0.1;

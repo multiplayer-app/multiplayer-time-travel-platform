@@ -7,10 +7,12 @@ using OpenTelemetry.Exporter;
 using OpenTelemetry;
 using NetEscapades.AspNetCore.SecurityHeaders.Infrastructure;
 using WebApiOpenApi;
-using Multiplayer.OpenTelemetry.Trace;
-using Multiplayer.OpenTelemetry.Constants;
+using Multiplayer.SessionRecorder;
+using Multiplayer.SessionRecorder.Types;
+using Multiplayer.SessionRecorder.Trace;
+using Multiplayer.SessionRecorder.Sdk;
 
-MultiplayerTraceIdConfiguration.ConfigureMultiplayerTraceIdGenerator(Config.MULTIPLAYER_OTLP_DOC_SPAN_RATIO);
+SessionRecorderTraceIdConfiguration.ConfigureSessionRecorderTraceIdGenerator();
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls($"http://0.0.0.0:{Config.PORT}");
@@ -59,7 +61,7 @@ builder.Services.AddOpenTelemetry()
             .SetResourceBuilder(resourceBuilder)
             .AddHttpClientInstrumentation()
             .AddAspNetCoreInstrumentation()
-            .SetSampler(new MultiplayerTraceIdRatioBasedSampler(Config.MULTIPLAYER_OTLP_SPAN_RATIO))
+            .SetSampler(new SessionRecorderTraceIdRatioBasedSampler(Config.MULTIPLAYER_OTLP_SPAN_RATIO))
             .AddProcessor(new SimpleActivityExportProcessor(traceExporter));
     })
     .WithLogging(logs => logs.AddProcessor(new BatchLogRecordExportProcessor(logExporter)));

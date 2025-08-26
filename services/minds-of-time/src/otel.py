@@ -1,69 +1,78 @@
-from opentelemetry.instrumentation.flask import FlaskInstrumentor
-from opentelemetry.sdk.resources import SERVICE_NAME as SERVICE_NAME_ATTR, SERVICE_VERSION as SERVICE_VERSION_ATTR, DEPLOYMENT_ENVIRONMENT, Resource
-
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import BatchSpanProcessor
-from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
-from opentelemetry._logs import set_logger_provider
+from opentelemetry.sdk.trace.export import ConsoleSpanExporter, BatchSpanProcessor
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+from opentelemetry.exporter.otlp.proto.http._log_exporter import OTLPLogExporter
+from multiplayer_session_recorder.trace.id_generator import SessionRecorderRandomIdGenerator
+from multiplayer_session_recorder.trace.sampler import SessionRecorderTraceIdRatioBasedSampler
+from multiplayer_session_recorder.exporter.http.log_exporter import (
+    OTLPLogExporter as SessionRecorderOTLPLogExporter
+)
+from multiplayer_session_recorder.exporter.http.trace_exporter import (
+    OTLPSpanExporter as SessionRecorderOTLPSpanExporter
+)
 from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
+from opentelemetry.sdk._logs import LoggerProvider
+from opentelemetry._logs import set_logger_provider
+from opentelemetry.sdk.resources import (
+    SERVICE_NAME as SERVICE_NAME_ATTR,
+    SERVICE_VERSION as SERVICE_VERSION_ATTR,
+    DEPLOYMENT_ENVIRONMENT,
+    Resource
+)
 
-from multiplayer.opentelemetry.exporter.http.trace_exporter import MultiplayerOTLPSpanExporter
-# from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
-# from opentelemetry.exporter.otlp.proto.http._log_exporter import OTLPLogExporter
-from multiplayer.opentelemetry.exporter.http.log_exporter import MultiplayerOTLPLogExporter
-from multiplayer.opentelemetry.trace.sampler import MultiplayerTraceIdRatioBasedSampler
-from multiplayer.opentelemetry.trace.id_generator import MultiplayerRandomIdGenerator
+from config import (
+    OTLP_TRACES_ENDPOINT,
+    OTLP_LOGS_ENDPOINT,
+    MULTIPLAYER_OTLP_KEY,
+    MULTIPLAYER_OTLP_SPAN_RATIO,
+    SERVICE_NAME,
+    SERVICE_VERSION,
+    PLATFORM_ENV
+)
 
-from config import OTLP_TRACES_ENDPOINT, OTLP_LOGS_ENDPOINT, MULTIPLAYER_OTLP_KEY, MULTIPLAYER_OTLP_DOC_SPAN_RATIO, MULTIPLAYER_OTLP_SPAN_RATIO, SERVICE_NAME, SERVICE_VERSION, PLATFORM_ENV
-
-
-def init_tracing(app):
-    id_generator = MultiplayerRandomIdGenerator(autoDocTracesRatio = MULTIPLAYER_OTLP_DOC_SPAN_RATIO)
-    sampler = MultiplayerTraceIdRatioBasedSampler(rate = 1) # MULTIPLAYER_OTLP_SPAN_RATIO
-
-    # Service name is required for most backends
+def init_opentelemetry():
     resource = Resource(attributes = {
         SERVICE_NAME_ATTR: SERVICE_NAME,
         SERVICE_VERSION_ATTR: SERVICE_VERSION,
         DEPLOYMENT_ENVIRONMENT: PLATFORM_ENV
     })
 
-    traceProvider = TracerProvider(
+    id_generator = SessionRecorderRandomIdGenerator()
+    sampler = SessionRecorderTraceIdRatioBasedSampler(rate = MULTIPLAYER_OTLP_SPAN_RATIO)
+
+    # traceExporter = OTLPSpanExporter(endpoint = OTLP_TRACES_ENDPOINT)
+    traceExporter = SessionRecorderOTLPSpanExporter(
+        endpoint = OTLP_TRACES_ENDPOINT,
+        api_key = MULTIPLAYER_OTLP_KEY
+    )
+    # logExporter = OTLPLogExporter(endpoint = OTLP_LOGS_ENDPOINT)
+    logExporter = SessionRecorderOTLPLogExporter(
+        endpoint=OTLP_LOGS_ENDPOINT,
+        api_key=MULTIPLAYER_OTLP_KEY
+    )
+
+    tracer_provider = TracerProvider(
         resource = resource,
         sampler = sampler,
         id_generator = id_generator
     )
 
-    # traceExporter = OTLPSpanExporter(OTLP_TRACES_ENDPOINT)
-    traceExporter = MultiplayerOTLPSpanExporter(
-        endpoint = OTLP_TRACES_ENDPOINT,
-        apiKey = MULTIPLAYER_OTLP_KEY
-    )
-
-    processor = BatchSpanProcessor(traceExporter)
-    traceProvider.add_span_processor(processor)
-    trace.set_tracer_provider(traceProvider)
-
     logger_provider = LoggerProvider(
-        resource = Resource.create(
-            {
-                "service.name": SERVICE_NAME,
-            }
-        ),
+        resource = resource,
     )
     set_logger_provider(logger_provider)
-    
-    logExporter = MultiplayerOTLPLogExporter(
-        endpoint = OTLP_LOGS_ENDPOINT,
-        apiKey = MULTIPLAYER_OTLP_KEY
-    )
-    # logExporter = OTLPLogExporter(
-    #     endpoint = OTLP_LOGS_ENDPOINT
-    # )
-
 
     logger_provider.add_log_record_processor(BatchLogRecordProcessor(logExporter))
 
+    span_processor = BatchSpanProcessor(traceExporter)
+    tracer_provider.add_span_processor(span_processor)
+    trace.set_tracer_provider(tracer_provider)
+    
+    print("OpenTelemetry initialized")
+
+
+def instrument_flask(app):
     FlaskInstrumentor().instrument_app(app)
-    # handler = LoggingHandler(level=logging.NOTSET, logger_provider=logger_provider)
+    print("Flask app instrumented with OpenTelemetry")
