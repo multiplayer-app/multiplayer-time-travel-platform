@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
-import { recorderEventBus } from "@multiplayer-app/session-recorder-browser";
+import SessionRecorder, {
+  recorderEventBus,
+} from "@multiplayer-app/session-recorder-browser";
 import SidePanel from "components/SidePanel";
 import Board from "components/Board";
 import NavigationModal from "components/NavigationModal";
@@ -17,9 +19,14 @@ Modal.setAppElement("#root");
 
 function App() {
   const [isNavigationModalOpen, setIsNavigationModalOpen] = useState(false);
-  const [isSandboxOpen, setIsSandboxOpen] = useState(!isSandboxClosed());
+  const [isSandboxOpen, setIsSandboxOpen] = useState(false);
   const userName = useAnonymousTimeTravelerName();
   const { isManuallyStopped, setIsManuallyStopped } = useTimeTravel();
+
+  useEffect(() => {
+    const dismissed = isSandboxClosed();
+    setIsSandboxOpen(!dismissed);
+  }, []);
 
   useEffect(() => {
     const handleNavigationModal = () => {
@@ -43,9 +50,11 @@ function App() {
   }, [isManuallyStopped, setIsManuallyStopped]);
 
   useEffect(() => {
-    window["mpSessionDebuggerMetadata"] = {
-      userName: userName,
-    };
+    if (userName) {
+      SessionRecorder.setSessionAttributes({
+        userName: userName,
+      });
+    }
   }, [userName]);
 
   return (
