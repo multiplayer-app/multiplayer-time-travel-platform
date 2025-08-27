@@ -68,3 +68,7 @@ Each API endpoint provides interactive documentation where you can test differen
 ## ⭐ Explore Further
 
 Try different conversation scenarios, explore various historical periods, and experience how Multiplayer’s full-stack session replays enhance the development workflow. The intentional errors you encounter are designed to demonstrate the Multiplayer’s capabilities in real-world use cases.
+
+## License
+
+MIT — see [LICENSE](./LICENSE).
