@@ -42,12 +42,19 @@ def init_opentelemetry():
     id_generator = SessionRecorderRandomIdGenerator()
     sampler = SessionRecorderTraceIdRatioBasedSampler(rate = MULTIPLAYER_OTLP_SPAN_RATIO)
 
-    # traceExporter = OTLPSpanExporter(endpoint = OTLP_TRACES_ENDPOINT)
+    # traceExporter = OTLPSpanExporter(
+    #     endpoint = OTLP_TRACES_ENDPOINT,
+    #     headers = { "authorization": MULTIPLAYER_OTLP_KEY }
+    # )
     traceExporter = SessionRecorderOTLPSpanExporter(
         endpoint = OTLP_TRACES_ENDPOINT,
         api_key = MULTIPLAYER_OTLP_KEY
     )
-    # logExporter = OTLPLogExporter(endpoint = OTLP_LOGS_ENDPOINT)
+
+    # logExporter = OTLPLogExporter(
+    #     endpoint = OTLP_LOGS_ENDPOINT,
+    #     headers = { "authorization": MULTIPLAYER_OTLP_KEY }
+    # )
     logExporter = SessionRecorderOTLPLogExporter(
         endpoint=OTLP_LOGS_ENDPOINT,
         api_key=MULTIPLAYER_OTLP_KEY
