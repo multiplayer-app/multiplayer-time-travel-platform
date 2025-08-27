@@ -37,7 +37,16 @@ debuggerInstance.init({
     Number(process.env.REACT_APP_MULTIPLAYER_OTLP_SPAN_RATIO) || 0.04,
   maxCapturingHttpPayloadSize: 100000,
   disableCapturingHttpPayload: false,
-  enableContinuousDebugging: false,
+  showContinuousRecording: false,
+  widgetTextOverrides: {
+    initialTitleWithoutContinuous: "Try a full-stack session recording!",
+    initialDescriptionWithoutContinuous:
+      "Start a recording to see Multiplayer in action.\n" +
+      "For the best experience, pick a character and start chatting: you’ll trigger real interactions (and a few intentional glitches 😉) that will show up in our sandbox.",
+    saveButtonText: "Save",
+    finalDescription:
+      "Save your full-stack session recording in our sandbox. You can also leave a quick message, just like a real user would for a bug report.",
+  },
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
