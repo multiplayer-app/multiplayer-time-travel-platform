@@ -1,4 +1,4 @@
-![Description](.github/images/opengraph.png)
+![Description](./docs/img/opengraph.png)
 
 # AI Time Travel Chat Demo
 

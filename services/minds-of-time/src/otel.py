@@ -56,8 +56,8 @@ def init_opentelemetry():
     #     headers = { "authorization": MULTIPLAYER_OTLP_KEY }
     # )
     logExporter = SessionRecorderOTLPLogExporter(
-        endpoint=OTLP_LOGS_ENDPOINT,
-        api_key=MULTIPLAYER_OTLP_KEY
+        endpoint = OTLP_LOGS_ENDPOINT,
+        api_key = MULTIPLAYER_OTLP_KEY
     )
 
     tracer_provider = TracerProvider(
