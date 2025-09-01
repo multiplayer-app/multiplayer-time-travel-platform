@@ -65,7 +65,7 @@ This application serves as a practical demonstration of:
 
 Each API endpoint provides interactive documentation where you can test different features and observe how the system handles various scenarios.
 
-## Example CLI apps
+## ⚙️ Example CLI apps
 
 The demo includes several CLI app examples, which can be found below:
 
