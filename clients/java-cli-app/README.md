@@ -26,18 +26,39 @@
   </p>
 </div>
 
-## Java cli example app
+# Time Travel Java CLI Demo
+
+A Java console application that demonstrates the Multiplayer Time Travel platform integration with SessionRecorder.
+
+## Prerequisites
+
+- Java 17 or later
+
+## Install
 
 ```bash
 ./gradlew build --refresh-dependencies
 ./gradlew clean shadowJar
-
-MINDS_OF_TIME_SERVICE_URL=https://api.demo.multiplayer.app \
-EPOCH_ENGINE_SERVICE_URL=https://api.demo.multiplayer.app \
-VAULT_OF_TIME_SERVICE_URL=https://api.demo.multiplayer.app \
-MULTIPLAYER_OTLP_KEY="{{KEY}}" \
-java -jar ./build/libs/java-cli-app-0.0.1-all.jar
 ```
+
+## How to run?
+
+Before launching CLI app, start Time Travel in your docker-compose
+
+```bash
+MULTIPLAYER_OTLP_KEY="{{MULTIPLAYER_OTLP_KEY}}" java -jar ./build/libs/java-cli-app-0.0.1-all.jar
+```
+
+***Note:*** replace `{{MULTIPLAYER_OTLP_KEY}}` with your Multiplayer OTLP key
+
+### Environment variables
+
+Optionally you can override Time Travel endpoints:
+
+- `DIALOGUE_HUB_SERVICE_URL` Default: http://localhost:3000/v1/dialogue-hub
+- `EPOCH_ENGINE_SERVICE_URL` Default: http://localhost:3000/v1/epoch-engine
+- `MINDS_OF_TIME_SERVICE_URL` Default: http://localhost:3000/v1/minds-of-time
+- `VAULT_OF_TIME_SERVICE_URL` Default: http://localhost:3000/v1/vault-of-time
 
 ## License
 

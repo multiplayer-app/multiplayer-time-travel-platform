@@ -26,55 +26,38 @@
   </p>
 </div>
 
-## .Net cli example app
+# Time Travel .Net CLI Demo
 
 A .NET console application that demonstrates the Multiplayer Time Travel platform integration with SessionRecorder.
 
 ## Prerequisites
 
 - .NET 9.0 SDK or later
-- SessionRecorder library (version 0.0.2)
 
-## Setup
+## Install
 
-1. Install dependencies:
 ```bash
 dotnet restore
 ```
 
-2. Set required environment variables:
-```bash
-export MULTIPLAYER_OTLP_KEY="your-api-key-here"
-export VAULT_OF_TIME_SERVICE_URL="https://api.demo.multiplayer.app"
-export EPOCH_ENGINE_SERVICE_URL="https://api.demo.multiplayer.app"
-export MINDS_OF_TIME_SERVICE_URL="https://api.demo.multiplayer.app"
-```
+## How to run?
 
-## Running the Application
+Before launching CLI app, start Time Travel in your docker-compose
 
 ```bash
-dotnet run
+MULTIPLAYER_OTLP_KEY="{{MULTIPLAYER_OTLP_KEY}}" dotnet run
 ```
 
-## Building
+***Note:*** replace `{{MULTIPLAYER_OTLP_KEY}}` with your Multiplayer OTLP key
 
-```bash
-dotnet build
-```
+### Environment variables
 
-## Publishing
+Optionally you can override Time Travel endpoints:
 
-```bash
-dotnet publish -c Release
-```
-
-## Features
-
-- OpenTelemetry integration with SessionRecorder
-- HTTP client for API calls
-- JSON response formatting
-- Environment variable configuration
-- Session recording with resource and session attributes
+- `DIALOGUE_HUB_SERVICE_URL` Default: http://localhost:3000/v1/dialogue-hub
+- `EPOCH_ENGINE_SERVICE_URL` Default: http://localhost:3000/v1/epoch-engine
+- `MINDS_OF_TIME_SERVICE_URL` Default: http://localhost:3000/v1/minds-of-time
+- `VAULT_OF_TIME_SERVICE_URL` Default: http://localhost:3000/v1/vault-of-time
 
 ## License
 

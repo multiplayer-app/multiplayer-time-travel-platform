@@ -13,7 +13,58 @@ public static class Config
     public static string OtlpTracesEndpoint => Environment.GetEnvironmentVariable("OTLP_TRACES_ENDPOINT") ?? "https://api.multiplayer.app/v1/traces";
     public static string OtlpLogsEndpoint => Environment.GetEnvironmentVariable("OTLP_LOGS_ENDPOINT") ?? "https://api.multiplayer.app/v1/logs";
     
-    public static string VaultOfTimeServiceUrl => Environment.GetEnvironmentVariable("VAULT_OF_TIME_SERVICE_URL") ?? "";
-    public static string EpochEngineServiceUrl => Environment.GetEnvironmentVariable("EPOCH_ENGINE_SERVICE_URL") ?? "";
-    public static string MindsOfTimeServiceUrl => Environment.GetEnvironmentVariable("MINDS_OF_TIME_SERVICE_URL") ?? "";
+    public static string MultiplayerBackendSource => Environment.GetEnvironmentVariable("MULTIPLAYER_BACKEND_SOURCE") ?? "production";
+
+    // Service URLs with backend source switching
+    public static string DialogueHubServiceUrl
+    {
+        get
+        {
+            var envUrl = Environment.GetEnvironmentVariable("DIALOGUE_HUB_SERVICE_URL");
+            if (!string.IsNullOrEmpty(envUrl)) return envUrl;
+            
+            return MultiplayerBackendSource == "production" 
+                ? "https://api.demo.multiplayer.app/v1/dialogue-hub"
+                : "http://localhost:3000/v1/dialogue-hub";
+        }
+    }
+
+    public static string EpochEngineServiceUrl
+    {
+        get
+        {
+            var envUrl = Environment.GetEnvironmentVariable("EPOCH_ENGINE_SERVICE_URL");
+            if (!string.IsNullOrEmpty(envUrl)) return envUrl;
+            
+            return MultiplayerBackendSource == "production" 
+                ? "https://api.demo.multiplayer.app/v1/epoch-engine"
+                : "http://localhost:3000/v1/epoch-engine";
+        }
+    }
+
+    public static string MindsOfTimeServiceUrl
+    {
+        get
+        {
+            var envUrl = Environment.GetEnvironmentVariable("MINDS_OF_TIME_SERVICE_URL");
+            if (!string.IsNullOrEmpty(envUrl)) return envUrl;
+            
+            return MultiplayerBackendSource == "production" 
+                ? "https://api.demo.multiplayer.app/v1/minds-of-time"
+                : "http://localhost:3000/v1/minds-of-time";
+        }
+    }
+
+    public static string VaultOfTimeServiceUrl
+    {
+        get
+        {
+            var envUrl = Environment.GetEnvironmentVariable("VAULT_OF_TIME_SERVICE_URL");
+            if (!string.IsNullOrEmpty(envUrl)) return envUrl;
+            
+            return MultiplayerBackendSource == "production" 
+                ? "https://api.demo.multiplayer.app/v1/vault-of-time"
+                : "http://localhost:3000/v1/vault-of-time";
+        }
+    }
 }

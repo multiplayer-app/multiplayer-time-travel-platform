@@ -26,7 +26,38 @@
   </p>
 </div>
 
-## Node.Js cli example app
+# Time Travel Node.Js CLI Demo
+
+A Node.Js console application that demonstrates the Multiplayer Time Travel platform integration with SessionRecorder.
+
+## Prerequisites
+
+- Node.Js 18.0 or later
+
+## Install
+
+```bash
+npm i
+```
+
+## How to run?
+
+Before launching CLI app, start Time Travel in your docker-compose
+
+```bash
+MULTIPLAYER_OTLP_KEY="{{MULTIPLAYER_OTLP_KEY}}" npm run dev
+```
+
+***Note:*** replace `{{MULTIPLAYER_OTLP_KEY}}` with your Multiplayer OTLP key
+
+### Environment variables
+
+Optionally you can override Time Travel endpoints:
+
+- `DIALOGUE_HUB_SERVICE_URL` Default: http://localhost:3000/v1/dialogue-hub
+- `EPOCH_ENGINE_SERVICE_URL` Default: http://localhost:3000/v1/epoch-engine
+- `MINDS_OF_TIME_SERVICE_URL` Default: http://localhost:3000/v1/minds-of-time
+- `VAULT_OF_TIME_SERVICE_URL` Default: http://localhost:3000/v1/vault-of-time
 
 ## License
 

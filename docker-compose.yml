@@ -127,6 +127,8 @@ services:
     container_name: mp-time-travel-timegate
     hostname: mp-time-travel-timegate
     restart: on-failure
+    ports:
+      - "3000:3000"
     environment:
       <<: *common-variables
       PORT: 3000

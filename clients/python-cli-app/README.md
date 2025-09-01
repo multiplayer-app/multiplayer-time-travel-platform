@@ -26,19 +26,40 @@
   </p>
 </div>
 
-## Python cli example app
+# Time Travel Python CLI Demo
 
-### How to run
+A Python console application that demonstrates the Multiplayer Time Travel platform integration with SessionRecorder.
+
+## Prerequisites
+
+- Python 3.8 or later
+- pip (Python package installer)
+
+## Install
 
 ```bash
-pip install -r requirements.txt 
-
-MINDS_OF_TIME_SERVICE_URL=https://api.demo.multiplayer.app \
-EPOCH_ENGINE_SERVICE_URL=https://api.demo.multiplayer.app \
-VAULT_OF_TIME_SERVICE_URL=https://api.demo.multiplayer.app \
-MULTIPLAYER_OTLP_KEY={{TOKEN}} \
-python ./src/main.py
+pip install -r requirements.txt
 ```
+
+## How to run?
+
+Before launching CLI app, start Time Travel in your docker-compose
+
+```bash
+MULTIPLAYER_OTLP_KEY="{{MULTIPLAYER_OTLP_KEY}}" python ./src/main.py
+```
+
+***Note:*** replace `{{MULTIPLAYER_OTLP_KEY}}` with your Multiplayer OTLP key
+
+### Environment variables
+
+Optionally you can override Time Travel endpoints:
+
+- `DIALOGUE_HUB_SERVICE_URL` Default: http://localhost:3000/v1/dialogue-hub
+- `EPOCH_ENGINE_SERVICE_URL` Default: http://localhost:3000/v1/epoch-engine
+- `MINDS_OF_TIME_SERVICE_URL` Default: http://localhost:3000/v1/minds-of-time
+- `VAULT_OF_TIME_SERVICE_URL` Default: http://localhost:3000/v1/vault-of-time
+
 
 ## License
 

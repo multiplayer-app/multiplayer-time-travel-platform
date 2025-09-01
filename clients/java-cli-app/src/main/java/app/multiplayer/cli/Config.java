@@ -15,7 +15,6 @@ public class Config {
         ? Double.parseDouble(System.getenv("MULTIPLAYER_OTLP_SPAN_RATIO"))
         : 0.01;
 
-
     public static String MULTIPLAYER_OTLP_KEY = System.getenv("MULTIPLAYER_OTLP_KEY") != null && !System.getenv("MULTIPLAYER_OTLP_KEY").isEmpty()
         ? System.getenv("MULTIPLAYER_OTLP_KEY")
         : "";
@@ -26,7 +25,44 @@ public class Config {
         ? System.getenv("OTLP_LOGS_ENDPOINT")
         : "https://api.multiplayer.app/v1/logs";
 
-    public static String VAULT_OF_TIME_SERVICE_URL = System.getenv("VAULT_OF_TIME_SERVICE_URL");
-    public static String EPOCH_ENGINE_SERVICE_URL = System.getenv("EPOCH_ENGINE_SERVICE_URL");
-    public static String MINDS_OF_TIME_SERVICE_URL = System.getenv("MINDS_OF_TIME_SERVICE_URL");
+    public static String MULTIPLAYER_BACKEND_SOURCE = System.getenv("MULTIPLAYER_BACKEND_SOURCE") != null && !System.getenv("MULTIPLAYER_BACKEND_SOURCE").isEmpty()
+        ? System.getenv("MULTIPLAYER_BACKEND_SOURCE")
+        : "production";
+
+    // Service URLs with backend source switching
+    public static String DIALOGUE_HUB_SERVICE_URL;
+    public static String EPOCH_ENGINE_SERVICE_URL;
+    public static String MINDS_OF_TIME_SERVICE_URL;
+    public static String VAULT_OF_TIME_SERVICE_URL;
+
+    static {
+        // Initialize service URLs based on backend source
+        switch (MULTIPLAYER_BACKEND_SOURCE) {
+            case "production":
+                DIALOGUE_HUB_SERVICE_URL = "https://api.demo.multiplayer.app/v1/dialogue-hub";
+                EPOCH_ENGINE_SERVICE_URL = "https://api.demo.multiplayer.app/v1/epoch-engine";
+                MINDS_OF_TIME_SERVICE_URL = "https://api.demo.multiplayer.app/v1/minds-of-time";
+                VAULT_OF_TIME_SERVICE_URL = "https://api.demo.multiplayer.app/v1/vault-of-time";
+                break;
+            default:
+                DIALOGUE_HUB_SERVICE_URL = "http://localhost:3000/v1/dialogue-hub";
+                EPOCH_ENGINE_SERVICE_URL = "http://localhost:3000/v1/epoch-engine";
+                MINDS_OF_TIME_SERVICE_URL = "http://localhost:3000/v1/minds-of-time";
+                VAULT_OF_TIME_SERVICE_URL = "http://localhost:3000/v1/vault-of-time";
+        }
+
+        // Override with environment variables if provided
+        if (System.getenv("DIALOGUE_HUB_SERVICE_URL") != null && !System.getenv("DIALOGUE_HUB_SERVICE_URL").isEmpty()) {
+            DIALOGUE_HUB_SERVICE_URL = System.getenv("DIALOGUE_HUB_SERVICE_URL");
+        }
+        if (System.getenv("EPOCH_ENGINE_SERVICE_URL") != null && !System.getenv("EPOCH_ENGINE_SERVICE_URL").isEmpty()) {
+            EPOCH_ENGINE_SERVICE_URL = System.getenv("EPOCH_ENGINE_SERVICE_URL");
+        }
+        if (System.getenv("MINDS_OF_TIME_SERVICE_URL") != null && !System.getenv("MINDS_OF_TIME_SERVICE_URL").isEmpty()) {
+            MINDS_OF_TIME_SERVICE_URL = System.getenv("MINDS_OF_TIME_SERVICE_URL");
+        }
+        if (System.getenv("VAULT_OF_TIME_SERVICE_URL") != null && !System.getenv("VAULT_OF_TIME_SERVICE_URL").isEmpty()) {
+            VAULT_OF_TIME_SERVICE_URL = System.getenv("VAULT_OF_TIME_SERVICE_URL");
+        }
+    }
 }

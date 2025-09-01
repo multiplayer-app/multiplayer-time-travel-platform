@@ -7,9 +7,24 @@ PLATFORM_ENV = os.getenv("PLATFORM_ENV", "staging")
 MULTIPLAYER_OTLP_KEY = os.getenv("MULTIPLAYER_OTLP_KEY")
 OTLP_TRACES_ENDPOINT = os.getenv("OTLP_TRACES_ENDPOINT", "https://api.multiplayer.app/v1/traces")
 OTLP_LOGS_ENDPOINT = os.getenv("OTLP_LOGS_ENDPOINT", "https://api.multiplayer.app/v1/logs")
-API_PREFIX = os.getenv("API_PREFIX", "/v1/minds-of-time")
+
 MULTIPLAYER_OTLP_SPAN_RATIO = float(os.getenv("MULTIPLAYER_OTLP_SPAN_RATIO", "0.05"))
 
-VAULT_OF_TIME_SERVICE_URL = os.getenv("VAULT_OF_TIME_SERVICE_URL")
-EPOCH_ENGINE_SERVICE_URL = os.getenv("EPOCH_ENGINE_SERVICE_URL")
-MINDS_OF_TIME_SERVICE_URL = os.getenv("MINDS_OF_TIME_SERVICE_URL")
+MULTIPLAYER_BACKEND_SOURCE = os.getenv("MULTIPLAYER_BACKEND_SOURCE", "production")
+
+if MULTIPLAYER_BACKEND_SOURCE == "production":
+    DIALOGUE_HUB_SERVICE_URL = "https://api.demo.multiplayer.app/v1/dialogue-hub"
+    EPOCH_ENGINE_SERVICE_URL = "https://api.demo.multiplayer.app/v1/epoch-engine"
+    MINDS_OF_TIME_SERVICE_URL = "https://api.demo.multiplayer.app/v1/minds-of-time"
+    VAULT_OF_TIME_SERVICE_URL = "https://api.demo.multiplayer.app/v1/vault-of-time"
+else:
+    DIALOGUE_HUB_SERVICE_URL = "http://localhost:3000/v1/dialogue-hub"
+    EPOCH_ENGINE_SERVICE_URL = "http://localhost:3000/v1/epoch-engine"
+    MINDS_OF_TIME_SERVICE_URL = "http://localhost:3000/v1/minds-of-time"
+    VAULT_OF_TIME_SERVICE_URL = "http://localhost:3000/v1/vault-of-time"
+
+
+DIALOGUE_HUB_SERVICE_URL = os.getenv("DIALOGUE_HUB_SERVICE_URL", DIALOGUE_HUB_SERVICE_URL)
+EPOCH_ENGINE_SERVICE_URL = os.getenv("EPOCH_ENGINE_SERVICE_URL", EPOCH_ENGINE_SERVICE_URL)
+MINDS_OF_TIME_SERVICE_URL = os.getenv("MINDS_OF_TIME_SERVICE_URL", MINDS_OF_TIME_SERVICE_URL)
+VAULT_OF_TIME_SERVICE_URL = os.getenv("VAULT_OF_TIME_SERVICE_URL", VAULT_OF_TIME_SERVICE_URL)
