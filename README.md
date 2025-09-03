@@ -73,6 +73,8 @@ The demo includes several CLI app examples, which can be found below:
 - [.Net](./clients/dotnet-cli-app/)
 - [Java](./clients/java-cli-app/)
 - [Python](./clients/python-cli-app/)
+- [Ruby](./clients/ruby-cli-app/)
+- [Go](./clients/go-cli-app/)
 
 ## ⭐ Explore Further
 

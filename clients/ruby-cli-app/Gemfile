@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+# Add the local gem for development
+gem 'multiplayer-session-recorder', path: '../../'
+
+# OpenTelemetry instrumentation gems
+gem 'opentelemetry-instrumentation-all', '~> 0.80.0'
+
+# Development dependencies
+group :development do
+  gem 'rake', '~> 13.0'
+end
+
