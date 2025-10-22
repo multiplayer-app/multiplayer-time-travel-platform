@@ -11,15 +11,8 @@ COPY tsconfig.json ./
 COPY ./src/ ./src
 COPY ./doc/ ./doc
 
-RUN NODE_ENV=development npm ci
+RUN NODE_ENV=development npm i
 RUN npm run build
-
-# RUN find . -type d -name "node_modules" -exec rm -rf {} +
-RUN find . -type d -name "src" ! -path "*/dist/src" -exec rm -rf {} +
-RUN find . -type f -name "README.md" -exec rm -rf {} +
-RUN find . -type f -name "tsconfig.*" -exec rm -rf {} +
-
-# RUN npm i
 
 FROM node:24-slim
 
