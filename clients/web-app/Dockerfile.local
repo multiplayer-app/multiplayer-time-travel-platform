@@ -21,6 +21,7 @@ WORKDIR /usr/src/app
 COPY . .
  
 RUN npm install ci
+RUN apk add curl
 
 EXPOSE 3000
 CMD ["npm", "start"]
