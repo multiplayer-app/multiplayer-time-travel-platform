@@ -34,7 +34,7 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ./services/dialogue-hub:/usr/src/app # :cached
+      - ./services/dialogue-hub/src:/usr/src/app/src # :cached
 
   envoy:
     image: envoyproxy/envoy:v1.33-latest
@@ -148,7 +148,7 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ./services/timegate:/usr/src/app # :cached
+      - ./services/timegate/src:/usr/src/app/src # :cached
 
   # go
   vault-of-time:
@@ -186,7 +186,7 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ./clients/web-app:/usr/src/app # :cached
+      - ./clients/web-app/src:/usr/src/app/src # :cached
 
   redis:
     image: redis:7.0.12-alpine
