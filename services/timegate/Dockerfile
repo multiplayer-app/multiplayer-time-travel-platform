@@ -19,7 +19,7 @@ RUN find . -type d -name "src" ! -path "*/dist/src" -exec rm -rf {} +
 RUN find . -type f -name "README.md" -exec rm -rf {} +
 RUN find . -type f -name "tsconfig.*" -exec rm -rf {} +
 
-RUN npm ci --omit=dev
+RUN npm i
 
 FROM node:24-slim
 
@@ -32,4 +32,3 @@ EXPOSE 3000
 COPY --from=build /usr/src/app /usr/src/app
 
 CMD ["npm", "start"]
-# CMD ["npm", "run", "dev"]

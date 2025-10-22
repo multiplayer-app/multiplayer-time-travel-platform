@@ -13,7 +13,8 @@ x-common-variables: &common-variables
   #  REACT_APP_MULTIPLAYER_OTLP_SPAN_RATIO: 0.05
 
 services:
-  dialogue-hub: # java
+  # nodejs
+  dialogue-hub:
     build:
       context: ./services/dialogue-hub
     container_name: mp-time-travel-dialogue-hub
@@ -26,13 +27,14 @@ services:
       REDIS_PORT: 6379
       REDIS_URI: redis://mp-time-travel-redis:6379
       SERVICE_VERSION: 0.0.1
+      NODE_ENV: development
     depends_on:
       redis:
         condition: service_started
     env_file:
       - ./.env
-    # volumes:
-    #   - ./services/dialogue-hub:/usr/app:cached
+    volumes:
+      - ./services/dialogue-hub:/usr/src/app # :cached
 
   envoy:
     image: envoyproxy/envoy:v1.33-latest
@@ -62,7 +64,8 @@ services:
       - ./services/envoy/start-envoy.sh:/etc/envoy/start-envoy.sh
       - ./services/envoy/otlp_capture_payload.wasm:/etc/istio/extensions/otlp_capture_payload.wasm
 
-  epoch-engine: # dotnet
+  # dotnet
+  epoch-engine:
     build:
       context: ./services/epoch-engine
     container_name: mp-time-travel-epoch-engine
@@ -78,7 +81,8 @@ services:
     # volumes:
     #   - ./services/epoch-engine:/source:cached
   
-  minds-of-time: # python
+  # python
+  minds-of-time:
     build:
       context: ./services/minds-of-time
     container_name: mp-time-travel-minds-of-time
@@ -106,7 +110,8 @@ services:
     volumes:
       - ./services/otel-collector/config.yaml:/etc/otel/config.yaml
 
-  # time-warp: # java
+  # java
+  # time-warp:
   #   build:
   #     context: ./services/time-warp
   #   container_name: mp-time-travel-time-warp
@@ -121,7 +126,8 @@ services:
   #   # volumes:
   #   #   - ./services/time-warp:/usr/src/app:cached
 
-  timegate: # nodejs
+  # nodejs
+  timegate:
     build:
       context: ./services/timegate
     container_name: mp-time-travel-timegate
@@ -138,12 +144,14 @@ services:
       MINDS_OF_TIME_SERVICE_URL: http://mp-time-travel-minds-of-time:3000
       VAULT_OF_TIME_SERVICE_URL: http://mp-time-travel-vault-of-time:3000
       MONGODB_URI: mongodb://mongo:27017/time-travel-demo
+      NODE_ENV: development
     env_file:
       - ./.env
-    # volumes:
-    #   - ./services/timegate:/usr/src/app:cached
+    volumes:
+      - ./services/timegate:/usr/src/app # :cached
 
-  vault-of-time: # go
+  # go
+  vault-of-time:
     build:
       context: ./services/vault-of-time
     container_name: mp-time-travel-vault-of-time
@@ -158,10 +166,10 @@ services:
     # volumes:
     #   - ./services/vault-of-time:/app:cached
 
-
   web-app:
     build:
       context: ./clients/web-app
+      dockerfile: Dockerfile.local
       args:
         <<: *common-variables
         MULTIPLAYER_OTLP_KEY: ${MULTIPLAYER_OTLP_KEY}
@@ -177,8 +185,8 @@ services:
       start_period: 15s
     env_file:
       - ./.env
-    # volumes:
-    #   - ./clients/mp-time-travel:/app:cached
+    volumes:
+      - ./clients/web-app:/usr/src/app # :cached
 
   redis:
     image: redis:7.0.12-alpine
@@ -204,6 +212,24 @@ services:
       - MONGO_INITDB_DATABASE=time-travel-demo
     volumes:
       - time-travel-mongo-data:/data/db
+
+  # jaeger-all-in-one:
+  #   image: jaegertracing/all-in-one:latest
+  #   container_name: time-travel-jaeger
+  #   hostname: time-travel-jaeger
+  #   restart: always
+  #   ports:
+  #     - "16686:16686"
+  #     - "14268"
+  #     - "14250"
+  #     - 6317:4317 # grpc receiver
+  #     # - "4318:4318"   # OTLP http receiver
+  #     - 6318:4318   # OTLP http receiver
+  #   environment:
+  #     - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+  #     - LOG_LEVEL=debug
+  #     - COLLECTOR_OTLP_ENABLED=true
+  #   # networks: *networks
 
 volumes:
   time-travel-mongo-data:
