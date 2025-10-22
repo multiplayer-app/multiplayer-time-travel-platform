@@ -22,8 +22,8 @@
         "@opentelemetry/api-logs": "0.203.0",
         "@opentelemetry/auto-instrumentations-node": "0.62.1",
         "@opentelemetry/core": "2.0.1",
-        "@opentelemetry/exporter-trace-otlp-http": "0.203.0",
         "@opentelemetry/exporter-logs-otlp-http": "0.203.0",
+        "@opentelemetry/exporter-trace-otlp-http": "0.203.0",
         "@opentelemetry/resources": "2.0.1",
         "@opentelemetry/sdk-logs": "0.203.0",
         "@opentelemetry/sdk-trace-base": "2.0.1",
@@ -45,6 +45,7 @@
         "socket.io": "4.8.1"
     },
     "devDependencies": {
+        "@tsconfig/node16": "16.1.6",
         "@types/body-parser": "1.19.2",
         "@types/cookie-parser": "1.4.3",
         "@types/cors": "2.8.13",
