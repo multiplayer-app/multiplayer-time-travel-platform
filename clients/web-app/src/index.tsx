@@ -1,4 +1,4 @@
-import debuggerInstance from "@multiplayer-app/session-recorder-browser";
+import debuggerInstance from "@multiplayer-app/session-recorder-react";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
@@ -6,20 +6,21 @@ import reportWebVitals from "./reportWebVitals";
 
 debuggerInstance.init({
   version: process.env.REACT_APP_SERVICE_VERSION,
-  application: process.env.REACT_APP_SERVICE_NAME || 'mp-time-travel-web-app',
+  application: process.env.REACT_APP_SERVICE_NAME || "mp-time-travel-web-app",
   environment: process.env.REACT_APP_PLATFORM_ENV,
   apiKey: process.env.REACT_APP_SESSION_DEBUGGER_KEY,
   ...(process.env.REACT_APP_SESSION_DEBUGGER_API_BASE_URL
     ? {
-      apiBaseUrl: process.env.REACT_APP_SESSION_DEBUGGER_API_BASE_URL,
+        apiBaseUrl: process.env.REACT_APP_SESSION_DEBUGGER_API_BASE_URL,
       }
     : {}),
   ...(process.env.REACT_APP_SESSION_DEBUGGER_EXPORTER_ENDPOINT
     ? {
-      exporterEndpoint: process.env.REACT_APP_SESSION_DEBUGGER_EXPORTER_ENDPOINT,
+        exporterEndpoint:
+          process.env.REACT_APP_SESSION_DEBUGGER_EXPORTER_ENDPOINT,
       }
     : {}),
-  canvasEnabled: false,
+  recordCanvas: false,
   showWidget: true,
   ignoreUrls: [
     /https:\/\/cdn\.jsdelivr\.net\/.*/,
@@ -32,11 +33,12 @@ debuggerInstance.init({
     `${process.env.REACT_APP_BASE_API_URL}\.*`,
     "i"
   ),
-  maskDebSpanPayload: false,
+  masking: {
+    isContentMaskingEnabled: false,
+  },
   sampleTraceRatio:
     Number(process.env.REACT_APP_MULTIPLAYER_OTLP_SPAN_RATIO) || 0.04,
   maxCapturingHttpPayloadSize: 100000,
-  disableCapturingHttpPayload: false,
   showContinuousRecording: false,
   widgetTextOverrides: {
     initialTitleWithoutContinuous: "Try a full-stack session recording!",

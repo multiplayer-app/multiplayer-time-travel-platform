@@ -1,5 +1,5 @@
 import { useEffect, memo, useCallback } from "react";
-import debuggerInstance from "@multiplayer-app/session-recorder-browser";
+import debuggerInstance from "@multiplayer-app/session-recorder-react";
 import Timeline from "components/Timeline";
 import CharacterList from "components/CharacterList";
 import WelcomeScreen from "components/WelcomeScreen";

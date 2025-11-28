@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import SessionRecorder, {
   recorderEventBus,
-} from "@multiplayer-app/session-recorder-browser";
+} from "@multiplayer-app/session-recorder-react";
 import { getEpoch, getProminentPersons } from "services";
 import { Character } from "utils/types";
 

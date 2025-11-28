@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { AxiosError } from "axios";
-import debuggerInstance from "@multiplayer-app/session-recorder-browser";
+import debuggerInstance from "@multiplayer-app/session-recorder-react";
 import {
   ChatContainer,
   MainContainer,

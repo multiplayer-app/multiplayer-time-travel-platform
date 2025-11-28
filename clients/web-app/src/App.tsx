@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import SessionRecorder, {
   recorderEventBus,
-} from "@multiplayer-app/session-recorder-browser";
+} from "@multiplayer-app/session-recorder-react";
 import SidePanel from "components/SidePanel";
 import Board from "components/Board";
 import NavigationModal from "components/NavigationModal";

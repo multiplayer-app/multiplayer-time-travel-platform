@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from "react";
-import debuggerInstance from "@multiplayer-app/session-recorder-browser";
+import debuggerInstance from "@multiplayer-app/session-recorder-react";
 import {
   triggerMouseDownEvent,
   triggerMouseUpEvent,
@@ -23,10 +23,10 @@ const DebuggerLabel = () => {
 
   useEffect(() => {
     const el = debuggerInstance?.sessionWidgetButtonElement;
-    el?.classList?.add("no-draggable");
+    el?.classList?.add("bottom-left");
 
     return () => {
-      el?.classList?.remove("no-draggable");
+      el?.classList?.remove("bottom-left");
     };
   }, []);
 
