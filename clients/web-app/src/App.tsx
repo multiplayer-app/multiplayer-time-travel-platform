@@ -17,6 +17,8 @@ import "./App.scss";
 // Required for accessibility
 Modal.setAppElement("#root");
 
+localStorage.removeItem("mp-recorder-button-position");
+
 function App() {
   const [isNavigationModalOpen, setIsNavigationModalOpen] = useState(false);
   const [isSandboxOpen, setIsSandboxOpen] = useState(false);
