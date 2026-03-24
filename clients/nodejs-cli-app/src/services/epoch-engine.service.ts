@@ -22,7 +22,7 @@ export const fetchEpochs = async (
     try {
         const { data: epochs } = await axios.get(
             `${EPOCH_ENGINE_SERVICE_URL}/v1/epoch-engine/epoch`,
-            { ...errorRate ? { params: { errorRate } } : {} }
+            { ...errorRate !== undefined ? { params: { errorRate } } : {} }
         )
 
         return epochs
