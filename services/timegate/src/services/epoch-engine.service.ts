@@ -21,7 +21,7 @@ export const fetchEpochs = async (
 ): Promise<HistoricalDate[]> => {
     try {
         const { data: epochs } = await axios.get(
-            `${EPOCH_ENGINE_SERVICE_URL}/v1/epoch-engine/epoch`,
+            `${EPOCH_ENGINE_SERVICE_URL}/epoch`,
             { ...errorRate ? { params: { errorRate } } : {} }
         )
 
