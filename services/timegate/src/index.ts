@@ -3,12 +3,18 @@ import './opentelemetry'
 import http from 'http'
 import { logger } from './libs'
 import { app } from './app'
-import { PORT } from './config'
+import { 
+  OTLP_LOGS_ENDPOINT,
+  OTLP_TRACES_ENDPOINT,
+  PORT
+} from './config'
 import * as websocket from './websocket'
 
 const httpServer = http.createServer(app)
 const onReady = () => {
   logger.info(`🚀 Server ready at http://localhost:${PORT}`)
+  logger.info(`🚀 OTLP Traces Endpoint ${OTLP_TRACES_ENDPOINT}`)
+  logger.info(`🚀 OTLP Logs Endpoint ${OTLP_LOGS_ENDPOINT}`)  
 }
 
 websocket.start(httpServer)

@@ -1,9 +1,9 @@
 x-common-variables: &common-variables
   PLATFORM_ENV: demo-env
 
-  OTLP_TRACES_ENDPOINT: http://otel-collector:4318/v1/traces # for backend services
-  OTLP_LOGS_ENDPOINT: http://otel-collector:4318/v1/logs # for backend services
-  MULTIPLAYER_OTLP_COLLECTOR_ENDPOINT: https://api.multiplayer.app:443 # for web-app and otel-collector
+  OTLP_TRACES_ENDPOINT: ${OTLP_TRACES_ENDPOINT:-http://otel-collector:4318/v1/traces} # for backend services
+  OTLP_LOGS_ENDPOINT: ${OTLP_LOGS_ENDPOINT:-http://otel-collector:4318/v1/logs} # for backend services
+  # MULTIPLAYER_OTLP_COLLECTOR_ENDPOINT: https://api.multiplayer.app:443 # for web-app and otel-collector
   MULTIPLAYER_OTLP_DOC_SPAN_RATIO: 0.04
   MULTIPLAYER_OTLP_SPAN_RATIO: 0.05
 
