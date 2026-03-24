@@ -19,5 +19,5 @@ public static class Config
         
     public static double RANDOM_ERROR_RATE = double.TryParse(Environment.GetEnvironmentVariable("RANDOM_ERROR_RATE"), out var value)
         ? value
-        : 0.1;
+        : 0.0;
 }
