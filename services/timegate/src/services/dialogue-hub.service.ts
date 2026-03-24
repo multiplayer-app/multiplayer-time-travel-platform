@@ -14,7 +14,7 @@ export const postOpenRouterMessage = async (
                 message,
                 ...contextId ? { contextId } : {}
             },
-            { ...errorRate ? { params: { errorRate } } : {} }
+            { ...errorRate != null ? { params: { errorRate } } : {} }
         )
 
         res.data
