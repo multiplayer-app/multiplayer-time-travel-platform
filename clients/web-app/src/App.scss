@@ -162,6 +162,10 @@ body {
       display: none !important;
     }
   }
+  &.bottom-left {
+    bottom: 24px !important;
+    left: 24px !important;
+  }
 }
 
 .mp-session-debugger-popover {

@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 import SessionRecorder, {
   recorderEventBus,
+  UserType,
 } from "@multiplayer-app/session-recorder-react";
 import SidePanel from "components/SidePanel";
 import Board from "components/Board";
@@ -25,10 +26,40 @@ function App() {
   const userName = useAnonymousTimeTravelerName();
   const { isManuallyStopped, setIsManuallyStopped } = useTimeTravel();
 
+  const widgetLockApplied = useRef(false);
+
   useEffect(() => {
     const dismissed = isSandboxClosed();
     setIsSandboxOpen(!dismissed);
   }, []);
+
+  useEffect(() => {
+    if (widgetLockApplied.current) return;
+
+    const el = SessionRecorder?.sessionWidgetButtonElement;
+    if (!el) return;
+
+    const root = el.getRootNode();
+    if (!(root instanceof ShadowRoot)) return;
+
+    widgetLockApplied.current = true;
+
+    const style = document.createElement("style");
+    style.textContent = `
+      .mp-session-debugger-button {
+        left: 24px !important;
+        bottom: 24px !important;
+        right: unset !important;
+        top: unset !important;
+        position: absolute !important;
+        touch-action: none !important;
+        border-radius: 36px 0 0 36px !important;
+        z-index: 19 !important;
+        transition: none !important;
+      }
+    `;
+    root.appendChild(style);
+  });
 
   useEffect(() => {
     const handleNavigationModal = () => {
@@ -40,13 +71,13 @@ function App() {
     };
     recorderEventBus?.on(
       "multiplayer-debug-session-response",
-      handleNavigationModal
+      handleNavigationModal,
     );
 
     return () => {
       recorderEventBus?.off(
         "multiplayer-debug-session-response",
-        handleNavigationModal
+        handleNavigationModal,
       );
     };
   }, [isManuallyStopped, setIsManuallyStopped]);
@@ -55,6 +86,7 @@ function App() {
     if (userName) {
       SessionRecorder.setSessionAttributes({
         userName: userName,
+        type: UserType.USER,
       });
     }
   }, [userName]);

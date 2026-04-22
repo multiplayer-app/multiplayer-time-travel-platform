@@ -27,20 +27,8 @@ const DebuggerLabel = () => {
 
     el.classList.add("bottom-left");
 
-    const stopDrag = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-    };
-
-    el.addEventListener("mousedown", stopDrag);
-    el.addEventListener("pointerdown", stopDrag);
-    el.addEventListener("dragstart", stopDrag);
-
     return () => {
       el.classList.remove("bottom-left");
-      el.removeEventListener("mousedown", stopDrag);
-      el.removeEventListener("pointerdown", stopDrag);
-      el.removeEventListener("dragstart", stopDrag);
     };
   }, []);
 
