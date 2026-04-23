@@ -8,7 +8,7 @@ export const fetchHistoricalEvents = async (
     try {
         const { data: historicalEvents } = await axios.get(
             `${VAULT_OF_TIME_SERVICE_URL}/v1/vault-of-time/historical-events`,
-            { ...errorRate ? { params: { errorRate } } : {} }
+            { params: { errorRate: errorRate ?? 0 } }
         )
 
         return historicalEvents
