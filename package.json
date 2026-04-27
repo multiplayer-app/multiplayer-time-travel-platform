@@ -1,0 +1,10 @@
+{
+    "name": "@multiplayer-app/timetravel",
+    "version": "0.0.1",
+    "description": "",
+    "scripts": {
+        "start": "export $(grep -v '^#' .env | xargs) && docker compose up --build -d",
+        "stop": "docker compose down"
+    },
+    "author": "Multiplayer"
+}

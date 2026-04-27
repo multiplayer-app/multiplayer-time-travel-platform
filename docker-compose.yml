@@ -17,6 +17,7 @@ services:
   dialogue-hub:
     build:
       context: ./services/dialogue-hub
+      dockerfile: Dockerfile.dev
     container_name: mp-time-travel-dialogue-hub
     hostname: mp-time-travel-dialogue-hub
     restart: on-failure
@@ -34,12 +35,12 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ./services/dialogue-hub/src:/usr/src/app/src # :cached
+      - ./services/dialogue-hub:/usr/src/app # :cached
 
   envoy:
     image: envoyproxy/envoy:v1.33-latest
     container_name: mp-time-travel-envoy
-    command: ["/etc/envoy/start-envoy.sh"]
+    command: [ "/etc/envoy/start-envoy.sh" ]
     env_file:
       - ./.env
     environment:
@@ -68,6 +69,7 @@ services:
   epoch-engine:
     build:
       context: ./services/epoch-engine
+      dockerfile: Dockerfile.dev
     container_name: mp-time-travel-epoch-engine
     hostname: mp-time-travel-epoch-engine
     restart: on-failure
@@ -78,13 +80,13 @@ services:
       SERVICE_VERSION: 0.0.1
     env_file:
       - ./.env
-    # volumes:
-    #   - ./services/epoch-engine:/source:cached
-  
-  # python
+    volumes:
+      - ./services/epoch-engine/src:/source/src
+    # python
   minds-of-time:
     build:
       context: ./services/minds-of-time
+      dockerfile: Dockerfile.dev
     container_name: mp-time-travel-minds-of-time
     hostname: mp-time-travel-minds-of-time
     restart: on-failure
@@ -94,15 +96,15 @@ services:
       SERVICE_VERSION: 0.0.1
     env_file:
       - ./.env
-    # volumes:
-    #   - ./services/minds-of-time:/usr/src/app:cached
+    volumes:
+      - ./services/minds-of-time/src:/usr/src/app/src
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib-dev:e9276a78341765d080347ee23f274f01e562fe5a
     container_name: otel-collector
     hostname: otel-collector
     restart: on-failure
-    command: ["--config=/etc/otel/config.yaml"]
+    command: [ "--config=/etc/otel/config.yaml" ]
     env_file:
       - ./.env
     environment:
@@ -130,6 +132,7 @@ services:
   timegate:
     build:
       context: ./services/timegate
+      dockerfile: Dockerfile.dev
     container_name: mp-time-travel-timegate
     hostname: mp-time-travel-timegate
     restart: on-failure
@@ -148,12 +151,13 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ./services/timegate/src:/usr/src/app/src # :cached
+      - ./services/timegate:/usr/src/app # :cached
 
   # go
   vault-of-time:
     build:
       context: ./services/vault-of-time
+      dockerfile: Dockerfile.dev
     container_name: mp-time-travel-vault-of-time
     hostname: mp-time-travel-vault-of-time
     restart: on-failure
@@ -163,8 +167,8 @@ services:
       SERVICE_VERSION: 0.0.1
     env_file:
       - ./.env
-    # volumes:
-    #   - ./services/vault-of-time:/app:cached
+    volumes:
+      - ./services/vault-of-time/src:/app/src
 
   web-app:
     build:
@@ -172,17 +176,19 @@ services:
       dockerfile: Dockerfile.local
       args:
         <<: *common-variables
-        MULTIPLAYER_OTLP_KEY: ${MULTIPLAYER_OTLP_KEY}
+        REACT_APP_SESSION_DEBUGGER_KEY: ${MULTIPLAYER_OTLP_KEY}
         VERSION: 0.0.1
     container_name: mp-time-travel-web-app
     hostname: mp-time-travel-web-app
     restart: on-failure
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      test: [ "CMD", "curl", "-f", "http://localhost:3000" ]
       interval: 10s
       timeout: 5s
       retries: 8
       start_period: 20s
+    environment:
+      WDS_SOCKET_PORT: 8080
     env_file:
       - ./.env
     volumes:
@@ -212,7 +218,6 @@ services:
       - MONGO_INITDB_DATABASE=time-travel-demo
     volumes:
       - time-travel-mongo-data:/data/db
-
   # jaeger-all-in-one:
   #   image: jaegertracing/all-in-one:latest
   #   container_name: time-travel-jaeger

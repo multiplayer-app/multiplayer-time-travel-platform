@@ -1,0 +1,13 @@
+FROM golang:1.25-bookworm
+
+WORKDIR /app
+
+COPY go.mod go.sum .air.toml ./
+
+RUN go mod download
+
+RUN go install github.com/air-verse/air@latest
+
+EXPOSE 3000
+
+CMD ["air"]

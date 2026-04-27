@@ -51,13 +51,11 @@ const instrumentations = [
       requestHook: SessionRecorderHttpInstrumentationHooksNode.requestHook({
         maskHeadersList: ["X-Api-Key"],
         maxPayloadSizeBytes: 5000,
-        schemifyDocSpanPayload: false,
         isMaskBodyEnabled: false,
       }),
       responseHook: SessionRecorderHttpInstrumentationHooksNode.responseHook({
         maskHeadersList: ["X-Api-Key"],
         maxPayloadSizeBytes: 5000,
-        schemifyDocSpanPayload: false,
         isMaskBodyEnabled: false
       }),
     },

@@ -21,8 +21,16 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 24
+
+      - name: Install multiplayer-app/cli
+        run: npm install -g @multiplayer-app/cli@latest
 
       - name: Set custom Docker tag
         run: echo "DOCKER_TAG=${GITHUB_REF_NAME//\//-}-${GITHUB_SHA::7}" >> $GITHUB_ENV
@@ -38,9 +46,6 @@ jobs:
 
       - name: Make release for dialogue-hub
         env:
-          MULTIPLAYER_WORKSPACE_ID: ${{ vars.MULTIPLAYER_WORKSPACE_ID }}
-          MULTIPLAYER_PROJECT_ID: ${{ vars.MULTIPLAYER_PROJECT_ID }}
-          MULTIPLAYER_HOST: ${{ vars.MULTIPLAYER_HOST }}
           MULTIPLAYER_API_KEY: ${{ secrets.MULTIPLAYER_API_KEY }}
           COMMIT_SHORT: ${{ steps.commit.outputs.short }}
           COMMIT_SHA: ${{ github.sha }}
@@ -62,9 +67,6 @@ jobs:
 
       - name: Make release for epoch-engine
         env:
-          MULTIPLAYER_WORKSPACE_ID: ${{ vars.MULTIPLAYER_WORKSPACE_ID }}
-          MULTIPLAYER_PROJECT_ID: ${{ vars.MULTIPLAYER_PROJECT_ID }}
-          MULTIPLAYER_HOST: ${{ vars.MULTIPLAYER_HOST }}
           MULTIPLAYER_API_KEY: ${{ secrets.MULTIPLAYER_API_KEY }}
           COMMIT_SHORT: ${{ steps.commit.outputs.short }}
           COMMIT_SHA: ${{ github.sha }}
@@ -86,9 +88,7 @@ jobs:
 
       - name: Make release for minds-of-time
         env:
-          MULTIPLAYER_WORKSPACE_ID: ${{ vars.MULTIPLAYER_WORKSPACE_ID }}
-          MULTIPLAYER_PROJECT_ID: ${{ vars.MULTIPLAYER_PROJECT_ID }}
-          MULTIPLAYER_HOST: ${{ vars.MULTIPLAYER_HOST }}
+
           MULTIPLAYER_API_KEY: ${{ secrets.MULTIPLAYER_API_KEY }}
           COMMIT_SHORT: ${{ steps.commit.outputs.short }}
           COMMIT_SHA: ${{ github.sha }}
@@ -110,9 +110,6 @@ jobs:
 
       - name: Make release for timegate
         env:
-          MULTIPLAYER_WORKSPACE_ID: ${{ vars.MULTIPLAYER_WORKSPACE_ID }}
-          MULTIPLAYER_PROJECT_ID: ${{ vars.MULTIPLAYER_PROJECT_ID }}
-          MULTIPLAYER_HOST: ${{ vars.MULTIPLAYER_HOST }}
           MULTIPLAYER_API_KEY: ${{ secrets.MULTIPLAYER_API_KEY }}
           COMMIT_SHORT: ${{ steps.commit.outputs.short }}
           COMMIT_SHA: ${{ github.sha }}
@@ -134,9 +131,6 @@ jobs:
 
       - name: Make release for vault-of-time
         env:
-          MULTIPLAYER_WORKSPACE_ID: ${{ vars.MULTIPLAYER_WORKSPACE_ID }}
-          MULTIPLAYER_PROJECT_ID: ${{ vars.MULTIPLAYER_PROJECT_ID }}
-          MULTIPLAYER_HOST: ${{ vars.MULTIPLAYER_HOST }}
           MULTIPLAYER_API_KEY: ${{ secrets.MULTIPLAYER_API_KEY }}
           COMMIT_SHORT: ${{ steps.commit.outputs.short }}
           COMMIT_SHA: ${{ github.sha }}
