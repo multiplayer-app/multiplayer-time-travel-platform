@@ -28,7 +28,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 24
-          cache: "pnpm"
 
       - name: Install multiplayer-app/cli
         run: npm install -g @multiplayer-app/cli@latest
