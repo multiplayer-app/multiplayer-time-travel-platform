@@ -1,0 +1,11 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine
+
+WORKDIR /source
+
+COPY . .
+
+RUN dotnet restore ./src
+
+EXPOSE 3000
+
+CMD ["dotnet", "watch", "--project", "./src", "run", "--urls", "http://0.0.0.0:3000"]

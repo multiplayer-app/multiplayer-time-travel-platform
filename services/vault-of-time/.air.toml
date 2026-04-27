@@ -1,0 +1,11 @@
+[build]
+  cmd = "go build -o ./tmp/main ./src"
+  bin = "./tmp/main"
+  include_ext = ["go"]
+  exclude_dir = ["tmp", "build", "src/docs"]
+
+[log]
+  time = false
+
+[misc]
+  clean_on_exit = true

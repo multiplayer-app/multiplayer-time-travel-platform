@@ -4,6 +4,8 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+console.log('_____', process.env.REACT_APP_BASE_API_URL)
+
 debuggerInstance.init({
   version: process.env.REACT_APP_SERVICE_VERSION,
   application: process.env.REACT_APP_SERVICE_NAME || "mp-time-travel-web-app",

@@ -15,6 +15,8 @@ import { isSandboxClosed } from "utils/sandboxHelper";
 import { useTimeTravel } from "hooks/useTimeTravel";
 import "./App.scss";
 
+
+
 // Required for accessibility
 Modal.setAppElement("#root");
 
