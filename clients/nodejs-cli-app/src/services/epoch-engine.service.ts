@@ -16,13 +16,10 @@ interface HistoricalDate {
     }
 }
 
-export const fetchEpochs = async (
-    errorRate?: number
-): Promise<HistoricalDate[]> => {
+export const fetchEpochs = async (): Promise<HistoricalDate[]> => {
     try {
         const { data: epochs } = await axios.get(
-            `${EPOCH_ENGINE_SERVICE_URL}/v1/epoch-engine/epoch`,
-            { ...errorRate ? { params: { errorRate } } : {} }
+            `${EPOCH_ENGINE_SERVICE_URL}/v1/epoch-engine/epoch`
         )
 
         return epochs

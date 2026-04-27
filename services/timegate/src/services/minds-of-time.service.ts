@@ -2,13 +2,10 @@ import axios from 'axios'
 import restify from 'restify-errors'
 import { MINDS_OF_TIME_SERVICE_URL } from '../config'
 
-export const fetchProminentPersons = async (
-    errorRate?: number
-): Promise<{ name: string }[]> => {
+export const fetchProminentPersons = async (): Promise<{ name: string }[]> => {
     try {
         const { data: prominentPersons } = await axios.get(
-            `${MINDS_OF_TIME_SERVICE_URL}/v1/minds-of-time/prominent-persons`,
-            { ...errorRate ? { params: { errorRate } } : {} }
+            `${MINDS_OF_TIME_SERVICE_URL}/v1/minds-of-time/prominent-persons`
         )
 
         return prominentPersons

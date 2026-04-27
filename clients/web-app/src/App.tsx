@@ -1,52 +1,46 @@
-import { useEffect, useRef, useState } from "react";
-import Modal from "react-modal";
-import SessionRecorder, {
-  recorderEventBus,
-  UserType,
-} from "@multiplayer-app/session-recorder-react";
-import SidePanel from "components/SidePanel";
-import Board from "components/Board";
-import NavigationModal from "components/NavigationModal";
-import DebuggerLabel from "components/DebuggerLabel";
-import Sandbox from "components/Sandbox";
-import { TimeTravelProvider } from "contexts/TimeTravelContext";
-import { useAnonymousTimeTravelerName } from "hooks/useAnonymousTimeTravelerName";
-import { isSandboxClosed } from "utils/sandboxHelper";
-import { useTimeTravel } from "hooks/useTimeTravel";
-import "./App.scss";
+import Modal from 'react-modal'
+import { useEffect, useRef, useState } from 'react'
+import SessionRecorder, { UserType } from '@multiplayer-app/session-recorder-react'
+import Board from 'components/Board'
+import Sandbox from 'components/Sandbox'
+import SidePanel from 'components/SidePanel'
+import DebuggerLabel from 'components/DebuggerLabel'
+import { ToastProvider } from 'contexts/ToastContext'
+import { TimeTravelProvider } from 'contexts/TimeTravelContext'
+import { useAnonymousTimeTravelerName } from 'hooks/useAnonymousTimeTravelerName'
+import { isSandboxClosed } from 'utils/sandboxHelper'
+import './App.scss'
 
 
 
 // Required for accessibility
-Modal.setAppElement("#root");
+Modal.setAppElement('#root')
 
-localStorage.removeItem("mp-recorder-button-position");
+localStorage.removeItem('mp-recorder-button-position')
 
 function App() {
-  const [isNavigationModalOpen, setIsNavigationModalOpen] = useState(false);
-  const [isSandboxOpen, setIsSandboxOpen] = useState(false);
-  const userName = useAnonymousTimeTravelerName();
-  const { isManuallyStopped, setIsManuallyStopped } = useTimeTravel();
+  const [isSandboxOpen, setIsSandboxOpen] = useState(false)
+  const userName = useAnonymousTimeTravelerName()
 
-  const widgetLockApplied = useRef(false);
+  const widgetLockApplied = useRef(false)
 
   useEffect(() => {
-    const dismissed = isSandboxClosed();
-    setIsSandboxOpen(!dismissed);
-  }, []);
+    const dismissed = isSandboxClosed()
+    setIsSandboxOpen(!dismissed)
+  }, [])
 
   useEffect(() => {
-    if (widgetLockApplied.current) return;
+    if (widgetLockApplied.current) return
 
-    const el = SessionRecorder?.sessionWidgetButtonElement;
-    if (!el) return;
+    const el = SessionRecorder?.sessionWidgetButtonElement
+    if (!el) return
 
-    const root = el.getRootNode();
-    if (!(root instanceof ShadowRoot)) return;
+    const root = el.getRootNode()
+    if (!(root instanceof ShadowRoot)) return
 
-    widgetLockApplied.current = true;
+    widgetLockApplied.current = true
 
-    const style = document.createElement("style");
+    const style = document.createElement('style')
     style.textContent = `
       .mp-session-debugger-button {
         left: 24px !important;
@@ -59,60 +53,37 @@ function App() {
         z-index: 19 !important;
         transition: none !important;
       }
-    `;
-    root.appendChild(style);
-  });
-
-  useEffect(() => {
-    const handleNavigationModal = () => {
-      if (isManuallyStopped) {
-        setIsManuallyStopped(false);
-        return;
-      }
-      setIsNavigationModalOpen(true);
-    };
-    recorderEventBus?.on(
-      "multiplayer-debug-session-response",
-      handleNavigationModal,
-    );
-
-    return () => {
-      recorderEventBus?.off(
-        "multiplayer-debug-session-response",
-        handleNavigationModal,
-      );
-    };
-  }, [isManuallyStopped, setIsManuallyStopped]);
+    `
+    root.appendChild(style)
+  })
 
   useEffect(() => {
     if (userName) {
-      SessionRecorder.setSessionAttributes({
+      SessionRecorder.setUserAttributes({
         userName: userName,
-        type: UserType.USER,
-      });
+        type: UserType.USER
+      })
     }
-  }, [userName]);
+  }, [userName])
 
   return (
-    <div className="mtt-app">
+    <div className='mtt-app'>
       <SidePanel />
       <Board />
-      <NavigationModal
-        isOpen={isNavigationModalOpen}
-        onClose={() => setIsNavigationModalOpen(false)}
-      />
       <Sandbox isOpen={isSandboxOpen} onClose={() => setIsSandboxOpen(false)} />
       <DebuggerLabel />
     </div>
-  );
+  )
 }
 
 const AppLayout = () => {
   return (
-    <TimeTravelProvider>
-      <App />
-    </TimeTravelProvider>
-  );
-};
+    <ToastProvider>
+      <TimeTravelProvider>
+        <App />
+      </TimeTravelProvider>
+    </ToastProvider>
+  )
+}
 
-export default AppLayout;
+export default AppLayout

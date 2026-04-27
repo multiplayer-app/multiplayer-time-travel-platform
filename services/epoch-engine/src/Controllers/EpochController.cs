@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace WebApiOpenApi.Controllers;
 
@@ -141,7 +140,7 @@ public class EpochController(ILogger<EpochController> _logger) : ControllerBase
     [EndpointDescription("Endpoint will return epochs for different characters.")]
     [Produces(typeof(Epoch[]))]
     [HttpGet()]
-    public IActionResult Get([FromQuery][Range(0.0, 1.0)] double? errorRate = null)
+    public IActionResult Get()
     {
         _logger.LogDebug("GetEpochs with OpenAPI definitions");
 

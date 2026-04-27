@@ -9,7 +9,6 @@ export const sendMessage = async (
   message: string,
   contextId: string,
   character: Character,
-  errorRate: number,
   signal: AbortSignal
 ) => {
   return instance.post(
@@ -23,9 +22,6 @@ export const sendMessage = async (
       ...(contextId ? { contextId } : {}),
     },
     {
-      params: {
-        errorRate,
-      },
       signal,
     }
   );

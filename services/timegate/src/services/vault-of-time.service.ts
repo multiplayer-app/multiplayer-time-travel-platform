@@ -2,13 +2,10 @@ import axios from 'axios'
 import restify from 'restify-errors'
 import { VAULT_OF_TIME_SERVICE_URL } from '../config'
 
-export const fetchHistoricalEvents = async (
-    errorRate?: number
-): Promise<{ event: string, name: string }[]> => {
+export const fetchHistoricalEvents = async (): Promise<{ event: string, name: string }[]> => {
     try {
         const { data: historicalEvents } = await axios.get(
-            `${VAULT_OF_TIME_SERVICE_URL}/v1/vault-of-time/historical-events`,
-            { ...errorRate ? { params: { errorRate } } : {} }
+            `${VAULT_OF_TIME_SERVICE_URL}/v1/vault-of-time/historical-events`
         )
 
         return historicalEvents

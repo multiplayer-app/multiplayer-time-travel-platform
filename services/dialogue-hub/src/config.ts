@@ -17,10 +17,6 @@ export const MULTIPLAYER_OTLP_SPAN_RATIO = process.env.MULTIPLAYER_OTLP_SPAN_RAT
     ? Number(process.env.MULTIPLAYER_OTLP_SPAN_RATIO)
     : 0.01
 
-export const RANDOM_ERROR_RATE = process.env.RANDOM_ERROR_RATE
-    ? Number(process.env.RANDOM_ERROR_RATE)
-    : 0.1
-
 export const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY
 export const OPENROUTER_API_URL = process.env.OPENROUTER_API_URL
     ? process.env.OPENROUTER_API_URL

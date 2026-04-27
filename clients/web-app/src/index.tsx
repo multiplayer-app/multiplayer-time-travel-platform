@@ -1,23 +1,22 @@
-import debuggerInstance from "@multiplayer-app/session-recorder-react";
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import debuggerInstance from '@multiplayer-app/session-recorder-react'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+import reportWebVitals from './reportWebVitals'
 
 debuggerInstance.init({
   version: process.env.REACT_APP_SERVICE_VERSION,
-  application: process.env.REACT_APP_SERVICE_NAME || "mp-time-travel-web-app",
+  application: process.env.REACT_APP_SERVICE_NAME || 'mp-time-travel-web-app',
   environment: process.env.REACT_APP_PLATFORM_ENV,
   apiKey: process.env.REACT_APP_SESSION_DEBUGGER_KEY,
   ...(process.env.REACT_APP_SESSION_DEBUGGER_API_BASE_URL
     ? {
-        apiBaseUrl: process.env.REACT_APP_SESSION_DEBUGGER_API_BASE_URL,
+        apiBaseUrl: process.env.REACT_APP_SESSION_DEBUGGER_API_BASE_URL
       }
     : {}),
   ...(process.env.REACT_APP_SESSION_DEBUGGER_EXPORTER_ENDPOINT
     ? {
-        exporterEndpoint:
-          process.env.REACT_APP_SESSION_DEBUGGER_EXPORTER_ENDPOINT,
+        exporterEndpoint: process.env.REACT_APP_SESSION_DEBUGGER_EXPORTER_ENDPOINT
       }
     : {}),
   recordCanvas: false,
@@ -26,39 +25,38 @@ debuggerInstance.init({
     /https:\/\/cdn\.jsdelivr\.net\/.*/,
     /https:\/\/bam\.nr-data\.net\/.*/,
     /posthog\.com.*/,
-    /https:\/\/pixel\.source\.app\/.*/,
+    /https:\/\/pixel\.source\.app\/.*/
   ],
   propagateTraceHeaderCorsUrls: new RegExp(
     // eslint-disable-next-line
     `${process.env.REACT_APP_BASE_API_URL}\.*`,
-    "i"
+    'i'
   ),
   masking: {
-    isContentMaskingEnabled: false,
+    isContentMaskingEnabled: false
   },
-  sampleTraceRatio:
-    Number(process.env.REACT_APP_MULTIPLAYER_OTLP_SPAN_RATIO) || 0.04,
+  sampleTraceRatio: Number(process.env.REACT_APP_MULTIPLAYER_OTLP_SPAN_RATIO) || 0.04,
   maxCapturingHttpPayloadSize: 100000,
   showContinuousRecording: false,
   widgetTextOverrides: {
-    initialTitleWithoutContinuous: "Try a full-stack session recording!",
+    initialTitleWithoutContinuous: 'Try a full-stack session recording!',
     initialDescriptionWithoutContinuous:
-      "Start a recording to see Multiplayer in action.\n" +
-      "For the best experience, pick a character and start chatting: you’ll trigger real interactions (and a few intentional glitches 😉) that will show up in our sandbox.",
-    saveButtonText: "Save",
+      'Start a recording to see Multiplayer in action.\n' +
+      'For the best experience, pick a character and start chatting: you’ll trigger real interactions (and a few intentional glitches 😉) that will show up in our sandbox.',
+    saveButtonText: 'Save',
     finalDescription:
-      "Save your full-stack session recording in our sandbox. You can also leave a quick message, just like a real user would for a bug report.",
-  },
-});
+      'Save your full-stack session recording in our sandbox. You can also leave a quick message, just like a real user would for a bug report.'
+  }
+})
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
-);
+)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+reportWebVitals()

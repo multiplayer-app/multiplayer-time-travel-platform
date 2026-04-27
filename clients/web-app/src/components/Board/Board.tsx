@@ -1,53 +1,42 @@
-import { useEffect, memo, useCallback } from "react";
-import debuggerInstance from "@multiplayer-app/session-recorder-react";
-import Timeline from "components/Timeline";
-import CharacterList from "components/CharacterList";
-import WelcomeScreen from "components/WelcomeScreen";
-import MultiplayerChat from "components/MultiplayerChat";
-import { characters } from "mock/characters";
+import { useEffect, memo, useCallback } from 'react'
+import debuggerInstance, { ErrorBoundary } from '@multiplayer-app/session-recorder-react'
+import Timeline from 'components/Timeline'
+import CharacterList from 'components/CharacterList'
+import WelcomeScreen from 'components/WelcomeScreen'
+import MultiplayerChat from 'components/MultiplayerChat'
+import { characters } from 'mock/characters'
 
-import "./board.scss";
-import { triggerMouseEvent } from "utils/triggerMouseEvent";
-import { useTimeTravel } from "hooks/useTimeTravel";
-import { SessionState } from "utils/types";
+import './board.scss'
+import { triggerMouseEvent } from 'utils/triggerMouseEvent'
+import { useTimeTravel } from 'hooks/useTimeTravel'
 
-const TERMS_URL = "https://www.multiplayer.app/terms-of-service/";
-const PRIVACY_URL = "https://www.multiplayer.app/privacy/";
+const TERMS_URL = 'https://www.multiplayer.app/terms-of-service/'
+const PRIVACY_URL = 'https://www.multiplayer.app/privacy/'
 
 const getRandomCharacter = () => {
-  const randomIndex = Math.floor(Math.random() * characters.length);
-  return characters[randomIndex];
-};
+  const randomIndex = Math.floor(Math.random() * characters.length)
+  return characters[randomIndex]
+}
 
 const Board = () => {
-  const { selectedCharacter, setSelectedCharacter, question, setQuestion } =
-    useTimeTravel();
+  const { selectedCharacter, setSelectedCharacter, question, setQuestion } = useTimeTravel()
 
   useEffect(() => {
-    setQuestion(null);
-    if (
-      selectedCharacter &&
-      debuggerInstance?.sessionState !== SessionState.started
-    ) {
-      debuggerInstance.start?.();
-    }
-  }, [selectedCharacter, setQuestion]);
+    setQuestion(null)
+  }, [selectedCharacter, setQuestion])
 
   const handleCharacterPick = useCallback(() => {
-    setSelectedCharacter(getRandomCharacter());
-  }, [setSelectedCharacter]);
+    setSelectedCharacter(getRandomCharacter())
+  }, [setSelectedCharacter])
 
   const onDebuggerOpen = () => {
-    triggerMouseEvent(debuggerInstance?.sessionWidgetButtonElement);
-  };
+    triggerMouseEvent(debuggerInstance?.sessionWidgetButtonElement)
+  }
 
   return (
-    <div className="mtt-board">
-      <div className="mtt-board-head">
-        <Timeline
-          selectedCharacter={selectedCharacter}
-          setSelectedCharacter={setSelectedCharacter}
-        />
+    <div className='mtt-board'>
+      <div className='mtt-board-head'>
+        <Timeline selectedCharacter={selectedCharacter} setSelectedCharacter={setSelectedCharacter} />
         <CharacterList
           characters={characters}
           selectedCharacter={selectedCharacter}
@@ -62,36 +51,27 @@ const Board = () => {
           setQuestion={setQuestion}
         />
       )}
+      <ErrorBoundary>
+        <MultiplayerChat
+          character={selectedCharacter}
+          preselectedQuestion={question}
+          setQuestion={setQuestion}
+          onDebuggerOpen={onDebuggerOpen}
+        />
+      </ErrorBoundary>
 
-      <MultiplayerChat
-        character={selectedCharacter}
-        preselectedQuestion={question}
-        setQuestion={setQuestion}
-        onDebuggerOpen={onDebuggerOpen}
-      />
-
-      <div className="mtt-terms-info medium-text">
-        By messaging Multiplayer Time Travel, you agree to our{" "}
-        <a
-          href={TERMS_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Terms of Service"
-        >
+      <div className='mtt-terms-info medium-text'>
+        By messaging Multiplayer Time Travel, you agree to our{' '}
+        <a href={TERMS_URL} target='_blank' rel='noopener noreferrer' aria-label='Terms of Service'>
           Terms
-        </a>{" "}
-        and have read our{" "}
-        <a
-          href={PRIVACY_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Privacy Policy"
-        >
+        </a>{' '}
+        and have read our{' '}
+        <a href={PRIVACY_URL} target='_blank' rel='noopener noreferrer' aria-label='Privacy Policy'>
           Privacy Policy
         </a>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default memo(Board);
+export default memo(Board)

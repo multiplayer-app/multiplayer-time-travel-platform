@@ -4,8 +4,7 @@ import { DIALOGUE_HUB_SERVICE_URL } from '../config'
 
 export const postOpenRouterMessage = async (
     message: string,
-    contextId?: string,
-    errorRate?: number
+    contextId?: string
 ): Promise<{ reply: string, contextId: string }> => {
     try {
         const res = await axios.post(
@@ -13,8 +12,7 @@ export const postOpenRouterMessage = async (
             {
                 message,
                 ...contextId ? { contextId } : {}
-            },
-            { ...errorRate ? { params: { errorRate } } : {} }
+            }
         )
 
         res.data

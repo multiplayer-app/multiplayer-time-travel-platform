@@ -3,8 +3,7 @@ import { EpochEngineService } from '../../services'
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const errorRate = req.query.errorRate as number | undefined
-    const epochs = await EpochEngineService.fetchEpochs(errorRate)
+    const epochs = await EpochEngineService.fetchEpochs()
 
     return res.status(200).json(epochs)
   } catch (err) {

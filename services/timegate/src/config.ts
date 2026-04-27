@@ -28,7 +28,3 @@ export const MULTIPLAYER_OTLP_SPAN_RATIO = process.env.MULTIPLAYER_OTLP_SPAN_RAT
 export const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/time-travel-demo'
 
 export const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME || 'mp-time-travel'
-
-export const RANDOM_ERROR_RATE = process.env.RANDOM_ERROR_RATE
-  ? Number(process.env.RANDOM_ERROR_RATE)
-  : 0.1

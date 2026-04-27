@@ -32,19 +32,3 @@ export const createCharacterErrorMessage = (message: string): ChatMessage => ({
   direction: "incoming",
   characterError: true,
 });
-
-export const getErrorRate = (messages: ChatMessage[]) => {
-  const outgoingMessages = messages.filter(
-    (msg) => msg.direction === "outgoing"
-  );
-  const outgoingCount = outgoingMessages.length;
-
-  const cycleLength = 4; // 2 safe + 2 increasing
-  const cycleIndex = outgoingCount % cycleLength;
-
-  if (cycleIndex < 2) {
-    return 0;
-  }
-
-  return (cycleIndex - 1) * 0.5; // 0.5, 1
-};

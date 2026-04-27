@@ -1,100 +1,113 @@
-import React, { createContext, ReactNode, useEffect, useState } from "react";
-import SessionRecorder, {
-  recorderEventBus,
-} from "@multiplayer-app/session-recorder-react";
-import { getEpoch, getProminentPersons } from "services";
-import { Character } from "utils/types";
+import React, { createContext, ReactNode, useEffect, useState } from 'react'
+import SessionRecorder, { recorderEventBus } from '@multiplayer-app/session-recorder-react'
+import { getEpoch, getProminentPersons } from 'services'
+import { Character } from 'utils/types'
+import NavigationModal from 'components/NavigationModal'
 
-const TimeTravelContext = createContext(undefined);
+const TimeTravelContext = createContext(undefined)
 
 interface TimeTravelProviderProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const getNavigationStoredUrl = () => {
-  const storedUrl = localStorage.getItem("mp-navigation-url");
-  if (!storedUrl || storedUrl === "undefined") return null;
+  const storedUrl = localStorage.getItem('mp-navigation-url')
+  if (!storedUrl || storedUrl === 'undefined') return null
   try {
-    return JSON.parse(storedUrl);
+    return JSON.parse(storedUrl)
   } catch (e) {
-    console.error("Failed to parse stored navigation URL:", e);
-    return null;
+    console.error('Failed to parse stored navigation URL:', e)
+    return null
   }
-};
+}
 
-export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({
-  children,
-}) => {
-  const [selectedCharacter, setSelectedCharacter] = useState<Character>(null);
-  const [question, setQuestion] = useState(null);
-  const [navigationUrl, setNavigationUrl] = useState(getNavigationStoredUrl());
-  const [errorRate, setErrorRate] = useState(0);
-  const [recordingState, setRecordingState] = useState(
-    SessionRecorder?.sessionState
-  );
-  const [isManualRate, setIsManualRate] = useState(false);
-  const [isManuallyStopped, setIsManuallyStopped] = useState(false);
+export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({ children }) => {
+  const [selectedCharacter, setSelectedCharacter] = useState<Character>(null)
+  const [question, setQuestion] = useState(null)
+  const [navigationUrl, setNavigationUrl] = useState(getNavigationStoredUrl())
+  const [recordingState, setRecordingState] = useState(SessionRecorder?.sessionState)
+  const [isManuallyStopped, setIsManuallyStopped] = useState(false)
+  const [isNavigationModalOpen, setIsNavigationModalOpen] = useState(false)
 
   useEffect(() => {
-    getEpoch();
-  }, []);
+    getEpoch()
+  }, [])
 
   useEffect(() => {
     // Make requests to generate traces
     if (selectedCharacter) {
-      getProminentPersons();
+      getProminentPersons()
     }
-  }, [selectedCharacter]);
+  }, [selectedCharacter])
 
   useEffect(() => {
-    const handleSetUrl = (res) => {
-      setNavigationUrl(res?.url);
-      localStorage.setItem("mp-navigation-url", JSON.stringify(res?.url));
-    };
-    recorderEventBus?.on("debug-session:started", handleSetUrl);
+    const handleSetUrl = (url: string) => {
+      if (!url) return
+      setNavigationUrl(url)
+      localStorage.setItem('mp-navigation-url', url)
+    }
+    recorderEventBus?.on('debug-session:auto-created', handleSetUrl)
+
     return () => {
-      recorderEventBus?.off("debug-session:started", handleSetUrl);
-    };
-  }, []);
+      recorderEventBus?.off('debug-session:auto-created', handleSetUrl)
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleNavigationModal = () => {
+      if (isManuallyStopped) {
+        setIsManuallyStopped(false)
+        return
+      }
+      if (navigationUrl) {
+        setIsNavigationModalOpen(true)
+      }
+    }
+    recorderEventBus?.on('debug-session-ready', handleNavigationModal)
+    return () => {
+      recorderEventBus?.off('debug-session-ready', handleNavigationModal)
+    }
+  }, [isManuallyStopped, setIsManuallyStopped])
 
   useEffect(() => {
     const handleMessage = (event) => {
-      if (event.data?.type === "MULTIPLAYER_SESSION_DEBUGGER_LIB") {
-        const { action, payload } = event.data;
-        if (action === "state-change") {
-          setRecordingState(payload);
+      if (event.data?.type === 'MULTIPLAYER_SESSION_DEBUGGER_LIB') {
+        const { action, payload } = event.data
+        if (action === 'state-change') {
+          setRecordingState(payload)
         }
       }
-    };
+    }
 
-    window.addEventListener("message", handleMessage);
+    window.addEventListener('message', handleMessage)
 
     return () => {
-      window.removeEventListener("message", handleMessage);
-    };
-  }, []);
+      window.removeEventListener('message', handleMessage)
+    }
+  }, [])
 
   const value = {
     selectedCharacter,
     question,
     navigationUrl,
-    errorRate,
-    isManualRate,
     recordingState,
     isManuallyStopped,
     setIsManuallyStopped,
     setSelectedCharacter,
     setQuestion,
-    setNavigationUrl,
-    setErrorRate,
-    setIsManualRate,
-  };
+    setNavigationUrl
+  }
 
   return (
     <TimeTravelContext.Provider value={value}>
       {children}
+      <NavigationModal
+        navigationUrl={navigationUrl}
+        isOpen={isNavigationModalOpen}
+        onClose={() => setIsNavigationModalOpen(false)}
+      />
     </TimeTravelContext.Provider>
-  );
-};
+  )
+}
 
-export { TimeTravelContext };
+export { TimeTravelContext }

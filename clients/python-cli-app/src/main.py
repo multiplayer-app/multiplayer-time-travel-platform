@@ -21,7 +21,6 @@ def get_data(name, base_url, endpoint):
     try:
         response = requests.get(
             url,
-            params = { "errorRate": 0 },
             timeout = 10
         )
         response.raise_for_status()
