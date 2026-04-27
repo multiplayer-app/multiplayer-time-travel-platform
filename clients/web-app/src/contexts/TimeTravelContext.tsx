@@ -13,12 +13,7 @@ interface TimeTravelProviderProps {
 const getNavigationStoredUrl = () => {
   const storedUrl = localStorage.getItem('mp-navigation-url')
   if (!storedUrl || storedUrl === 'undefined') return null
-  try {
-    return JSON.parse(storedUrl)
-  } catch (e) {
-    console.error('Failed to parse stored navigation URL:', e)
-    return null
-  }
+  return storedUrl
 }
 
 export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({ children }) => {
@@ -47,7 +42,6 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({ children
       localStorage.setItem('mp-navigation-url', url)
     }
     recorderEventBus?.on('debug-session:auto-created', handleSetUrl)
-
     return () => {
       recorderEventBus?.off('debug-session:auto-created', handleSetUrl)
     }
@@ -86,16 +80,21 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({ children
     }
   }, [])
 
+  const handleNavigationModalClose = () => {
+    setIsNavigationModalOpen(false)
+    setNavigationUrl(null)
+    localStorage.removeItem('mp-navigation-url')
+  }
   const value = {
     selectedCharacter,
     question,
     navigationUrl,
     recordingState,
     isManuallyStopped,
-    setIsManuallyStopped,
-    setSelectedCharacter,
     setQuestion,
-    setNavigationUrl
+    setNavigationUrl,
+    setIsManuallyStopped,
+    setSelectedCharacter
   }
 
   return (
@@ -104,7 +103,7 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({ children
       <NavigationModal
         navigationUrl={navigationUrl}
         isOpen={isNavigationModalOpen}
-        onClose={() => setIsNavigationModalOpen(false)}
+        onClose={handleNavigationModalClose}
       />
     </TimeTravelContext.Provider>
   )
