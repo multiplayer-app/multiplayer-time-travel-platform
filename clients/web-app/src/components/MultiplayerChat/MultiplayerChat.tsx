@@ -27,7 +27,7 @@ import { useToast } from 'hooks/useToast'
 
 const MultiplayerChat = ({ character, preselectedQuestion, setQuestion, onDebuggerOpen }) => {
   const { navigationUrl, recordingState, setIsManuallyStopped } = useTimeTravel()
-  const { showSuccess, showError } = useToast()
+  const { showError } = useToast()
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [isTyping, setIsTyping] = useState<boolean>(false)
   const [contextId, setContextId] = useState<string>(null)

@@ -61,7 +61,7 @@ export const TimeTravelProvider: React.FC<TimeTravelProviderProps> = ({ children
     return () => {
       recorderEventBus?.off('debug-session-ready', handleNavigationModal)
     }
-  }, [isManuallyStopped, setIsManuallyStopped])
+  }, [isManuallyStopped, navigationUrl])
 
   useEffect(() => {
     const handleMessage = (event) => {
