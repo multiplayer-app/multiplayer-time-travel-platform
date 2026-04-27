@@ -176,7 +176,7 @@ services:
       dockerfile: Dockerfile.local
       args:
         <<: *common-variables
-        REACT_APP_SESSION_DEBUGGER_KEY: ${MULTIPLAYER_OTLP_KEY}
+        MULTIPLAYER_OTLP_KEY: ${MULTIPLAYER_OTLP_KEY}
         VERSION: 0.0.1
     container_name: mp-time-travel-web-app
     hostname: mp-time-travel-web-app
