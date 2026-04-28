@@ -76,7 +76,7 @@ const MultiplayerChat = ({ character, preselectedQuestion, setQuestion, onDebugg
           sender: 'Multiplayer',
           direction: 'incoming'
         };
-        if (err.statusCode !== 500) {
+        if (err?.response?.status !== 500) {
           botMessage.message = getRandomErrorMessage();
           botMessage.systemError = true;
         } else {
@@ -109,21 +109,23 @@ const MultiplayerChat = ({ character, preselectedQuestion, setQuestion, onDebugg
     <div className='mtt-chat-container'>
       <MainContainer>
         <ChatContainer>
-          <MessageList typingIndicator={isTyping && <TypingIndicator content={`${character.name} is typing...`} />}>
+          <MessageList typingIndicator={isTyping && character && <TypingIndicator content={`${character.name} is typing...`} />}>
             {messages.map((msg, i) => (
-              <div className={`mtt-message-row mtt-${msg.direction}`} key={i}>
-                <MessageAvatar direction={msg.direction} character={character} systemError={msg.systemError} />
-                <div className='cs-message__content'>
-                  <Message.HtmlContent html={msg.message} />
-                  {(msg.systemError || msg.characterError) && (
-                    <Message.CustomContent>
-                      <div className='mtt-debugger-toggle' onClick={onDebuggerOpen}>
-                        Start Debugging
-                      </div>
-                    </Message.CustomContent>
-                  )}
-                </div>
-              </div>
+              <Message key={i} model={msg}>
+                <Message.CustomContent>
+                  <div className={`mtt-message-row mtt-${msg.direction}`}>
+                    <MessageAvatar direction={msg.direction} character={character} systemError={msg.systemError} />
+                    <div className='cs-message__content'>
+                      <Message.HtmlContent html={msg.message} />
+                      {(msg.systemError || msg.characterError) && (
+                        <div className='mtt-debugger-toggle' onClick={onDebuggerOpen}>
+                          Start Debugging
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </Message.CustomContent>
+              </Message>
             ))}
           </MessageList>
 
