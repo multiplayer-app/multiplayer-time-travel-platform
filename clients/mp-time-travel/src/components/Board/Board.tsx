@@ -29,9 +29,11 @@ const Board = () => {
     setSelectedCharacter(getRandomCharacter());
   }, [setSelectedCharacter]);
 
-  const onDebuggerOpen = () => {
-    triggerMouseEvent(debuggerInstance?.sessionWidgetButtonElement);
-  };
+  const onDebuggerOpen = useCallback(() => {
+    const buttonElement = debuggerInstance?.sessionWidgetButtonElement;
+    if (!buttonElement) return;
+    triggerMouseEvent(buttonElement);
+  }, []);
 
   return (
     <div className='mtt-board'>

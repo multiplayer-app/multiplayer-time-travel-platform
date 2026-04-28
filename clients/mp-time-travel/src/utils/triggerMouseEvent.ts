@@ -1,4 +1,6 @@
-const triggerMouseEvent = (element: HTMLElement) => {
+const triggerMouseEvent = (element: HTMLElement | null | undefined) => {
+  if (!element) return;
+
   const mouseDownEvent = new MouseEvent('mousedown', {
     bubbles: true,
     cancelable: true,
