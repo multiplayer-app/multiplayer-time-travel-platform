@@ -13,13 +13,13 @@ export const MULTIPLAYER_OTLP_KEY = process.env.MULTIPLAYER_OTLP_KEY || "<multip
 export const OTLP_TRACES_ENDPOINT = process.env.OTLP_TRACES_ENDPOINT || "https://api.multiplayer.app/v1/traces"
 export const OTLP_LOGS_ENDPOINT = process.env.OTLP_LOGS_ENDPOINT || "https://api.multiplayer.app/v1/logs"
 
-export const DIALOGUE_HUB_SERVICE_URL = process.env.DIALOGUE_HUB_SERVICE_URL || 'http://localhost:3000/v1/dialogue-hub'
+export const DIALOGUE_HUB_SERVICE_URL = process.env.DIALOGUE_HUB_SERVICE_URL || 'http://localhost:3000'
 
-export const EPOCH_ENGINE_SERVICE_URL = process.env.EPOCH_ENGINE_SERVICE_URL || 'http://localhost:3000/v1/epoch-engine'
+export const EPOCH_ENGINE_SERVICE_URL = process.env.EPOCH_ENGINE_SERVICE_URL || 'http://localhost:3000'
 
-export const MINDS_OF_TIME_SERVICE_URL = process.env.MINDS_OF_TIME_SERVICE_URL || 'http://localhost:3000/v1/minds-of-time'
+export const MINDS_OF_TIME_SERVICE_URL = process.env.MINDS_OF_TIME_SERVICE_URL || 'http://localhost:3000'
 
-export const VAULT_OF_TIME_SERVICE_URL = process.env.VAULT_OF_TIME_SERVICE_URL || 'http://localhost:3000/v1/vault-of-time'
+export const VAULT_OF_TIME_SERVICE_URL = process.env.VAULT_OF_TIME_SERVICE_URL || 'http://localhost:3000'
 
 export const OTLP_MULTIPLAYER_DOC_SPAN_RATIO = process.env.OTLP_MULTIPLAYER_DOC_SPAN_RATIO
     ? Number(process.env.OTLP_MULTIPLAYER_DOC_SPAN_RATIO)
